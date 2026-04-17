@@ -1,616 +1,619 @@
-@extends('layouts.app')
-@section('title', 'Profile')
-@section('styles')
-<style>
-    .p-tab-content { display: none; }
-    .p-tab-content.active { display: block; }
-    .p-overlay { display: none; }
-    .p-overlay.open { display: flex; }
-</style>
-@endsection
-@section('content')
+<div>
+    @extends('layouts.app')
+    @section('title', 'Profile')
+    @section('styles')
+    <style>
+        .p-tab-content { display: none; }
+        .p-tab-content.active { display: block; }
+        .p-overlay { display: none; }
+        .p-overlay.open { display: flex; }
+    </style>
+    @endsection
+    @section('content')
 
-  <!-- ========================== main ========================== -->
-  <main class="profile-page">
-    <div class="container">
-      <!-- Top Bar -->
-      <div style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-          ">
-        <div>
-          <h2 style="
-                font-size: 22px;
-                font-weight: 900;
-                color: #1a1a1a;
-                margin: 0;
+      <!-- ========================== main ========================== -->
+      <main class="profile-page">
+        <div class="container">
+          <!-- Top Bar -->
+          <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 24px;
               ">
-            ملفي الشخصي
-          </h2>
-        </div>
-        <button class="p-edit-btn" onclick="openModal('main')">
-          <i class="fas fa-pen"></i> تعديل البيانات
-        </button>
-      </div>
-
-      <div class="profile-layout">
-        <!-- ===== SIDEBAR ===== -->
-        <div class="p-sidebar">
-          <!-- Avatar -->
-          <div class="p-card p-avatar-card">
-            <div class="p-avatar-wrap">
-              <div class="p-avatar" id="avatarEl">
-                <span id="avatarInitials">سم</span>
-                <input type="file" accept="image/*" onchange="handleAvatar(event)" title="تغيير الصورة" />
-              </div>
-              <div class="p-avatar-edit"><i class="fas fa-camera"></i></div>
-            </div>
-            <div class="p-name" id="dispName">سارة محمد علي</div>
-            <div class="p-title" id="dispTitle">
-              متخصصة في علم النفس الإكلينيكي
-            </div>
-            <div class="p-location">
-              <i class="fas fa-map-marker-alt"></i>
-              <span id="dispLocation">القاهرة، مصر</span>
-            </div>
-            <div class="p-stats">
-              <div class="p-stat">
-                <div class="p-stat-num" id="statCourses">4</div>
-                <div class="p-stat-lbl">دورات</div>
-              </div>
-              <div class="p-stat">
-                <div class="p-stat-num" id="statDone">1</div>
-                <div class="p-stat-lbl">مكتملة</div>
-              </div>
-              <div class="p-stat">
-                <div class="p-stat-num" id="statSessions">12</div>
-                <div class="p-stat-lbl">جلسة</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Contact Info -->
-          <div class="p-card">
-            <div class="p-card-inner">
-              <div class="p-card-header">
-                <span class="p-card-title">معلومات التواصل</span>
-                <button class="p-edit-btn" onclick="openModal('contact')">
-                  <i class="fas fa-pen"></i> تعديل
-                </button>
-              </div>
-              <div class="p-info-row">
-                <span class="p-info-label"><i class="fas fa-envelope"></i> البريد</span>
-                <span class="p-info-val" id="dispEmail">sara@email.com</span>
-              </div>
-              <div class="p-info-row">
-                <span class="p-info-label"><i class="fas fa-phone"></i> الهاتف</span>
-                <span class="p-info-val" id="dispPhone">+20 100 123 4567</span>
-              </div>
-              <div class="p-info-row">
-                <span class="p-info-label"><i class="fas fa-city"></i> المدينة</span>
-                <span class="p-info-val" id="dispCity">القاهرة</span>
-              </div>
-              <div class="p-info-row">
-                <span class="p-info-label"><i class="fas fa-birthday-cake"></i> العمر</span>
-                <span class="p-info-val" id="dispAge">28 سنة</span>
-              </div>
-              <div class="p-info-row">
-                <span class="p-info-label"><i class="fas fa-calendar-alt"></i> عضو منذ</span>
-                <span class="p-info-val">يناير 2024</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Interests -->
-          <div class="p-card">
-            <div class="p-card-inner">
-              <div class="p-card-header">
-                <span class="p-card-title">الاهتمامات</span>
-                <button class="p-edit-btn" onclick="openModal('interests')">
-                  <i class="fas fa-pen"></i> تعديل
-                </button>
-              </div>
-              <div class="p-tag-list" id="tagList">
-                <span class="p-tag">إدارة التوتر</span>
-                <span class="p-tag">التأمل</span>
-                <span class="p-tag">علم النفس</span>
-                <span class="p-tag">الصحة النفسية</span>
-                <span class="p-tag">الذكاء العاطفي</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ===== MAIN ===== -->
-        <div class="p-main">
-          <!-- About -->
-          <div class="p-card">
-            <div class="p-card-inner">
-              <div class="p-card-header">
-                <span class="p-card-title">نبذة عني</span>
-                <button class="p-edit-btn" onclick="openModal('about')">
-                  <i class="fas fa-pen"></i> تعديل
-                </button>
-              </div>
-              <p class="p-about-text" id="dispAbout">
-                متخصصة في مجال الصحة النفسية، أسعى دائماً لتطوير مهاراتي من
-                خلال الدورات والجلسات التخصصية. أؤمن بأهمية الصحة النفسية
-                كأساس للحياة السعيدة والمنتجة. انضممت إلى هذه المنصة لأستفيد
-                من أفضل المتخصصين وأطور نفسي باستمرار.
-              </p>
-            </div>
-          </div>
-
-          <!-- Tabs -->
-          <div class="p-card">
-            <div class="p-card-inner" style="padding-bottom: 0">
-              <div class="p-tabs">
-                <button class="p-tab active" onclick="switchTab(this, 'courses')">
-                  <i class="fas fa-graduation-cap" style="margin-left: 6px"></i>الدورات
-                </button>
-                <button class="p-tab" onclick="switchTab(this, 'sessions')">
-                  <i class="fas fa-brain" style="margin-left: 6px"></i>الجلسات
-                  النفسية
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Courses Tab -->
-          <div class="p-tab-content active" id="tab-courses">
-            <div class="p-course-card" onclick="
-                  openCert(
-                    'إدارة التوتر والقلق اليومي',
-                    'د. أحمد حسين',
-                    '28 مارس 2025',
-                    '6 أسابيع · 8 وحدات',
-                    'CERT-2025-0342',
-                  )
-                ">
-              <div class="p-course-ico" style="
-                    background: rgba(76, 175, 80, 0.1);
-                    color: #4caf50;
+            <div>
+              <h2 style="
                     font-size: 22px;
+                    font-weight: 900;
+                    color: #1a1a1a;
+                    margin: 0;
                   ">
-                <i class="fas fa-brain"></i>
-              </div>
-              <div class="p-course-body">
-                <div class="p-course-top">
-                  <div class="p-course-name">إدارة التوتر والقلق اليومي</div>
-                  <span class="p-badge pb-done"><i class="fas fa-check" style="margin-left: 4px"></i>مكتملة</span>
-                </div>
-                <div class="p-course-meta">
-                  د. أحمد حسين · 8 وحدات · 6 أسابيع
-                </div>
-                <div class="p-prog-bar">
-                  <div class="p-prog-fill" style="width: 100%; background: #4caf50"></div>
-                </div>
-                <div class="p-prog-row">
-                  <span class="p-prog-lbl">8 / 8 وحدات</span>
-                  <span class="p-prog-lbl" style="color: var(--color-primary); font-weight: 600">اضغط لعرض الشهادة
-                    ←</span>
-                </div>
-              </div>
+                ملفي الشخصي
+              </h2>
             </div>
+            <button class="p-edit-btn" onclick="openModal('main')">
+              <i class="fas fa-pen"></i> تعديل البيانات
+            </button>
+          </div>
 
-            <div class="p-course-card">
-              <div class="p-course-ico" style="
-                    background: rgba(197, 167, 115, 0.1);
-                    color: var(--color-primary);
-                    font-size: 22px;
-                  ">
-                <i class="fas fa-comments"></i>
-              </div>
-              <div class="p-course-body">
-                <div class="p-course-top">
-                  <div class="p-course-name">
-                    تطوير مهارات التواصل الفعّال
+          <div class="profile-layout">
+            <!-- ===== SIDEBAR ===== -->
+            <div class="p-sidebar">
+              <!-- Avatar -->
+              <div class="p-card p-avatar-card">
+                <div class="p-avatar-wrap">
+                  <div class="p-avatar" id="avatarEl">
+                    <span id="avatarInitials">سم</span>
+                    <input type="file" accept="image/*" onchange="handleAvatar(event)" title="تغيير الصورة" />
                   </div>
-                  <span class="p-badge pb-progress">جارية</span>
+                  <div class="p-avatar-edit"><i class="fas fa-camera"></i></div>
                 </div>
-                <div class="p-course-meta">
-                  د. منى رشاد · 10 وحدات · 8 أسابيع
+                <div class="p-name" id="dispName">سارة محمد علي</div>
+                <div class="p-title" id="dispTitle">
+                  متخصصة في علم النفس الإكلينيكي
                 </div>
-                <div class="p-prog-bar">
-                  <div class="p-prog-fill" style="width: 60%; background: var(--color-primary)"></div>
+                <div class="p-location">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span id="dispLocation">القاهرة، مصر</span>
                 </div>
-                <div class="p-prog-row">
-                  <span class="p-prog-lbl">6 / 10 وحدات</span><span class="p-prog-lbl">60%</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="p-course-card">
-              <div class="p-course-ico" style="
-                    background: rgba(197, 167, 115, 0.08);
-                    color: var(--color-primary-dark);
-                    font-size: 22px;
-                  ">
-                <i class="fas fa-leaf"></i>
-              </div>
-              <div class="p-course-body">
-                <div class="p-course-top">
-                  <div class="p-course-name">الصحة النفسية للمرأة</div>
-                  <span class="p-badge pb-progress">جارية</span>
-                </div>
-                <div class="p-course-meta">
-                  د. لمياء سالم · 6 وحدات · 4 أسابيع
-                </div>
-                <div class="p-prog-bar">
-                  <div class="p-prog-fill" style="width: 33%; background: var(--color-primary-dark)"></div>
-                </div>
-                <div class="p-prog-row">
-                  <span class="p-prog-lbl">2 / 6 وحدات</span><span class="p-prog-lbl">33%</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="p-course-card" style="opacity: 0.55; cursor: default" onclick="return false;">
-              <div class="p-course-ico" style="background: #f5f5f5; color: #bbb; font-size: 22px">
-                <i class="fas fa-lock"></i>
-              </div>
-              <div class="p-course-body">
-                <div class="p-course-top">
-                  <div class="p-course-name">
-                    العلاج المعرفي السلوكي — المستوى المتقدم
+                <div class="p-stats">
+                  <div class="p-stat">
+                    <div class="p-stat-num" id="statCourses">4</div>
+                    <div class="p-stat-lbl">دورات</div>
                   </div>
-                  <span class="p-badge pb-soon">قريباً</span>
+                  <div class="p-stat">
+                    <div class="p-stat-num" id="statDone">1</div>
+                    <div class="p-stat-lbl">مكتملة</div>
+                  </div>
+                  <div class="p-stat">
+                    <div class="p-stat-num" id="statSessions">12</div>
+                    <div class="p-stat-lbl">جلسة</div>
+                  </div>
                 </div>
-                <div class="p-course-meta">يبدأ 15 مايو 2025 · 12 وحدة</div>
-                <div class="p-prog-bar">
-                  <div class="p-prog-fill" style="width: 0%; background: #ccc"></div>
+              </div>
+
+              <!-- Contact Info -->
+              <div class="p-card">
+                <div class="p-card-inner">
+                  <div class="p-card-header">
+                    <span class="p-card-title">معلومات التواصل</span>
+                    <button class="p-edit-btn" onclick="openModal('contact')">
+                      <i class="fas fa-pen"></i> تعديل
+                    </button>
+                  </div>
+                  <div class="p-info-row">
+                    <span class="p-info-label"><i class="fas fa-envelope"></i> البريد</span>
+                    <span class="p-info-val" id="dispEmail">sara@email.com</span>
+                  </div>
+                  <div class="p-info-row">
+                    <span class="p-info-label"><i class="fas fa-phone"></i> الهاتف</span>
+                    <span class="p-info-val" id="dispPhone">+20 100 123 4567</span>
+                  </div>
+                  <div class="p-info-row">
+                    <span class="p-info-label"><i class="fas fa-city"></i> المدينة</span>
+                    <span class="p-info-val" id="dispCity">القاهرة</span>
+                  </div>
+                  <div class="p-info-row">
+                    <span class="p-info-label"><i class="fas fa-birthday-cake"></i> العمر</span>
+                    <span class="p-info-val" id="dispAge">28 سنة</span>
+                  </div>
+                  <div class="p-info-row">
+                    <span class="p-info-label"><i class="fas fa-calendar-alt"></i> عضو منذ</span>
+                    <span class="p-info-val">يناير 2024</span>
+                  </div>
                 </div>
-                <div class="p-prog-row">
-                  <span class="p-prog-lbl">لم تبدأ بعد</span>
+              </div>
+
+              <!-- Interests -->
+              <div class="p-card">
+                <div class="p-card-inner">
+                  <div class="p-card-header">
+                    <span class="p-card-title">الاهتمامات</span>
+                    <button class="p-edit-btn" onclick="openModal('interests')">
+                      <i class="fas fa-pen"></i> تعديل
+                    </button>
+                  </div>
+                  <div class="p-tag-list" id="tagList">
+                    <span class="p-tag">إدارة التوتر</span>
+                    <span class="p-tag">التأمل</span>
+                    <span class="p-tag">علم النفس</span>
+                    <span class="p-tag">الصحة النفسية</span>
+                    <span class="p-tag">الذكاء العاطفي</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== MAIN ===== -->
+            <div class="p-main">
+              <!-- About -->
+              <div class="p-card">
+                <div class="p-card-inner">
+                  <div class="p-card-header">
+                    <span class="p-card-title">نبذة عني</span>
+                    <button class="p-edit-btn" onclick="openModal('about')">
+                      <i class="fas fa-pen"></i> تعديل
+                    </button>
+                  </div>
+                  <p class="p-about-text" id="dispAbout">
+                    متخصصة في مجال الصحة النفسية، أسعى دائماً لتطوير مهاراتي من
+                    خلال الدورات والجلسات التخصصية. أؤمن بأهمية الصحة النفسية
+                    كأساس للحياة السعيدة والمنتجة. انضممت إلى هذه المنصة لأستفيد
+                    من أفضل المتخصصين وأطور نفسي باستمرار.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Tabs -->
+              <div class="p-card">
+                <div class="p-card-inner" style="padding-bottom: 0">
+                  <div class="p-tabs">
+                    <button class="p-tab active" onclick="switchTab(this, 'courses')">
+                      <i class="fas fa-graduation-cap" style="margin-left: 6px"></i>الدورات
+                    </button>
+                    <button class="p-tab" onclick="switchTab(this, 'sessions')">
+                      <i class="fas fa-brain" style="margin-left: 6px"></i>الجلسات
+                      النفسية
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Courses Tab -->
+              <div class="p-tab-content active" id="tab-courses">
+                <div class="p-course-card" onclick="
+                      openCert(
+                        'إدارة التوتر والقلق اليومي',
+                        'د. أحمد حسين',
+                        '28 مارس 2025',
+                        '6 أسابيع · 8 وحدات',
+                        'CERT-2025-0342',
+                      )
+                    ">
+                  <div class="p-course-ico" style="
+                        background: rgba(76, 175, 80, 0.1);
+                        color: #4caf50;
+                        font-size: 22px;
+                      ">
+                    <i class="fas fa-brain"></i>
+                  </div>
+                  <div class="p-course-body">
+                    <div class="p-course-top">
+                      <div class="p-course-name">إدارة التوتر والقلق اليومي</div>
+                      <span class="p-badge pb-done"><i class="fas fa-check" style="margin-left: 4px"></i>مكتملة</span>
+                    </div>
+                    <div class="p-course-meta">
+                      د. أحمد حسين · 8 وحدات · 6 أسابيع
+                    </div>
+                    <div class="p-prog-bar">
+                      <div class="p-prog-fill" style="width: 100%; background: #4caf50"></div>
+                    </div>
+                    <div class="p-prog-row">
+                      <span class="p-prog-lbl">8 / 8 وحدات</span>
+                      <span class="p-prog-lbl" style="color: var(--color-primary); font-weight: 600">اضغط لعرض الشهادة
+                        ←</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-course-card">
+                  <div class="p-course-ico" style="
+                        background: rgba(197, 167, 115, 0.1);
+                        color: var(--color-primary);
+                        font-size: 22px;
+                      ">
+                    <i class="fas fa-comments"></i>
+                  </div>
+                  <div class="p-course-body">
+                    <div class="p-course-top">
+                      <div class="p-course-name">
+                        تطوير مهارات التواصل الفعّال
+                      </div>
+                      <span class="p-badge pb-progress">جارية</span>
+                    </div>
+                    <div class="p-course-meta">
+                      د. منى رشاد · 10 وحدات · 8 أسابيع
+                    </div>
+                    <div class="p-prog-bar">
+                      <div class="p-prog-fill" style="width: 60%; background: var(--color-primary)"></div>
+                    </div>
+                    <div class="p-prog-row">
+                      <span class="p-prog-lbl">6 / 10 وحدات</span><span class="p-prog-lbl">60%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-course-card">
+                  <div class="p-course-ico" style="
+                        background: rgba(197, 167, 115, 0.08);
+                        color: var(--color-primary-dark);
+                        font-size: 22px;
+                      ">
+                    <i class="fas fa-leaf"></i>
+                  </div>
+                  <div class="p-course-body">
+                    <div class="p-course-top">
+                      <div class="p-course-name">الصحة النفسية للمرأة</div>
+                      <span class="p-badge pb-progress">جارية</span>
+                    </div>
+                    <div class="p-course-meta">
+                      د. لمياء سالم · 6 وحدات · 4 أسابيع
+                    </div>
+                    <div class="p-prog-bar">
+                      <div class="p-prog-fill" style="width: 33%; background: var(--color-primary-dark)"></div>
+                    </div>
+                    <div class="p-prog-row">
+                      <span class="p-prog-lbl">2 / 6 وحدات</span><span class="p-prog-lbl">33%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-course-card" style="opacity: 0.55; cursor: default" onclick="return false;">
+                  <div class="p-course-ico" style="background: #f5f5f5; color: #bbb; font-size: 22px">
+                    <i class="fas fa-lock"></i>
+                  </div>
+                  <div class="p-course-body">
+                    <div class="p-course-top">
+                      <div class="p-course-name">
+                        العلاج المعرفي السلوكي — المستوى المتقدم
+                      </div>
+                      <span class="p-badge pb-soon">قريباً</span>
+                    </div>
+                    <div class="p-course-meta">يبدأ 15 مايو 2025 · 12 وحدة</div>
+                    <div class="p-prog-bar">
+                      <div class="p-prog-fill" style="width: 0%; background: #ccc"></div>
+                    </div>
+                    <div class="p-prog-row">
+                      <span class="p-prog-lbl">لم تبدأ بعد</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sessions Tab -->
+              <div class="p-tab-content" id="tab-sessions">
+                <div class="p-session-row">
+                  <div class="p-s-dot" style="background: #4caf50"></div>
+                  <div class="p-s-info">
+                    <div class="p-s-title">جلسة متابعة — د. سمر إبراهيم</div>
+                    <div class="p-s-date">
+                      <i class="fas fa-calendar-alt"></i> الأحد، 6 أبريل 2025 ·
+                      3:00 م · أونلاين
+                    </div>
+                  </div>
+                  <span class="p-s-badge psb-confirmed">مؤكدة</span>
+                </div>
+
+                <div class="p-session-row">
+                  <div class="p-s-dot" style="background: var(--color-primary)"></div>
+                  <div class="p-s-info">
+                    <div class="p-s-title">جلسة تقييم أولية — د. طارق منصور</div>
+                    <div class="p-s-date">
+                      <i class="fas fa-calendar-alt"></i> الثلاثاء، 8 أبريل 2025 ·
+                      5:30 م · أونلاين
+                    </div>
+                  </div>
+                  <span class="p-s-badge psb-pending">في الانتظار</span>
+                </div>
+
+                <div class="p-session-row">
+                  <div class="p-s-dot" style="background: var(--color-primary-dark)"></div>
+                  <div class="p-s-info">
+                    <div class="p-s-title">جلسة دعم نفسي — د. سمر إبراهيم</div>
+                    <div class="p-s-date">
+                      <i class="fas fa-calendar-alt"></i> الأحد، 23 مارس 2025 ·
+                      3:00 م
+                    </div>
+                  </div>
+                  <span class="p-s-badge psb-done">مكتملة</span>
+                </div>
+
+                <div class="p-session-row">
+                  <div class="p-s-dot" style="background: var(--color-primary-dark)"></div>
+                  <div class="p-s-info">
+                    <div class="p-s-title">جلسة دعم نفسي — د. سمر إبراهيم</div>
+                    <div class="p-s-date">
+                      <i class="fas fa-calendar-alt"></i> الأحد، 9 مارس 2025 ·
+                      3:00 م
+                    </div>
+                  </div>
+                  <span class="p-s-badge psb-done">مكتملة</span>
+                </div>
+
+                <div class="p-session-row">
+                  <div class="p-s-dot" style="background: #e74c3c"></div>
+                  <div class="p-s-info">
+                    <div class="p-s-title">جلسة متابعة — د. ليلى حمدان</div>
+                    <div class="p-s-date">
+                      <i class="fas fa-calendar-alt"></i> الخميس، 27 فبراير 2025 ·
+                      6:00 م
+                    </div>
+                  </div>
+                  <span class="p-s-badge psb-cancelled">ملغية</span>
+                </div>
+
+                <div class="p-session-row">
+                  <div class="p-s-dot" style="background: var(--color-primary-dark)"></div>
+                  <div class="p-s-info">
+                    <div class="p-s-title">جلسة تشخيصية — د. ليلى حمدان</div>
+                    <div class="p-s-date">
+                      <i class="fas fa-calendar-alt"></i> الاثنين، 3 فبراير 2025 ·
+                      4:00 م
+                    </div>
+                  </div>
+                  <span class="p-s-badge psb-done">مكتملة</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <!-- ===== MODALS ===== -->
 
-          <!-- Sessions Tab -->
-          <div class="p-tab-content" id="tab-sessions">
-            <div class="p-session-row">
-              <div class="p-s-dot" style="background: #4caf50"></div>
-              <div class="p-s-info">
-                <div class="p-s-title">جلسة متابعة — د. سمر إبراهيم</div>
-                <div class="p-s-date">
-                  <i class="fas fa-calendar-alt"></i> الأحد، 6 أبريل 2025 ·
-                  3:00 م · أونلاين
+        <!-- Edit Main -->
+        <div class="p-overlay" id="modal-main">
+          <div class="p-modal">
+            <div class="p-modal-head">
+              <h3>تعديل البيانات الأساسية</h3>
+              <button class="p-modal-close" onclick="closeModal('main')">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="p-modal-body">
+              <div class="p-field">
+                <label>الاسم الكامل</label><input id="f-name" value="سارة محمد علي" />
+              </div>
+              <div class="p-field">
+                <label>التخصص / المسمى الوظيفي</label><input id="f-title" value="متخصصة في علم النفس الإكلينيكي" />
+              </div>
+              <div class="p-field">
+                <label>المدينة، الدولة</label><input id="f-location" value="القاهرة، مصر" />
+              </div>
+              <div class="p-field">
+                <label>عدد الدورات الكلية</label><input id="f-sc" type="number" value="4" />
+              </div>
+              <div class="p-field">
+                <label>الدورات المكتملة</label><input id="f-sd" type="number" value="1" />
+              </div>
+              <div class="p-field">
+                <label>عدد الجلسات</label><input id="f-ss" type="number" value="12" />
+              </div>
+            </div>
+            <div class="p-modal-foot">
+              <button class="p-btn-cancel" onclick="closeModal('main')">
+                إلغاء
+              </button>
+              <button class="p-btn-save" onclick="saveMain()">
+                حفظ التغييرات
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Contact -->
+        <div class="p-overlay" id="modal-contact">
+          <div class="p-modal">
+            <div class="p-modal-head">
+              <h3>تعديل معلومات التواصل</h3>
+              <button class="p-modal-close" onclick="closeModal('contact')">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="p-modal-body">
+              <div class="p-field">
+                <label>البريد الإلكتروني</label><input id="f-email" type="email" value="sara@email.com" />
+              </div>
+              <div class="p-field">
+                <label>رقم الهاتف</label><input id="f-phone" value="+20 100 123 4567" />
+              </div>
+              <div class="p-field">
+                <label>المدينة</label><input id="f-city" value="القاهرة" />
+              </div>
+              <div class="p-field">
+                <label>العمر</label><input id="f-age" value="28 سنة" />
+              </div>
+            </div>
+            <div class="p-modal-foot">
+              <button class="p-btn-cancel" onclick="closeModal('contact')">
+                إلغاء
+              </button>
+              <button class="p-btn-save" onclick="saveContact()">
+                حفظ التغييرات
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit About -->
+        <div class="p-overlay" id="modal-about">
+          <div class="p-modal">
+            <div class="p-modal-head">
+              <h3>تعديل نبذتي</h3>
+              <button class="p-modal-close" onclick="closeModal('about')">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="p-modal-body">
+              <div class="p-field">
+                <label>النبذة الشخصية</label>
+                <textarea id="f-about" rows="6">
+      متخصصة في مجال الصحة النفسية، أسعى دائماً لتطوير مهاراتي من خلال الدورات والجلسات التخصصية. أؤمن بأهمية الصحة النفسية كأساس للحياة السعيدة والمنتجة.</textarea>
+              </div>
+            </div>
+            <div class="p-modal-foot">
+              <button class="p-btn-cancel" onclick="closeModal('about')">
+                إلغاء
+              </button>
+              <button class="p-btn-save" onclick="saveAbout()">
+                حفظ التغييرات
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Interests -->
+        <div class="p-overlay" id="modal-interests">
+          <div class="p-modal">
+            <div class="p-modal-head">
+              <h3>تعديل الاهتمامات</h3>
+              <button class="p-modal-close" onclick="closeModal('interests')">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="p-modal-body">
+              <div class="p-field">
+                <label>الاهتمامات (افصل بينها بفاصلة)</label>
+                <textarea id="f-interests" rows="3">
+      إدارة التوتر، التأمل، علم النفس، الصحة النفسية، الذكاء العاطفي</textarea>
+              </div>
+            </div>
+            <div class="p-modal-foot">
+              <button class="p-btn-cancel" onclick="closeModal('interests')">
+                إلغاء
+              </button>
+              <button class="p-btn-save" onclick="saveInterests()">
+                حفظ التغييرات
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certificate Modal -->
+        <div class="p-overlay" id="modal-cert">
+          <div class="cert-wrap" onclick="event.stopPropagation()">
+            <div class="cert-head">
+              <button class="cert-close" onclick="closeModal('cert')">
+                <i class="fas fa-times"></i>
+              </button>
+              <div class="cert-medal">
+                <i class="fas fa-medal" style="color: var(--color-primary); font-size: 38px"></i>
+              </div>
+              <h4>شهادة إتمام دورة</h4>
+              <h2 id="cert-title">—</h2>
+            </div>
+            <div class="cert-body">
+              <div class="cert-to">
+                <span>تُمنح هذه الشهادة إلى</span>
+                <p id="cert-recipient">—</p>
+              </div>
+              <hr class="cert-hr" />
+              <div class="cert-details">
+                <div class="cert-info-list">
+                  <div>المدرب: <strong id="cert-trainer">—</strong></div>
+                  <div>تاريخ الإتمام: <strong id="cert-date">—</strong></div>
+                  <div>المدة: <strong id="cert-duration">—</strong></div>
+                  <div>رقم الشهادة: <strong id="cert-id">—</strong></div>
+                </div>
+                <div class="cert-qr-box">
+                  <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="72" height="72" fill="white" />
+                    <rect x="4" y="4" width="28" height="28" rx="2" fill="none" stroke="#c5a773" stroke-width="2" />
+                    <rect x="8" y="8" width="20" height="20" rx="1" fill="#c5a773" />
+                    <rect x="12" y="12" width="12" height="12" fill="white" />
+                    <rect x="40" y="4" width="28" height="28" rx="2" fill="none" stroke="#c5a773" stroke-width="2" />
+                    <rect x="44" y="8" width="20" height="20" rx="1" fill="#c5a773" />
+                    <rect x="48" y="12" width="12" height="12" fill="white" />
+                    <rect x="4" y="40" width="28" height="28" rx="2" fill="none" stroke="#c5a773" stroke-width="2" />
+                    <rect x="8" y="44" width="20" height="20" rx="1" fill="#c5a773" />
+                    <rect x="12" y="48" width="12" height="12" fill="white" />
+                    <rect x="40" y="40" width="4" height="4" fill="#c5a773" />
+                    <rect x="46" y="40" width="4" height="4" fill="#c5a773" />
+                    <rect x="52" y="40" width="4" height="4" fill="#c5a773" />
+                    <rect x="58" y="40" width="4" height="4" fill="#c5a773" />
+                    <rect x="64" y="40" width="4" height="4" fill="#c5a773" />
+                    <rect x="40" y="46" width="4" height="4" fill="#c5a773" />
+                    <rect x="52" y="46" width="4" height="4" fill="#c5a773" />
+                    <rect x="64" y="46" width="4" height="4" fill="#c5a773" />
+                    <rect x="40" y="52" width="4" height="4" fill="#c5a773" />
+                    <rect x="46" y="52" width="4" height="4" fill="#c5a773" />
+                    <rect x="58" y="52" width="4" height="4" fill="#c5a773" />
+                    <rect x="40" y="58" width="4" height="4" fill="#c5a773" />
+                    <rect x="52" y="58" width="4" height="4" fill="#c5a773" />
+                    <rect x="64" y="58" width="4" height="4" fill="#c5a773" />
+                  </svg>
                 </div>
               </div>
-              <span class="p-s-badge psb-confirmed">مؤكدة</span>
             </div>
-
-            <div class="p-session-row">
-              <div class="p-s-dot" style="background: var(--color-primary)"></div>
-              <div class="p-s-info">
-                <div class="p-s-title">جلسة تقييم أولية — د. طارق منصور</div>
-                <div class="p-s-date">
-                  <i class="fas fa-calendar-alt"></i> الثلاثاء، 8 أبريل 2025 ·
-                  5:30 م · أونلاين
-                </div>
-              </div>
-              <span class="p-s-badge psb-pending">في الانتظار</span>
-            </div>
-
-            <div class="p-session-row">
-              <div class="p-s-dot" style="background: var(--color-primary-dark)"></div>
-              <div class="p-s-info">
-                <div class="p-s-title">جلسة دعم نفسي — د. سمر إبراهيم</div>
-                <div class="p-s-date">
-                  <i class="fas fa-calendar-alt"></i> الأحد، 23 مارس 2025 ·
-                  3:00 م
-                </div>
-              </div>
-              <span class="p-s-badge psb-done">مكتملة</span>
-            </div>
-
-            <div class="p-session-row">
-              <div class="p-s-dot" style="background: var(--color-primary-dark)"></div>
-              <div class="p-s-info">
-                <div class="p-s-title">جلسة دعم نفسي — د. سمر إبراهيم</div>
-                <div class="p-s-date">
-                  <i class="fas fa-calendar-alt"></i> الأحد، 9 مارس 2025 ·
-                  3:00 م
-                </div>
-              </div>
-              <span class="p-s-badge psb-done">مكتملة</span>
-            </div>
-
-            <div class="p-session-row">
-              <div class="p-s-dot" style="background: #e74c3c"></div>
-              <div class="p-s-info">
-                <div class="p-s-title">جلسة متابعة — د. ليلى حمدان</div>
-                <div class="p-s-date">
-                  <i class="fas fa-calendar-alt"></i> الخميس، 27 فبراير 2025 ·
-                  6:00 م
-                </div>
-              </div>
-              <span class="p-s-badge psb-cancelled">ملغية</span>
-            </div>
-
-            <div class="p-session-row">
-              <div class="p-s-dot" style="background: var(--color-primary-dark)"></div>
-              <div class="p-s-info">
-                <div class="p-s-title">جلسة تشخيصية — د. ليلى حمدان</div>
-                <div class="p-s-date">
-                  <i class="fas fa-calendar-alt"></i> الاثنين، 3 فبراير 2025 ·
-                  4:00 م
-                </div>
-              </div>
-              <span class="p-s-badge psb-done">مكتملة</span>
+            <div class="cert-foot">
+              <button class="cert-btn">
+                <i class="fas fa-share-alt" style="margin-left: 6px"></i>مشاركة
+              </button>
+              <button class="cert-btn primary">
+                <i class="fas fa-download" style="margin-left: 6px"></i>تحميل PDF
+              </button>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <!-- ===== MODALS ===== -->
 
-    <!-- Edit Main -->
-    <div class="p-overlay" id="modal-main">
-      <div class="p-modal">
-        <div class="p-modal-head">
-          <h3>تعديل البيانات الأساسية</h3>
-          <button class="p-modal-close" onclick="closeModal('main')">
-            <i class="fas fa-times"></i>
-          </button>
+        <div class="p-toast" id="toast">
+          <i class="fas fa-check-circle"></i> تم الحفظ بنجاح
         </div>
-        <div class="p-modal-body">
-          <div class="p-field">
-            <label>الاسم الكامل</label><input id="f-name" value="سارة محمد علي" />
-          </div>
-          <div class="p-field">
-            <label>التخصص / المسمى الوظيفي</label><input id="f-title" value="متخصصة في علم النفس الإكلينيكي" />
-          </div>
-          <div class="p-field">
-            <label>المدينة، الدولة</label><input id="f-location" value="القاهرة، مصر" />
-          </div>
-          <div class="p-field">
-            <label>عدد الدورات الكلية</label><input id="f-sc" type="number" value="4" />
-          </div>
-          <div class="p-field">
-            <label>الدورات المكتملة</label><input id="f-sd" type="number" value="1" />
-          </div>
-          <div class="p-field">
-            <label>عدد الجلسات</label><input id="f-ss" type="number" value="12" />
-          </div>
-        </div>
-        <div class="p-modal-foot">
-          <button class="p-btn-cancel" onclick="closeModal('main')">
-            إلغاء
-          </button>
-          <button class="p-btn-save" onclick="saveMain()">
-            حفظ التغييرات
-          </button>
-        </div>
-      </div>
-    </div>
+      </main>
 
-    <!-- Edit Contact -->
-    <div class="p-overlay" id="modal-contact">
-      <div class="p-modal">
-        <div class="p-modal-head">
-          <h3>تعديل معلومات التواصل</h3>
-          <button class="p-modal-close" onclick="closeModal('contact')">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="p-modal-body">
-          <div class="p-field">
-            <label>البريد الإلكتروني</label><input id="f-email" type="email" value="sara@email.com" />
-          </div>
-          <div class="p-field">
-            <label>رقم الهاتف</label><input id="f-phone" value="+20 100 123 4567" />
-          </div>
-          <div class="p-field">
-            <label>المدينة</label><input id="f-city" value="القاهرة" />
-          </div>
-          <div class="p-field">
-            <label>العمر</label><input id="f-age" value="28 سنة" />
-          </div>
-        </div>
-        <div class="p-modal-foot">
-          <button class="p-btn-cancel" onclick="closeModal('contact')">
-            إلغاء
-          </button>
-          <button class="p-btn-save" onclick="saveContact()">
-            حفظ التغييرات
-          </button>
-        </div>
-      </div>
-    </div>
+    @endsection
 
-    <!-- Edit About -->
-    <div class="p-overlay" id="modal-about">
-      <div class="p-modal">
-        <div class="p-modal-head">
-          <h3>تعديل نبذتي</h3>
-          <button class="p-modal-close" onclick="closeModal('about')">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="p-modal-body">
-          <div class="p-field">
-            <label>النبذة الشخصية</label>
-            <textarea id="f-about" rows="6">
-  متخصصة في مجال الصحة النفسية، أسعى دائماً لتطوير مهاراتي من خلال الدورات والجلسات التخصصية. أؤمن بأهمية الصحة النفسية كأساس للحياة السعيدة والمنتجة.</textarea>
-          </div>
-        </div>
-        <div class="p-modal-foot">
-          <button class="p-btn-cancel" onclick="closeModal('about')">
-            إلغاء
-          </button>
-          <button class="p-btn-save" onclick="saveAbout()">
-            حفظ التغييرات
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Edit Interests -->
-    <div class="p-overlay" id="modal-interests">
-      <div class="p-modal">
-        <div class="p-modal-head">
-          <h3>تعديل الاهتمامات</h3>
-          <button class="p-modal-close" onclick="closeModal('interests')">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="p-modal-body">
-          <div class="p-field">
-            <label>الاهتمامات (افصل بينها بفاصلة)</label>
-            <textarea id="f-interests" rows="3">
-  إدارة التوتر، التأمل، علم النفس، الصحة النفسية، الذكاء العاطفي</textarea>
-          </div>
-        </div>
-        <div class="p-modal-foot">
-          <button class="p-btn-cancel" onclick="closeModal('interests')">
-            إلغاء
-          </button>
-          <button class="p-btn-save" onclick="saveInterests()">
-            حفظ التغييرات
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Certificate Modal -->
-    <div class="p-overlay" id="modal-cert">
-      <div class="cert-wrap" onclick="event.stopPropagation()">
-        <div class="cert-head">
-          <button class="cert-close" onclick="closeModal('cert')">
-            <i class="fas fa-times"></i>
-          </button>
-          <div class="cert-medal">
-            <i class="fas fa-medal" style="color: var(--color-primary); font-size: 38px"></i>
-          </div>
-          <h4>شهادة إتمام دورة</h4>
-          <h2 id="cert-title">—</h2>
-        </div>
-        <div class="cert-body">
-          <div class="cert-to">
-            <span>تُمنح هذه الشهادة إلى</span>
-            <p id="cert-recipient">—</p>
-          </div>
-          <hr class="cert-hr" />
-          <div class="cert-details">
-            <div class="cert-info-list">
-              <div>المدرب: <strong id="cert-trainer">—</strong></div>
-              <div>تاريخ الإتمام: <strong id="cert-date">—</strong></div>
-              <div>المدة: <strong id="cert-duration">—</strong></div>
-              <div>رقم الشهادة: <strong id="cert-id">—</strong></div>
-            </div>
-            <div class="cert-qr-box">
-              <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
-                <rect width="72" height="72" fill="white" />
-                <rect x="4" y="4" width="28" height="28" rx="2" fill="none" stroke="#c5a773" stroke-width="2" />
-                <rect x="8" y="8" width="20" height="20" rx="1" fill="#c5a773" />
-                <rect x="12" y="12" width="12" height="12" fill="white" />
-                <rect x="40" y="4" width="28" height="28" rx="2" fill="none" stroke="#c5a773" stroke-width="2" />
-                <rect x="44" y="8" width="20" height="20" rx="1" fill="#c5a773" />
-                <rect x="48" y="12" width="12" height="12" fill="white" />
-                <rect x="4" y="40" width="28" height="28" rx="2" fill="none" stroke="#c5a773" stroke-width="2" />
-                <rect x="8" y="44" width="20" height="20" rx="1" fill="#c5a773" />
-                <rect x="12" y="48" width="12" height="12" fill="white" />
-                <rect x="40" y="40" width="4" height="4" fill="#c5a773" />
-                <rect x="46" y="40" width="4" height="4" fill="#c5a773" />
-                <rect x="52" y="40" width="4" height="4" fill="#c5a773" />
-                <rect x="58" y="40" width="4" height="4" fill="#c5a773" />
-                <rect x="64" y="40" width="4" height="4" fill="#c5a773" />
-                <rect x="40" y="46" width="4" height="4" fill="#c5a773" />
-                <rect x="52" y="46" width="4" height="4" fill="#c5a773" />
-                <rect x="64" y="46" width="4" height="4" fill="#c5a773" />
-                <rect x="40" y="52" width="4" height="4" fill="#c5a773" />
-                <rect x="46" y="52" width="4" height="4" fill="#c5a773" />
-                <rect x="58" y="52" width="4" height="4" fill="#c5a773" />
-                <rect x="40" y="58" width="4" height="4" fill="#c5a773" />
-                <rect x="52" y="58" width="4" height="4" fill="#c5a773" />
-                <rect x="64" y="58" width="4" height="4" fill="#c5a773" />
-              </svg>
-            </div>
-          </div>
-        </div>
-        <div class="cert-foot">
-          <button class="cert-btn">
-            <i class="fas fa-share-alt" style="margin-left: 6px"></i>مشاركة
-          </button>
-          <button class="cert-btn primary">
-            <i class="fas fa-download" style="margin-left: 6px"></i>تحميل PDF
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-toast" id="toast">
-      <i class="fas fa-check-circle"></i> تم الحفظ بنجاح
-    </div>
-  </main>
-
-@endsection
-
-@section('scripts')
-<script>
-function openCert(title, trainer, date, duration, certId) {
-    document.getElementById('cert-title').textContent = title;
-    document.getElementById('cert-recipient').textContent = document.getElementById('dispName').textContent;
-    document.getElementById('cert-trainer').textContent = trainer;
-    document.getElementById('cert-date').textContent = date;
-    document.getElementById('cert-duration').textContent = duration;
-    document.getElementById('cert-id').textContent = certId;
-    openModal('cert');
-}
-
-function saveContact() {
-    document.getElementById('dispEmail').textContent = document.getElementById('f-email').value;
-    document.getElementById('dispPhone').textContent = document.getElementById('f-phone').value;
-    document.getElementById('dispCity').textContent = document.getElementById('f-city').value;
-    document.getElementById('dispAge').textContent = document.getElementById('f-age').value;
-    closeModal('contact');
-    showToast();
-}
-
-function saveAbout() {
-    document.getElementById('dispAbout').textContent = document.getElementById('f-about').value;
-    closeModal('about');
-    showToast();
-}
-
-function saveInterests() {
-    var tags = document.getElementById('f-interests').value.split('،').map(t => t.trim()).filter(t => t);
-    var list = document.getElementById('tagList');
-    list.innerHTML = tags.map(t => '<span class="p-tag">' + t + '</span>').join('');
-    closeModal('interests');
-    showToast();
-}
-
-function handleAvatar(event) {
-    var file = event.target.files[0];
-    if (!file) { return; }
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        var avatar = document.getElementById('avatarEl');
-        avatar.style.backgroundImage = 'url(' + e.target.result + ')';
-        document.getElementById('avatarInitials').style.display = 'none';
-    };
-    reader.readAsDataURL(file);
-}
-
-function switchTab(btn, name) {
-    document.querySelectorAll('.p-tab').forEach(function(t) {
-        t.classList.remove('active');
-    });
-    document.querySelectorAll('.p-tab-content').forEach(function(c) {
-        c.classList.remove('active');
-        c.style.display = 'none';
-    });
-    btn.classList.add('active');
-    var target = document.getElementById('tab-' + name);
-    if (target) {
-        target.classList.add('active');
-        target.style.display = 'block';
+    @section('scripts')
+    <script>
+    function openCert(title, trainer, date, duration, certId) {
+        document.getElementById('cert-title').textContent = title;
+        document.getElementById('cert-recipient').textContent = document.getElementById('dispName').textContent;
+        document.getElementById('cert-trainer').textContent = trainer;
+        document.getElementById('cert-date').textContent = date;
+        document.getElementById('cert-duration').textContent = duration;
+        document.getElementById('cert-id').textContent = certId;
+        openModal('cert');
     }
-}
-</script>
-@endsection
+
+    function saveContact() {
+        document.getElementById('dispEmail').textContent = document.getElementById('f-email').value;
+        document.getElementById('dispPhone').textContent = document.getElementById('f-phone').value;
+        document.getElementById('dispCity').textContent = document.getElementById('f-city').value;
+        document.getElementById('dispAge').textContent = document.getElementById('f-age').value;
+        closeModal('contact');
+        showToast();
+    }
+
+    function saveAbout() {
+        document.getElementById('dispAbout').textContent = document.getElementById('f-about').value;
+        closeModal('about');
+        showToast();
+    }
+
+    function saveInterests() {
+        var tags = document.getElementById('f-interests').value.split('،').map(t => t.trim()).filter(t => t);
+        var list = document.getElementById('tagList');
+        list.innerHTML = tags.map(t => '<span class="p-tag">' + t + '</span>').join('');
+        closeModal('interests');
+        showToast();
+    }
+
+    function handleAvatar(event) {
+        var file = event.target.files[0];
+        if (!file) { return; }
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var avatar = document.getElementById('avatarEl');
+            avatar.style.backgroundImage = 'url(' + e.target.result + ')';
+            document.getElementById('avatarInitials').style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function switchTab(btn, name) {
+        document.querySelectorAll('.p-tab').forEach(function(t) {
+            t.classList.remove('active');
+        });
+        document.querySelectorAll('.p-tab-content').forEach(function(c) {
+            c.classList.remove('active');
+            c.style.display = 'none';
+        });
+        btn.classList.add('active');
+        var target = document.getElementById('tab-' + name);
+        if (target) {
+            target.classList.add('active');
+            target.style.display = 'block';
+        }
+    }
+    </script>
+    @endsection
+
+</div>

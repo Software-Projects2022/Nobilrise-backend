@@ -43,6 +43,8 @@ class ServiceForm
                 FileUpload::make('image')
                     ->required()
                     ->image()
+                    ->disk('public')
+                    ->directory('services')
                     ->maxSize(1024),
                 Toggle::make('most_requested')
                     ->default(false),

@@ -28,7 +28,10 @@ class AboutForm
                     ->required(),
                 FileUpload::make('image')
                     ->label('Image')
-                    ->required(),
+                    ->required()
+                    ->image()
+                    ->disk('public')
+                    ->directory('abouts'),
             ]);
     }
 }

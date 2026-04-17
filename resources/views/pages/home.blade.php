@@ -9,14 +9,12 @@
                 <div class="hero-row">
                     <div class="hero-content">
                         <h1 class="hero-title">
-                            رحلتك نحو <span class="highlight">صحة نفسية</span> أفضل
+                            {{ $settings?->home_banner_title ?? 'رحلتك نحو' }} <span class="highlight">{{ $settings?->home_banner_description ?? 'صحة نفسية أفضل' }}</span>
                         </h1>
                         <p class="hero-subtitle">
-                            عزّز صحتك النفسية من خلال جلسات استشارية متخصصة مع معالجين
-                            نفسيين محترفين، واحصل على الدعم والإرشاد الذي تحتاجه لتحقيق
-                            التوازن والسعادة في حياتك.
+                            {{ $settings?->home_banner_description ?? 'عزّز صحتك النفسية من خلال جلسات استشارية متخصصة مع معالجين نفسيين محترفين.' }}
                         </p>
-                        <a href="#sessions" class="hero-cta">احجز جلستك الاستشارية الآن</a>
+                        <a href="{{ $settings?->home_banner_link ?? '#sessions' }}" class="hero-cta">احجز جلستك الاستشارية الآن</a>
                         <div class="hero-features">
                             <div class="feature-item">
                                 <div class="feature-icon"><i class="fas fa-user-md"></i></div>
@@ -45,10 +43,10 @@
                         <div class="hero-image-wrapper">
                             <div class="circular-images">
                                 <div class="circle-image image-1">
-                                    <img src="./assets/img/hero.jpg" alt="مستشارة نفسية" />
+                                    <img src="{{ $settings?->home_banner_image1 ? Storage::url($settings->home_banner_image1) : asset('assets/img/hero.jpg') }}" alt="مستشارة نفسية" />
                                 </div>
                                 <div class="circle-image image-2">
-                                    <img src="./assets/img/main_hero.jpg" alt="مستشار نفسي" />
+                                    <img src="{{ $settings?->home_banner_image2 ? Storage::url($settings->home_banner_image2) : asset('assets/img/main_hero.jpg') }}" alt="مستشار نفسي" />
                                 </div>
                             </div>
                         </div>
@@ -69,13 +67,11 @@
                                 <span>من نحن</span>
                             </div>
                             <h2 class="section-title">
-                                نساعدك على تحقيق
-                                <span class="highlight">التوازن النفسي</span>
+                                {{ $about?->title ?? 'نساعدك على تحقيق' }}
+                                <span class="highlight">{{ $about?->title_ar ?? 'التوازن النفسي' }}</span>
                             </h2>
                             <p class="section-description">
-                                منصة الصعود النبيل هي منصة متخصصة في تقديم الاستشارات النفسية
-                                والجلسات العلاجية بأعلى معايير الجودة والاحترافية. نؤمن بأن
-                                الصحة النفسية حق للجميع.
+                                {{ $about?->description ?? 'منصة الصعود النبيل هي منصة متخصصة في تقديم الاستشارات النفسية والجلسات العلاجية بأعلى معايير الجودة والاحترافية. نؤمن بأن الصحة النفسية حق للجميع.' }}
                             </p>
                             <div class="about-features">
                                 <div class="feature-row">
@@ -127,7 +123,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
                         <div class="about-img-wrap">
-                            <img src="./assets/img/main_hero.jpg" alt="من نحن" class="about-side-img" />
+                            <img src="{{ $about?->image ? Storage::url($about->image) : asset('assets/img/main_hero.jpg') }}" alt="من نحن" class="about-side-img" />
                             <div class="about-img-badge">
                                 <i class="fas fa-award"></i>
                                 <span>+5 سنوات خبرة</span>
@@ -142,7 +138,7 @@
                             <div class="stats-grid">
                                 <div class="stat-box">
                                     <div class="stat-icon">
-                                        <img src="./assets/img/User.png" alt="" />
+                                        <img src="{{ asset('assets/img/User.png') }}" alt="" />
                                     </div>
                                     <div class="stat-content">
                                         <h3 class="stat-number">
@@ -153,7 +149,7 @@
                                 </div>
                                 <div class="stat-box">
                                     <div class="stat-icon">
-                                        <img src="./assets/img/successful.png" alt="" />
+                                        <img src="{{ asset('assets/img/successful.png') }}" alt="" />
                                     </div>
                                     <div class="stat-content">
                                         <h3 class="stat-number">
@@ -209,62 +205,22 @@
                     </p>
                 </div>
                 <div class="services-grid">
-                    <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                    @foreach($services as $index => $service)
+                    <div class="service-card {{ $service->most_requested ? 'featured' : '' }}" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                        @if($service->most_requested)
+                            <div class="featured-badge">الأكثر طلباً</div>
+                        @endif
                         <div class="service-icon">
-                            <img src="https://cdn-icons-png.flaticon.com/512/4807/4807231.png" alt="جلسات فردية" />
+                            @if($service->image)
+                                <img src="{{ Storage::url($service->image) }}" alt="{{ $service->name }}" />
+                            @endif
                             <div class="icon-bg-circle"></div>
                         </div>
-                        <h3 class="service-title">جلسات فردية</h3>
-                        <p class="service-description">
-                            جلسات خاصة وشخصية مع معالج نفسي متخصص لمساعدتك على التعامل مع
-                            التحديات
-                        </p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> خصوصية تامة وسرية كاملة</li>
-                            <li><i class="fas fa-check"></i> معالجون معتمدون</li>
-                            <li><i class="fas fa-check"></i> مواعيد مرنة تناسبك</li>
-                        </ul>
-                        <a href="#sessions" class="service-btn"><span>احجز جلستك</span><i
-                                class="fas fa-arrow-left"></i></a>
+                        <h3 class="service-title">{{ $service->name }}</h3>
+                        <p class="service-description">{{ $service->short_description }}</p>
+                        <a href="#sessions" class="service-btn"><span>احجز الآن</span><i class="fas fa-arrow-left"></i></a>
                     </div>
-                    <div class="service-card featured" data-aos="fade-up" data-aos-delay="200">
-                        <div class="featured-badge">الأكثر طلباً</div>
-                        <div class="service-icon">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png" alt="جلسات جماعية" />
-                            <div class="icon-bg-circle"></div>
-                        </div>
-                        <h3 class="service-title">جلسات جماعية</h3>
-                        <p class="service-description">
-                            انضم إلى مجموعات الدعم النفسي وشارك تجاربك مع الآخرين في بيئة
-                            آمنة
-                        </p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> بيئة داعمة ومشجعة</li>
-                            <li><i class="fas fa-check"></i> تبادل الخبرات والتجارب</li>
-                            <li><i class="fas fa-check"></i> إشراف متخصص</li>
-                        </ul>
-                        <a href="#sessions" class="service-btn"><span>انضم الآن</span><i
-                                class="fas fa-arrow-left"></i></a>
-                    </div>
-                    <div class="service-card" data-aos="fade-up" data-aos-delay="300">
-                        <div class="service-icon">
-                            <img src="https://cdn-icons-png.flaticon.com/512/10337/10337577.png"
-                                alt="استشارات أونلاين" />
-                            <div class="icon-bg-circle"></div>
-                        </div>
-                        <h3 class="service-title">استشارات أونلاين</h3>
-                        <p class="service-description">
-                            احصل على الدعم النفسي من أي مكان عبر جلسات الفيديو أو المكالمات
-                            الصوتية
-                        </p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> راحة من منزلك</li>
-                            <li><i class="fas fa-check"></i> جودة عالية في التواصل</li>
-                            <li><i class="fas fa-check"></i> توفير الوقت والجهد</li>
-                        </ul>
-                        <a href="#sessions" class="service-btn"><span>ابدأ الآن</span><i
-                                class="fas fa-arrow-left"></i></a>
-                    </div>
+                    @endforeach
                 </div>
             </div>
             <div class="stats-decoration_tow">
@@ -288,216 +244,52 @@
                 </div>
                 <div class="course-filters" data-aos="fade-up" data-aos-delay="100">
                     <button class="filter-btn active" data-filter="all">الكل</button>
-                    <button class="filter-btn" data-filter="personal">
-                        تطوير الذات
-                    </button>
-                    <button class="filter-btn" data-filter="skills">
-                        المهارات الشخصية
-                    </button>
-                    <button class="filter-btn" data-filter="development">
-                        التنمية البشرية
-                    </button>
-                    <button class="filter-btn" data-filter="leadership">
-                        القيادة والإدارة
-                    </button>
+                    @foreach($courseCategories as $category)
+                        <button class="filter-btn" data-filter="{{ $category->name }}">
+                            {{ $category->name }}
+                        </button>
+                    @endforeach
                 </div>
+            </div>
+            <div class="container">
                 <div class="courses-grid">
-                    <!-- Course 1 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="100" data-category="personal">
+                    @foreach($courses as $index => $course)
+                    <div class="course-card" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}" data-category="{{ $course->trainingCourseCategory?->name }}">
                         <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1552581234-26160f608093?w=600"
-                                alt="تطوير الذات" />
+                            @if($course->image)
+                                <img src="{{ Storage::url($course->image) }}" alt="{{ $course->name }}" />
+                            @endif
                             <div class="course-badge">
                                 <div class="course-category">
-                                    <i class="fas fa-lightbulb"></i><span>تطوير الذات</span>
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>{{ $course->trainingCourseCategory?->name }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="course-content">
-                            <h3 class="course-title">دورة تطوير الذات الشاملة</h3>
-                            <p class="course-desc">
-                                رحلة متكاملة لاكتشاف قدراتك وتطوير مهاراتك لتحقيق النجاح
-                                والتميز
-                            </p>
-                            <div class="course-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span>4.8</span>
-                            </div>
+                            <h3 class="course-title">{{ $course->name }}</h3>
+                            <p class="course-desc">{{ $course->short_description }}</p>
                             <div class="course-footer">
                                 <div class="course-price">
-                                    <span class="old-price">1500 ج.م</span>
-                                    <span class="new-price">1200 ج.م</span>
+                                    @if($course->discount_price)
+                                        <span class="old-price">{{ $course->price }} ج.م</span>
+                                        <span class="new-price">{{ $course->discount_price }} ج.م</span>
+                                    @else
+                                        <span class="new-price">{{ $course->price }} ج.م</span>
+                                    @endif
                                 </div>
-                                <a href="#" class="course-btn">احجز الآن <i class="fas fa-arrow-left"></i></a>
+                                <a href="{{ route('course-details', $course->id) }}" class="course-btn">احجز الآن <i class="fas fa-arrow-left"></i></a>
                             </div>
                         </div>
                     </div>
-                    <!-- Course 2 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="200" data-category="skills">
-                        <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600"
-                                alt="المهارات الشخصية" />
-                            <div class="course-badge">
-                                <div class="course-category">
-                                    <i class="fas fa-user-tie"></i><span>المهارات الشخصية</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="course-content">
-                            <h3 class="course-title">فن التواصل الفعّال والإقناع</h3>
-                            <p class="course-desc">
-                                تعلم مهارات التواصل الاحترافي وبناء العلاقات القوية والتأثير
-                            </p>
-                            <div class="course-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star"></i>
-                                </div>
-                                <span>5.0</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-price">
-                                    <span class="new-price">1000 ج.م</span>
-                                </div>
-                                <a href="#" class="course-btn">احجز الآن <i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Course 3 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="300" data-category="development">
-                        <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600"
-                                alt="التنمية البشرية" />
-                            <div class="course-badge">
-                                <div class="course-category">
-                                    <i class="fas fa-brain"></i><span>التنمية البشرية</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="course-content">
-                            <h3 class="course-title">إدارة الوقت وتعزيز الإنتاجية</h3>
-                            <p class="course-desc">
-                                اكتشف أسرار إدارة الوقت بفعالية وزيادة إنتاجيتك بكفاءة عالية
-                            </p>
-                            <div class="course-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star"></i>
-                                </div>
-                                <span>4.9</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-price">
-                                    <span class="old-price">900 ج.م</span>
-                                    <span class="new-price">750 ج.م</span>
-                                </div>
-                                <a href="#" class="course-btn">احجز الآن <i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Course 4 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="400" data-category="leadership">
-                        <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600"
-                                alt="القيادة والإدارة" />
-                            <div class="course-badge">
-                                <div class="course-category">
-                                    <i class="fas fa-chess-king"></i><span>القيادة والإدارة</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="course-content">
-                            <h3 class="course-title">مهارات القيادة الاحترافية</h3>
-                            <p class="course-desc">
-                                طور مهاراتك القيادية وقد فريقك بنجاح وحقق الأهداف بكفاءة
-                            </p>
-                            <div class="course-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star"></i>
-                                </div>
-                                <span>4.9</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-price">
-                                    <span class="new-price">1800 ج.م</span>
-                                </div>
-                                <a href="#" class="course-btn">احجز الآن <i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Course 5 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="500" data-category="development">
-                        <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=600"
-                                alt="الذكاء العاطفي" />
-                            <div class="course-badge">
-                                <div class="course-category">
-                                    <i class="fas fa-heart"></i><span>التنمية البشرية</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="course-content">
-                            <h3 class="course-title">الذكاء العاطفي والتحكم بالمشاعر</h3>
-                            <p class="course-desc">
-                                تعلم فهم مشاعرك والآخرين وطور قدرتك على التحكم العاطفي
-                            </p>
-                            <div class="course-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span>4.7</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-price">
-                                    <span class="new-price">850 ج.م</span>
-                                </div>
-                                <a href="#" class="course-btn">احجز الآن <i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Course 6 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="600" data-category="skills">
-                        <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600"
-                                alt="حل المشكلات" />
-                            <div class="course-badge">
-                                <div class="course-category">
-                                    <i class="fas fa-puzzle-piece"></i><span>المهارات الشخصية</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="course-content">
-                            <h3 class="course-title">التفكير الإبداعي وحل المشكلات</h3>
-                            <p class="course-desc">
-                                اكتسب مهارات التفكير الإبداعي والابتكار في حل المشكلات
-                            </p>
-                            <div class="course-rating">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <span>4.8</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-price">
-                                    <span class="old-price">1300 ج.م</span>
-                                    <span class="new-price">950 ج.م</span>
-                                </div>
-                                <a href="#" class="course-btn">احجز الآن <i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <div class="courses-footer" data-aos="fade-up">
-                    <a href="#all-courses" class="view-all-btn">
+                    <a href="{{ route('training-courses') }}" class="view-all-btn">
                         استكشف جميع الدورات <i class="fas fa-arrow-left"></i>
                     </a>
                 </div>
+            </div>
             </div>
         </section>
 
@@ -622,7 +414,7 @@
 
                 <!-- Testimonials Slider -->
                 <div class="testimonials-slider" data-aos="fade-up" data-aos-delay="100">
-                    <!-- Card 1 -->
+                    @foreach($testimonials as $testimonial)
                     <div class="testimonial-slide">
                         <div class="testimonial-card">
                             <div class="card-top">
@@ -630,22 +422,27 @@
                                     <i class="fas fa-quote-right"></i>
                                 </div>
                                 <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= $testimonial->rating)
+                                            <i class="fas fa-star"></i>
+                                        @elseif($i - 0.5 <= $testimonial->rating)
+                                            <i class="fas fa-star-half-alt"></i>
+                                        @else
+                                            <i class="far fa-star"></i>
+                                        @endif
+                                    @endfor
                                 </div>
                             </div>
-                            <p class="testimonial-text">
-                                الجلسات الجماعية كانت تجربة استثنائية، تعرفت على أشخاص يمرون
-                                بنفس التحديات وهذا منحني قوة إضافية. المنصة توفر بيئة آمنة
-                                ومحترمة للجميع.
-                            </p>
+                            <p class="testimonial-text">{{ $testimonial->review }}</p>
                             <div class="testimonial-footer">
                                 <div class="client-avatar">
-                                    <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="عمر حسن" />
+                                    @if($testimonial->image)
+                                        <img src="{{ Storage::url($testimonial->image) }}" alt="{{ $testimonial->name }}" />
+                                    @endif
                                 </div>
                                 <div class="client-info">
-                                    <h4 class="client-name">عمر حسن</h4>
-                                    <p class="client-role">مهندس - الكويت</p>
+                                    <h4 class="client-name">{{ $testimonial->name }}</h4>
+                                    <p class="client-role">{{ $testimonial->job }}</p>
                                 </div>
                                 <div class="verified-badge">
                                     <i class="fas fa-check-circle"></i> موثق
@@ -653,161 +450,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Card 2 -->
-                    <div class="testimonial-slide">
-                        <div class="testimonial-card">
-                            <div class="card-top">
-                                <div class="quote-icon">
-                                    <i class="fas fa-quote-right"></i>
-                                </div>
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                                </div>
-                            </div>
-                            <p class="testimonial-text">
-                                الجلسات الجماعية كانت تجربة استثنائية، تعرفت على أشخاص يمرون
-                                بنفس التحديات وهذا منحني قوة إضافية. المنصة توفر بيئة آمنة
-                                ومحترمة للجميع.
-                            </p>
-                            <div class="testimonial-footer">
-                                <div class="client-avatar">
-                                    <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="عمر حسن" />
-                                </div>
-                                <div class="client-info">
-                                    <h4 class="client-name">عمر حسن</h4>
-                                    <p class="client-role">مهندس - الكويت</p>
-                                </div>
-                                <div class="verified-badge">
-                                    <i class="fas fa-check-circle"></i> موثق
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 3 -->
-                    <div class="testimonial-slide">
-                        <div class="testimonial-card">
-                            <div class="card-top">
-                                <div class="quote-icon">
-                                    <i class="fas fa-quote-right"></i>
-                                </div>
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                                </div>
-                            </div>
-                            <p class="testimonial-text">
-                                الجلسات الجماعية كانت تجربة استثنائية، تعرفت على أشخاص يمرون
-                                بنفس التحديات وهذا منحني قوة إضافية. المنصة توفر بيئة آمنة
-                                ومحترمة للجميع.
-                            </p>
-                            <div class="testimonial-footer">
-                                <div class="client-avatar">
-                                    <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="عمر حسن" />
-                                </div>
-                                <div class="client-info">
-                                    <h4 class="client-name">عمر حسن</h4>
-                                    <p class="client-role">مهندس - الكويت</p>
-                                </div>
-                                <div class="verified-badge">
-                                    <i class="fas fa-check-circle"></i> موثق
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 4 -->
-                    <div class="testimonial-slide">
-                        <div class="testimonial-card">
-                            <div class="card-top">
-                                <div class="quote-icon">
-                                    <i class="fas fa-quote-right"></i>
-                                </div>
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                                </div>
-                            </div>
-                            <p class="testimonial-text">
-                                الجلسات الجماعية كانت تجربة استثنائية، تعرفت على أشخاص يمرون
-                                بنفس التحديات وهذا منحني قوة إضافية. المنصة توفر بيئة آمنة
-                                ومحترمة للجميع.
-                            </p>
-                            <div class="testimonial-footer">
-                                <div class="client-avatar">
-                                    <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="عمر حسن" />
-                                </div>
-                                <div class="client-info">
-                                    <h4 class="client-name">عمر حسن</h4>
-                                    <p class="client-role">مهندس - الكويت</p>
-                                </div>
-                                <div class="verified-badge">
-                                    <i class="fas fa-check-circle"></i> موثق
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 5 -->
-                    <div class="testimonial-slide">
-                        <div class="testimonial-card">
-                            <div class="card-top">
-                                <div class="quote-icon">
-                                    <i class="fas fa-quote-right"></i>
-                                </div>
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                                </div>
-                            </div>
-                            <p class="testimonial-text">
-                                الجلسات الجماعية كانت تجربة استثنائية، تعرفت على أشخاص يمرون
-                                بنفس التحديات وهذا منحني قوة إضافية. المنصة توفر بيئة آمنة
-                                ومحترمة للجميع.
-                            </p>
-                            <div class="testimonial-footer">
-                                <div class="client-avatar">
-                                    <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="عمر حسن" />
-                                </div>
-                                <div class="client-info">
-                                    <h4 class="client-name">عمر حسن</h4>
-                                    <p class="client-role">مهندس - الكويت</p>
-                                </div>
-                                <div class="verified-badge">
-                                    <i class="fas fa-check-circle"></i> موثق
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card 6 -->
-                    <div class="testimonial-slide">
-                        <div class="testimonial-card">
-                            <div class="card-top">
-                                <div class="quote-icon">
-                                    <i class="fas fa-quote-right"></i>
-                                </div>
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                                </div>
-                            </div>
-                            <p class="testimonial-text">
-                                الجلسات الجماعية كانت تجربة استثنائية، تعرفت على أشخاص يمرون
-                                بنفس التحديات وهذا منحني قوة إضافية. المنصة توفر بيئة آمنة
-                                ومحترمة للجميع.
-                            </p>
-                            <div class="testimonial-footer">
-                                <div class="client-avatar">
-                                    <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="عمر حسن" />
-                                </div>
-                                <div class="client-info">
-                                    <h4 class="client-name">عمر حسن</h4>
-                                    <p class="client-role">مهندس - الكويت</p>
-                                </div>
-                                <div class="verified-badge">
-                                    <i class="fas fa-check-circle"></i> موثق
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
             <div class="bg-shapes">
@@ -841,14 +484,14 @@
                             <li><i class="fas fa-check-circle"></i> تواصل مباشر مع المعالج</li>
                         </ul>
                         <div class="app-store-btns">
-                            <a href="#" class="store-btn">
+                            <a href="{{ $settings?->app_store_link ?? '#' }}" class="store-btn">
                                 <i class="fab fa-apple"></i>
                                 <div>
                                     <span>حمّل من</span>
                                     <strong>App Store</strong>
                                 </div>
                             </a>
-                            <a href="#" class="store-btn">
+                            <a href="{{ $settings?->google_play_link ?? '#' }}" class="store-btn">
                                 <i class="fab fa-google-play"></i>
                                 <div>
                                     <span>حمّل من</span>
@@ -863,18 +506,18 @@
                         <div class="phone-mockup-wrap">
                             <div class="phone-glow"></div>
                             <div class="phone-device">
-                                <img src="./assets/img/iphone-mask.png" alt="iPhone Frame" class="phone-frame-img" />
+                                <img src="{{ $settings?->app_phone_frame ? Storage::url($settings->app_phone_frame) : asset('assets/img/iphone-mask.png') }}" alt="iPhone Frame" class="phone-frame-img" />
                                 <div class="phone-screen">
                                     <div class="swiper mySwiper">
                                         <div class="swiper-wrapper">
                                             <div class="swiper-slide">
-                                                <img src="./assets/img/Screenshot .png" alt="شاشة التطبيق 1" />
+                                                <img src="{{ $settings?->app_screenshot_1 ? Storage::url($settings->app_screenshot_1) : asset('assets/img/Screenshot .png') }}" alt="شاشة التطبيق 1" />
                                             </div>
                                             <div class="swiper-slide">
-                                                <img src="./assets/img/Screenshot .png" alt="شاشة التطبيق 2" />
+                                                <img src="{{ $settings?->app_screenshot_2 ? Storage::url($settings->app_screenshot_2) : asset('assets/img/Screenshot .png') }}" alt="شاشة التطبيق 2" />
                                             </div>
                                             <div class="swiper-slide">
-                                                <img src="./assets/img/Screenshot .png" alt="شاشة التطبيق 3" />
+                                                <img src="{{ $settings?->app_screenshot_3 ? Storage::url($settings->app_screenshot_3) : asset('assets/img/Screenshot .png') }}" alt="شاشة التطبيق 3" />
                                             </div>
                                         </div>
                                         <div class="swiper-pagination"></div>
@@ -884,14 +527,14 @@
                             <div class="float-badge badge-top">
                                 <i class="fas fa-star"></i>
                                 <div>
-                                    <strong>4.9</strong>
+                                    <strong>{{ $settings?->app_rating ?? '4.9' }}</strong>
                                     <span>تقييم المستخدمين</span>
                                 </div>
                             </div>
                             <div class="float-badge badge-bottom">
                                 <i class="fas fa-download"></i>
                                 <div>
-                                    <strong>+10K</strong>
+                                    <strong>{{ $settings?->app_downloads ?? '+10K' }}</strong>
                                     <span>تحميل</span>
                                 </div>
                             </div>

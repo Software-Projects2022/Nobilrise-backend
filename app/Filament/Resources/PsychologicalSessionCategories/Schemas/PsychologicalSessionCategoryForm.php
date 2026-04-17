@@ -23,6 +23,8 @@ class PsychologicalSessionCategoryForm
                 FileUpload::make('image')
                     ->required()
                     ->image()
+                    ->disk('public')
+                    ->directory('psychological-session-categories')
                     ->maxSize(1024),
             ]);
     }

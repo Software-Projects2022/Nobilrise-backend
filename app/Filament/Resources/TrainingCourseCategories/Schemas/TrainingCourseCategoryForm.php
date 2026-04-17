@@ -24,6 +24,8 @@ class TrainingCourseCategoryForm
                 FileUpload::make('image')
                     ->required()
                     ->image()
+                    ->disk('public')
+                    ->directory('training-course-categories')
                     ->maxSize(1024),
             ]);
     }

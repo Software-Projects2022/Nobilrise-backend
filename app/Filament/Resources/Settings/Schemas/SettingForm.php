@@ -28,10 +28,16 @@ class SettingForm
                     ->required(),
                 FileUpload::make('home_banner_image1')
                     ->label('Home Banner Image 1')
-                    ->required(),
+                    ->required()
+                    ->image()
+                    ->disk('public')
+                    ->directory('settings'),
                 FileUpload::make('home_banner_image2')
                     ->label('Home Banner Image 2')
-                    ->required(),
+                    ->required()
+                    ->image()
+                    ->disk('public')
+                    ->directory('settings'),
                 TextInput::make('home_banner_link')
                     ->label('Home Banner Link')
                     ->required(),
@@ -68,6 +74,42 @@ class SettingForm
                 TextInput::make('youtube')
                     ->label('YouTube')
                     ->required(),
+                TextInput::make('app_store_link')
+                    ->label('App Store Link')
+                    ->nullable(),
+                TextInput::make('google_play_link')
+                    ->label('Google Play Link')
+                    ->nullable(),
+                TextInput::make('app_rating')
+                    ->label('App Rating')
+                    ->nullable(),
+                TextInput::make('app_downloads')
+                    ->label('App Downloads')
+                    ->nullable(),
+                FileUpload::make('app_phone_frame')
+                    ->label('App Phone Frame Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('settings')
+                    ->nullable(),
+                FileUpload::make('app_screenshot_1')
+                    ->label('App Screenshot 1')
+                    ->image()
+                    ->disk('public')
+                    ->directory('settings')
+                    ->nullable(),
+                FileUpload::make('app_screenshot_2')
+                    ->label('App Screenshot 2')
+                    ->image()
+                    ->disk('public')
+                    ->directory('settings')
+                    ->nullable(),
+                FileUpload::make('app_screenshot_3')
+                    ->label('App Screenshot 3')
+                    ->image()
+                    ->disk('public')
+                    ->directory('settings')
+                    ->nullable(),
             ]);
     }
 }

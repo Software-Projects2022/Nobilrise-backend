@@ -25,8 +25,18 @@
                 </nav>
 
                 <div class="auth-buttons d-none d-lg-flex">
-                    <a href="{{ route('login') }}" class="btn-login">تسجيل الدخول</a>
-                    <a href="{{ route('login') }}" class="btn-register">إنشاء حساب</a>
+                    @auth('client')
+                        <a href="{{ route('profile') }}" class="btn-login">
+                            <i class="fas fa-user-circle"></i> {{ Auth::guard('client')->user()->name }}
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" style="display:inline">
+                            @csrf
+                            <button type="submit" class="btn-register">تسجيل الخروج</button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="btn-login">تسجيل الدخول</a>
+                        <a href="{{ route('register') }}" class="btn-register">إنشاء حساب</a>
+                    @endauth
                 </div>
 
                 <div class="menu-toggle" id="menuToggle">
