@@ -942,7 +942,7 @@
             <div class="container">
                 <div class="hero-content">
                     <div class="breadcrumb">
-                        <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+                        <a href="{{ route('home') }}"><i class="fas fa-home"></i> الرئيسية</a>
                         <i class="fas fa-chevron-left"></i>
                         <span>تواصل معنا</span>
                     </div>
@@ -1050,12 +1050,12 @@
                                 </div>
                             </div>
                             <div class="contact-social-grid">
-                                <a href="#" class="contact-soc-btn fb"><i class="fab fa-facebook-f"></i> فيسبوك</a>
-                                <a href="#" class="contact-soc-btn tw"><i class="fab fa-twitter"></i> تويتر</a>
-                                <a href="#" class="contact-soc-btn ig"><i class="fab fa-instagram"></i> انستغرام</a>
-                                <a href="#" class="contact-soc-btn wa"><i class="fab fa-whatsapp"></i> واتساب</a>
-                                <a href="#" class="contact-soc-btn yt"><i class="fab fa-youtube"></i> يوتيوب</a>
-                                <a href="#" class="contact-soc-btn li"><i class="fab fa-linkedin-in"></i> لينكدإن</a>
+                                <a href="{{ $settings?->facebook ?? '#' }}" class="contact-soc-btn fb"><i class="fab fa-facebook-f"></i> فيسبوك</a>
+                                <a href="{{ $settings?->twitter ?? '#' }}" class="contact-soc-btn tw"><i class="fab fa-twitter"></i> تويتر</a>
+                                <a href="{{ $settings?->instagram ?? '#' }}" class="contact-soc-btn ig"><i class="fab fa-instagram"></i> انستغرام</a>
+                                <a href="{{ $settings?->facebook ?? '#' }}" class="contact-soc-btn wa"><i class="fab fa-whatsapp"></i> واتساب</a>
+                                <a href="{{ $settings?->youtube ?? '#' }}" class="contact-soc-btn yt"><i class="fab fa-youtube"></i> يوتيوب</a>
+                                <a href="{{ $settings?->linkedin ?? '#' }}" class="contact-soc-btn li"><i class="fab fa-linkedin-in"></i> لينكدإن</a>
                             </div>
                         </div>
 

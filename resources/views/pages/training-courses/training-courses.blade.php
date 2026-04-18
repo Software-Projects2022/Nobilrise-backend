@@ -1,5 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Training Courses')
+@section('styles')
+<style>
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; }
+    .modal-overlay.active { display: flex; }
+</style>
+@endsection
 @section('content')
   <main>
         <!-- ========================== Page Hero ========================== -->
@@ -17,16 +23,12 @@
                     <p class="page-description">
                         برامج تدريبية متميزة وجلسات نفسية احترافية مصممة لتطوير مهاراتك وتحقيق صحتك النفسية
                     </p>
-
-                    <!-- Tab Switcher in Hero -->
                     <div class="hero-tabs">
                         <a href="#courses" class="hero-tab active" id="tab-courses">
-                            <i class="fas fa-graduation-cap"></i>
-                            الدورات التدريبية
+                            <i class="fas fa-graduation-cap"></i> الدورات التدريبية
                         </a>
                         <a href="#sessions" class="hero-tab" id="tab-sessions">
-                            <i class="fas fa-brain"></i>
-                            الجلسات النفسية
+                            <i class="fas fa-brain"></i> الجلسات النفسية
                         </a>
                     </div>
                 </div>
@@ -47,171 +49,41 @@
                 </div>
                 <div class="course-filters" data-aos="fade-up" data-aos-delay="100">
                     <button class="filter-btn active" data-filter="all">الكل</button>
-                    <button class="filter-btn" data-filter="personal">تطوير الذات</button>
-                    <button class="filter-btn" data-filter="skills">المهارات الشخصية</button>
-                    <button class="filter-btn" data-filter="development">التنمية البشرية</button>
-                    <button class="filter-btn" data-filter="leadership">القيادة والإدارة</button>
+                    @foreach($categories as $category)
+                        <button class="filter-btn" data-filter="{{ $category->name }}">{{ $category->name }}</button>
+                    @endforeach
                 </div>
                 <div class="courses-grid">
-                    <!-- Course 1 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="100" data-category="personal">
+                    @foreach($courses as $index => $course)
+                    <div class="course-card" data-aos="fade-up" data-aos-delay="{{ ($index % 3 + 1) * 100 }}" data-category="{{ $course->trainingCourseCategory?->name }}">
                         <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1552581234-26160f608093?w=600"
-                                alt="تطوير الذات">
+                            @if($course->image)
+                                <img src="{{ Storage::url($course->image) }}" alt="{{ $course->name }}">
+                            @endif
                             <div class="course-badge">
-                                <div class="course-category"><i class="fas fa-lightbulb"></i><span>تطوير الذات</span>
+                                <div class="course-category">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>{{ $course->trainingCourseCategory?->name }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="course-content">
-                            <h3 class="course-title">دورة تطوير الذات الشاملة</h3>
-                            <p class="course-desc">رحلة متكاملة لاكتشاف قدراتك وتطوير مهاراتك لتحقيق النجاح والتميز</p>
-                            <div class="course-rating">
-                                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star-half-alt"></i></div>
-                                <span>4.8</span>
-                            </div>
+                            <h3 class="course-title">{{ $course->name }}</h3>
+                            <p class="course-desc">{{ $course->short_description }}</p>
                             <div class="course-footer">
                                 <div class="course-price">
-                                    <span class="old-price">1500 ج.م</span>
-                                    <span class="new-price">1200 ج.م</span>
+                                    @if($course->discount_price)
+                                        <span class="old-price">{{ $course->price }} ج.م</span>
+                                        <span class="new-price">{{ $course->discount_price }} ج.م</span>
+                                    @else
+                                        <span class="new-price">{{ $course->price }} ج.م</span>
+                                    @endif
                                 </div>
-                                <a href="{{ route('course-details', 1) }}" class="course-btn">التفصيل<i class="fas fa-arrow-left"></i></a>
+                                <a href="{{ route('course-details', $course->id) }}" class="course-btn">التفصيل<i class="fas fa-arrow-left"></i></a>
                             </div>
                         </div>
                     </div>
-                    <!-- Course 2 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="200" data-category="skills">
-                        <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600"
-                                alt="المهارات الشخصية">
-                            <div class="course-badge">
-                                <div class="course-category"><i class="fas fa-user-tie"></i><span>المهارات
-                                        الشخصية</span></div>
-                            </div>
-                        </div>
-                        <div class="course-content">
-                            <h3 class="course-title">فن التواصل الفعّال والإقناع</h3>
-                            <p class="course-desc">تعلم مهارات التواصل الاحترافي وبناء العلاقات القوية والتأثير</p>
-                            <div class="course-rating">
-                                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                </div>
-                                <span>5.0</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-price"><span class="new-price">1000 ج.م</span></div>
-                                <a href="{{ route('course-details', 2) }}" class="course-btn">التفصيل<i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Course 3 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="300" data-category="development">
-                        <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600"
-                                alt="التنمية البشرية">
-                            <div class="course-badge">
-                                <div class="course-category"><i class="fas fa-brain"></i><span>التنمية البشرية</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="course-content">
-                            <h3 class="course-title">إدارة الوقت وتعزيز الإنتاجية</h3>
-                            <p class="course-desc">اكتشف أسرار إدارة الوقت بفعالية وزيادة إنتاجيتك بكفاءة عالية</p>
-                            <div class="course-rating">
-                                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                </div>
-                                <span>4.9</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-price">
-                                    <span class="old-price">900 ج.م</span>
-                                    <span class="new-price">750 ج.م</span>
-                                </div>
-                                <a href="{{ route('course-details', 3) }}" class="course-btn">التفصيل<i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Course 4 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="400" data-category="leadership">
-                        <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600"
-                                alt="القيادة والإدارة">
-                            <div class="course-badge">
-                                <div class="course-category"><i class="fas fa-chess-king"></i><span>القيادة
-                                        والإدارة</span></div>
-                            </div>
-                        </div>
-                        <div class="course-content">
-                            <h3 class="course-title">مهارات القيادة الاحترافية</h3>
-                            <p class="course-desc">طور مهاراتك القيادية وقد فريقك بنجاح وحقق الأهداف بكفاءة</p>
-                            <div class="course-rating">
-                                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                </div>
-                                <span>4.9</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-price"><span class="new-price">1800 ج.م</span></div>
-                                <a href="{{ route('course-details', 4) }}" class="course-btn">التفصيل<i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Course 5 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="500" data-category="development">
-                        <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=600"
-                                alt="الذكاء العاطفي">
-                            <div class="course-badge">
-                                <div class="course-category"><i class="fas fa-heart"></i><span>التنمية البشرية</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="course-content">
-                            <h3 class="course-title">الذكاء العاطفي والتحكم بالمشاعر</h3>
-                            <p class="course-desc">تعلم فهم مشاعرك والآخرين وطور قدرتك على التحكم العاطفي</p>
-                            <div class="course-rating">
-                                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star-half-alt"></i></div>
-                                <span>4.7</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-price"><span class="new-price">850 ج.م</span></div>
-                                <a href="{{ route('course-details', 5) }}" class="course-btn">التفصيل<i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Course 6 -->
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="600" data-category="skills">
-                        <div class="course-image">
-                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600"
-                                alt="حل المشكلات">
-                            <div class="course-badge">
-                                <div class="course-category"><i class="fas fa-puzzle-piece"></i><span>المهارات
-                                        الشخصية</span></div>
-                            </div>
-                        </div>
-                        <div class="course-content">
-                            <h3 class="course-title">التفكير الإبداعي وحل المشكلات</h3>
-                            <p class="course-desc">اكتسب مهارات التفكير الإبداعي والابتكار في حل المشكلات</p>
-                            <div class="course-rating">
-                                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                        class="fas fa-star-half-alt"></i></div>
-                                <span>4.8</span>
-                            </div>
-                            <div class="course-footer">
-                                <div class="course-price">
-                                    <span class="old-price">1300 ج.م</span>
-                                    <span class="new-price">950 ج.م</span>
-                                </div>
-                                <a href="{{ route('course-details', 6) }}" class="course-btn">التفصيل<i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -220,8 +92,7 @@
         <section class="sessions-page-section" id="sessions">
             <div class="container">
                 <div class="section-header" data-aos="fade-up">
-                    <div class="section-badge"
-                        style="background: rgba(197,167,115,0.1); border: 1px solid rgba(197,167,115,0.3); color: #c5a773;">
+                    <div class="section-badge" style="background: rgba(197,167,115,0.1); border: 1px solid rgba(197,167,115,0.3); color: #c5a773;">
                         <i class="fas fa-brain"></i>
                         <span>الجلسات النفسية</span>
                     </div>
@@ -233,151 +104,41 @@
                     </p>
                 </div>
                 <div class="sessions-grid">
-                    <!-- Session 1 -->
-                    <div class="session-card" data-aos="fade-up" data-aos-delay="200">
+                    @foreach($sessions as $index => $session)
+                    <div class="session-card" data-aos="fade-up" data-aos-delay="{{ ($index % 3 + 1) * 100 }}">
                         <div class="session-image">
-                            <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600"
-                                alt="جلسة جماعية">
-                            <div class="session-type-badge"><i class="fas fa-users"></i> جلسة جماعية</div>
+                            @if($session->image)
+                                <img src="{{ Storage::url($session->image) }}" alt="{{ $session->name }}">
+                            @endif
+                            <div class="session-type-badge">
+                                <i class="fas fa-brain"></i> {{ $session->psychologicalSessionCategory?->name }}
+                            </div>
                         </div>
                         <div class="session-content">
-                            <h3 class="session-title">جلسة دعم جماعية</h3>
-                            <p class="session-desc">انضم لمجموعة دعم نفسي في بيئة آمنة مع أشخاص يمرون بتحديات مشابهة</p>
-
+                            <h3 class="session-title">{{ $session->name }}</h3>
+                            <p class="session-desc">{{ $session->short_description }}</p>
                             <div class="session-meta-row">
-                                <span><i class="fas fa-clock"></i> 90 دقيقة</span>
-                                <span><i class="fas fa-users"></i> 6-10 أشخاص</span>
+                                @if($session->duration)
+                                    <span><i class="fas fa-clock"></i> {{ $session->duration }} دقيقة</span>
+                                @endif
+                                @if($session->people_count)
+                                    <span><i class="fas fa-users"></i> {{ $session->people_count }} أشخاص</span>
+                                @endif
                             </div>
                             <div class="session-footer">
                                 <div class="session-price">
-                                    <span class="s-new-price">200 ج.م</span>
+                                    @if($session->discount_price)
+                                        <span class="s-old-price">{{ $session->price }} ج.م</span>
+                                        <span class="s-new-price">{{ $session->discount_price }} ج.م</span>
+                                    @else
+                                        <span class="s-new-price">{{ $session->price }} ج.م</span>
+                                    @endif
                                 </div>
-                                <a href="#" class="session-book-btn open-modal" data-session="جلسة جماعية">احجز الآن <i
-                                        class="fas fa-arrow-left"></i></a>
+                                <a href="#" class="session-book-btn open-modal" data-session="{{ $session->name }}">احجز الآن <i class="fas fa-arrow-left"></i></a>
                             </div>
                         </div>
                     </div>
-                    <!-- Session 2 -->
-                    <div class="session-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="session-image">
-                            <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600"
-                                alt="جلسة جماعية">
-                            <div class="session-type-badge"><i class="fas fa-users"></i> جلسة جماعية</div>
-                        </div>
-                        <div class="session-content">
-                            <h3 class="session-title">جلسة دعم جماعية</h3>
-                            <p class="session-desc">انضم لمجموعة دعم نفسي في بيئة آمنة مع أشخاص يمرون بتحديات مشابهة</p>
-
-                            <div class="session-meta-row">
-                                <span><i class="fas fa-clock"></i> 90 دقيقة</span>
-                                <span><i class="fas fa-users"></i> 6-10 أشخاص</span>
-                            </div>
-                            <div class="session-footer">
-                                <div class="session-price">
-                                    <span class="s-new-price">200 ج.م</span>
-                                </div>
-                                <a href="#" class="session-book-btn open-modal" data-session="جلسة جماعية">احجز الآن <i
-                                        class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Session 3 -->
-                    <div class="session-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="session-image">
-                            <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600"
-                                alt="جلسة جماعية">
-                            <div class="session-type-badge"><i class="fas fa-users"></i> جلسة جماعية</div>
-                        </div>
-                        <div class="session-content">
-                            <h3 class="session-title">جلسة دعم جماعية</h3>
-                            <p class="session-desc">انضم لمجموعة دعم نفسي في بيئة آمنة مع أشخاص يمرون بتحديات مشابهة</p>
-
-                            <div class="session-meta-row">
-                                <span><i class="fas fa-clock"></i> 90 دقيقة</span>
-                                <span><i class="fas fa-users"></i> 6-10 أشخاص</span>
-                            </div>
-                            <div class="session-footer">
-                                <div class="session-price">
-                                    <span class="s-new-price">200 ج.م</span>
-                                </div>
-                                <a href="#" class="session-book-btn open-modal" data-session="جلسة جماعية">احجز الآن <i
-                                        class="fas fa-arrow-left"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Session 4 -->
-                    <div class="session-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="session-image">
-                            <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600"
-                                alt="جلسة جماعية">
-                            <div class="session-type-badge"><i class="fas fa-users"></i> جلسة جماعية</div>
-                        </div>
-                        <div class="session-content">
-                            <h3 class="session-title">جلسة دعم جماعية</h3>
-                            <p class="session-desc">انضم لمجموعة دعم نفسي في بيئة آمنة مع أشخاص يمرون بتحديات مشابهة</p>
-
-                            <div class="session-meta-row">
-                                <span><i class="fas fa-clock"></i> 90 دقيقة</span>
-                                <span><i class="fas fa-users"></i> 6-10 أشخاص</span>
-                            </div>
-                            <div class="session-footer">
-                                <div class="session-price">
-                                    <span class="s-new-price">200 ج.م</span>
-                                </div>
-                                <a href="#" class="session-book-btn open-modal" data-session="جلسة جماعية">احجز الآن <i
-                                        class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Session 5 -->
-                    <div class="session-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="session-image">
-                            <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600"
-                                alt="جلسة جماعية">
-                            <div class="session-type-badge"><i class="fas fa-users"></i> جلسة جماعية</div>
-                        </div>
-                        <div class="session-content">
-                            <h3 class="session-title">جلسة دعم جماعية</h3>
-                            <p class="session-desc">انضم لمجموعة دعم نفسي في بيئة آمنة مع أشخاص يمرون بتحديات مشابهة</p>
-
-                            <div class="session-meta-row">
-                                <span><i class="fas fa-clock"></i> 90 دقيقة</span>
-                                <span><i class="fas fa-users"></i> 6-10 أشخاص</span>
-                            </div>
-                            <div class="session-footer">
-                                <div class="session-price">
-                                    <span class="s-new-price">200 ج.م</span>
-                                </div>
-                                <a href="#" class="session-book-btn open-modal" data-session="جلسة جماعية">احجز الآن <i
-                                        class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Session 6 -->
-                    <div class="session-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="session-image">
-                            <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600"
-                                alt="جلسة جماعية">
-                            <div class="session-type-badge"><i class="fas fa-users"></i> جلسة جماعية</div>
-                        </div>
-                        <div class="session-content">
-                            <h3 class="session-title">جلسة دعم جماعية</h3>
-                            <p class="session-desc">انضم لمجموعة دعم نفسي في بيئة آمنة مع أشخاص يمرون بتحديات مشابهة</p>
-
-                            <div class="session-meta-row">
-                                <span><i class="fas fa-clock"></i> 90 دقيقة</span>
-                                <span><i class="fas fa-users"></i> 6-10 أشخاص</span>
-                            </div>
-                            <div class="session-footer">
-                                <div class="session-price">
-                                    <span class="s-new-price">200 ج.م</span>
-                                </div>
-                                <a href="#" class="session-book-btn open-modal" data-session="جلسة جماعية">احجز الآن <i
-                                        class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -391,64 +152,38 @@
                 <h3>احجز جلستك النفسية</h3>
                 <p id="modalSessionType">جلسة فردية</p>
             </div>
-
             <div class="form-row-two">
-                <!-- الاسم -->
                 <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-user"></i> الاسم الكامل
-                    </label>
+                    <label class="form-label"><i class="fas fa-user"></i> الاسم الكامل</label>
                     <input type="text" class="form-ctrl" placeholder="أدخل اسمك الكامل">
                 </div>
-                <!-- الهاتف -->
                 <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-phone"></i> رقم الهاتف
-                    </label>
+                    <label class="form-label"><i class="fas fa-phone"></i> رقم الهاتف</label>
                     <input type="tel" class="form-ctrl" placeholder="01XX XXX XXXX" dir="ltr">
                 </div>
             </div>
-
-            <!-- البريد -->
-            <div class="form-group">
-                <label class="form-label">
-                    <i class="fas fa-envelope"></i> البريد الإلكتروني
-                </label>
+            <input class="form-group">
+                <label class="form-label"><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
                 <input type="email" class="form-ctrl" placeholder="example@email.com" dir="ltr">
-            </div>
-
+            </input>
             <div class="form-row-two">
-                <!-- التاريخ -->
                 <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-calendar-alt"></i> تاريخ الجلسة
-                    </label>
+                    <label class="form-label"><i class="fas fa-calendar-alt"></i> تاريخ الجلسة</label>
                     <input type="date" class="form-ctrl">
                 </div>
-                <!-- المعالج - select -->
                 <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-user-md"></i> المعالج المفضل
-                    </label>
+                    <label class="form-label"><i class="fas fa-user-md"></i> المعالج المفضل</label>
                     <div class="select-wrap">
                         <i class="fas fa-chevron-down sel-arrow"></i>
                         <select class="form-ctrl is-select">
                             <option value="">اختر المعالج</option>
                             <option value="any">أي معالج متاح</option>
-                            <option value="sara">د. سارة أحمد</option>
-                            <option value="mohamed">د. محمد خالد</option>
-                            <option value="nora">د. نورا إبراهيم</option>
-                            <option value="ahmed">د. أحمد سعيد</option>
                         </select>
                     </div>
                 </div>
             </div>
-
-            <!-- الوقت -->
             <div class="form-group">
-                <label class="form-label">
-                    <i class="fas fa-clock"></i> الوقت المناسب
-                </label>
+                <label class="form-label"><i class="fas fa-clock"></i> الوقت المناسب</label>
                 <div class="time-slots">
                     <div class="time-slot">9:00 ص</div>
                     <div class="time-slot">10:30 ص</div>
@@ -458,21 +193,44 @@
                     <div class="time-slot">6:00 م</div>
                 </div>
             </div>
-
-            <!-- ملاحظات -->
             <div class="form-group">
-                <label class="form-label">
-                    <i class="fas fa-comment-dots"></i>
-                    ملاحظات إضافية
-                    <span style="font-weight:400; color:#bbb; font-size:12px;">(اختياري)</span>
-                </label>
-                <textarea class="form-ctrl is-textarea" rows="3"
-                    placeholder="اكتب أي معلومات تريد مشاركتها مع المعالج..."></textarea>
+                <label class="form-label"><i class="fas fa-comment-dots"></i> ملاحظات إضافية <span style="font-weight:400; color:#bbb; font-size:12px;">(اختياري)</span></label>
+                <textarea class="form-ctrl is-textarea" rows="3" placeholder="اكتب أي معلومات تريد مشاركتها مع المعالج..."></textarea>
             </div>
-
             <button class="submit-btn-modal">
                 <i class="fas fa-calendar-check"></i> تأكيد الحجز
             </button>
         </div>
     </div>
+
+@section('scripts')
+<script>
+$('.submit-btn-modal').click(function() {
+    const selected = $('.time-slot.selected').text();
+    if (!selected) { alert('من فضلك اختر وقت الجلسة'); return; }
+
+    $.ajax({
+        url: '{{ route("bookings.store") }}',
+        method: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            name: $('.form-ctrl').eq(0).val(),
+            phone: $('.form-ctrl').eq(1).val(),
+            email: $('.form-ctrl').eq(2).val(),
+            date: $('.form-ctrl').eq(3).val(),
+            time: selected,
+            session_type: $('#modalSessionType').text(),
+            notes: $('.is-textarea').val(),
+        },
+        success: function(res) {
+            alert(res.message);
+            $('#bookingModal').removeClass('active');
+            $('body').css('overflow', '');
+        },
+        error: function() {
+            alert('حدث خطأ، من فضلك تأكد من ملء جميع الحقول');
+        }
+    });
+});
+</script>
 @endsection

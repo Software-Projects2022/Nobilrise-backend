@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // ========================== Booking Modal ==========================
 
 // فتح المودال
-$(".open-modal").click(function (e) {
+$(document).on("click", ".open-modal", function (e) {
 
   e.preventDefault();
 

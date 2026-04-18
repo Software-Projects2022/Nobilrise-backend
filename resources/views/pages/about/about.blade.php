@@ -7,19 +7,15 @@
             <div class="container">
                 <div class="hero-content">
                     <div class="breadcrumb">
-                        <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+                        <a href="{{ route('home') }}"><i class="fas fa-home"></i> الرئيسية</a>
                         <i class="fas fa-chevron-left"></i>
                         <span>من نحن</span>
                     </div>
                     <h1 class="page-title">
-                        نساعدك على تحقيق <span class="highlight">التوازن النفسي</span>
+                        {{ $about?->title ?? 'نساعدك على تحقيق' }} <span class="highlight">{{ $about?->title_ar ?? 'التوازن النفسي' }}</span>
                     </h1>
                     <p class="page-description">
-                        منصة الصعود النبيل هي منصة متخصصة في تقديم الاستشارات النفسية والجلسات العلاجية بأعلى معايير
-                        الجودة
-                        والاحترافية. نؤمن بأن الصحة النفسية حق للجميع ونسعى لتقديم الدعم النفسي المتخصص لكل من يبحث عن
-                        حياة
-                        أفضل.
+                        {{ $about?->description ?? 'منصة الصعود النبيل هي منصة متخصصة في تقديم الاستشارات النفسية والجلسات العلاجية.' }}
                     </p>
                 </div>
             </div>
@@ -39,12 +35,11 @@
                                 <span>من نحن</span>
                             </div>
                             <h2 class="section-title">
-                                نساعدك على تحقيق
-                                <span class="highlight">التوازن النفسي</span>
+                                {{ $about?->title ?? 'نساعدك على تحقيق' }}
+                                <span class="highlight">{{ $about?->title_ar ?? 'التوازن النفسي' }}</span>
                             </h2>
                             <p class="section-description">
-                                منصة الصعود النبيل هي منصة متخصصة في تقديم الاستشارات النفسية والجلسات العلاجية بأعلى
-                                معايير الجودة والاحترافية. نؤمن بأن الصحة النفسية حق للجميع.
+                                {{ $about?->description ?? 'منصة الصعود النبيل هي منصة متخصصة في تقديم الاستشارات النفسية.' }}
                             </p>
                             <div class="about-features">
                                 <div class="feature-row">
@@ -88,7 +83,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
                         <div class="about-img-wrap">
-                            <img src="./assets/img/main_hero.jpg" alt="من نحن" class="about-side-img">
+                            <img src="{{ $about?->image ? Storage::url($about->image) : asset('assets/img/main_hero.jpg') }}" alt="من نحن" class="about-side-img">
                             <div class="about-img-badge">
                                 <i class="fas fa-award"></i>
                                 <span>+5 سنوات خبرة</span>
@@ -102,14 +97,14 @@
                         <div class="stats-card">
                             <div class="stats-grid">
                                 <div class="stat-box">
-                                    <div class="stat-icon"><img src="./assets/img/User.png" alt=""></div>
+                                    <div class="stat-icon"><img src="{{ asset('assets/img/User.png') }}" alt=""></div>
                                     <div class="stat-content">
                                         <h3 class="stat-number"><span class="counter" data-target="5000">0</span>+</h3>
                                         <p class="stat-label">عميل سعيد</p>
                                     </div>
                                 </div>
                                 <div class="stat-box">
-                                    <div class="stat-icon"><img src="./assets/img/successful.png" alt=""></div>
+                                    <div class="stat-icon"><img src="{{ asset('assets/img/successful.png') }}" alt=""></div>
                                     <div class="stat-content">
                                         <h3 class="stat-number"><span class="counter" data-target="15000">0</span>+</h3>
                                         <p class="stat-label">جلسة ناجحة</p>
@@ -155,58 +150,21 @@
                     <h2 class="sec-title">ما الذي يجعلنا مختلفين</h2>
                 </div>
                 <div class="row g-4">
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="0">
+                    @foreach($values as $index => $value)
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}">
                         <div class="value-card">
-                            <div class="value-icon"><i class="fas fa-shield-halved"></i></div>
-                            <div class="value-title">الأمان والسرية التامة</div>
-                            <div class="value-desc">كل ما تشاركه معنا يبقى بيننا. نحمي خصوصيتك بأعلى معايير السرية
-                                والاحترام
-                                المهني.</div>
+                            <div class="value-icon">
+                                @if($value->image)
+                                    <img src="{{ Storage::url($value->image) }}" alt="{{ $value->title }}" style="width:40px">
+                                @else
+                                    <i class="fas fa-star"></i>
+                                @endif
+                            </div>
+                            <div class="value-title">{{ $value->title }}</div>
+                            <div class="value-desc">{{ $value->description }}</div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="value-card">
-                            <div class="value-icon"><i class="fas fa-heart"></i></div>
-                            <div class="value-title">التعاطف بلا حكم</div>
-                            <div class="value-desc">نستقبلك كما أنت، بقصتك كاملة، بلا حكم مسبق ولا توقعات. أنت آمن هنا
-                                تماماً.</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="value-card">
-                            <div class="value-icon"><i class="fas fa-microscope"></i></div>
-                            <div class="value-title">الاحترافية العلمية</div>
-                            <div class="value-desc">جميع متخصصينا حاصلون على أعلى المؤهلات، ويواكبون أحدث أساليب العلاج
-                                النفسي المعتمد.</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="0">
-                        <div class="value-card">
-                            <div class="value-icon"><i class="fas fa-earth-africa"></i></div>
-                            <div class="value-title">الشمولية والتنوع</div>
-                            <div class="value-desc">نؤمن أن الصحة النفسية حق للجميع بغض النظر عن الخلفية أو الثقافة أو
-                                الوضع
-                                الاجتماعي.</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="value-card">
-                            <div class="value-icon"><i class="fas fa-leaf"></i></div>
-                            <div class="value-title">النمو المستدام</div>
-                            <div class="value-desc">لا نبحث عن حلول مؤقتة، بل نبني معك أدوات للحياة تدوم وتنمو معك على
-                                مدى
-                                السنين.</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="value-card">
-                            <div class="value-icon"><i class="fas fa-hands-holding-circle"></i></div>
-                            <div class="value-title">الشراكة الحقيقية</div>
-                            <div class="value-desc">أنت الخبير في حياتك ونحن الخبراء في أدوات التحول. معاً نرسم خريطة
-                                رحلتك
-                                الخاصة.</div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>
@@ -223,8 +181,8 @@
                         </p>
                     </div>
                     <div class="cta-btns">
-                        <a href="index.html#sessions" class="btn-gold">احجز جلستك المجانية</a>
-                        <a href="index.html#courses" class="btn-ghost">تصفح الدورات</a>
+                        <a href="{{ route('training-courses') }}" class="btn-gold">احجز جلستك المجانية</a>
+                        <a href="{{ route('training-courses') }}" class="btn-ghost">تصفح الدورات</a>
                     </div>
                 </div>
             </div>

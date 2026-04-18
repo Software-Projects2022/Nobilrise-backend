@@ -54,6 +54,19 @@ class TrainingCourseForm
                     ->disk('public')
                     ->directory('training-courses')
                     ->maxSize(1024),
+                TextInput::make('instructor_name')->label('Instructor Name')->nullable(),
+                TextInput::make('instructor_title')->label('Instructor Title')->nullable(),
+                FileUpload::make('instructor_image')
+                    ->label('Instructor Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('instructors')
+                    ->nullable(),
+                Textarea::make('instructor_bio')->label('Instructor Bio')->nullable(),
+                TextInput::make('rating')->label('Rating')->numeric()->nullable(),
+                TextInput::make('reviews_count')->label('Reviews Count')->numeric()->nullable(),
+                TextInput::make('students_count')->label('Students Count')->numeric()->nullable(),
+                TextInput::make('duration_hours')->label('Duration (hours)')->numeric()->nullable(),
                 Select::make('training_course_category_id')
                     ->required()
                     ->options(TrainingCourseCategory::all()->pluck('name', 'id')),

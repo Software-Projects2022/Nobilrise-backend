@@ -9,55 +9,66 @@
         <section class="cd-hero">
             <div class="container">
                 <div class="cd-breadcrumb">
-                    <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+                    <a href="{{ route('home') }}"><i class="fas fa-home"></i> الرئيسية</a>
                     <i class="fas fa-chevron-left"></i>
-                    <a href="training_courses.html">الدورات</a>
+                    <a href="{{ route('training-courses') }}">الدورات</a>
                     <i class="fas fa-chevron-left"></i>
-                    <span id="cd-breadcrumb-title">تفصيل الدورة</span>
+                    <span>{{ $course->name }}</span>
                 </div>
                 <div class="cd-hero-grid">
                     <!-- Info -->
                     <div class="cd-hero-info" data-aos="fade-right">
                         <div class="cd-category-badge">
-                            <i id="cd-category-icon" class="fas fa-lightbulb"></i>
-                            <span id="cd-category-text">تطوير الذات</span>
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>{{ $course->trainingCourseCategory?->name }}</span>
                         </div>
-                        <h1 class="cd-title" id="cd-title">دورة تطوير الذات الشاملة</h1>
-                        <p class="cd-desc" id="cd-desc">رحلة متكاملة لاكتشاف قدراتك وتطوير مهاراتك.</p>
+                        <h1 class="cd-title">{{ $course->name }}</h1>
+                        <p class="cd-desc">{{ $course->short_description }}</p>
                         <div class="cd-meta-row">
-                            <div class="cd-meta-item">
-                                <i class="fas fa-star"></i>
-                                <span id="cd-rating">4.8</span>
-                                <span class="cd-meta-label">(320 تقييم)</span>
-                            </div>
-                            <div class="cd-meta-item"><i class="fas fa-users"></i><span>+1200 طالب</span></div>
-                            <div class="cd-meta-item"><i class="fas fa-clock"></i><span>24 ساعة</span></div>
-                            <div class="cd-meta-item"><i class="fas fa-signal"></i><span>مبتدئ - متقدم</span></div>
+                            @if($course->rating)
+                                <div class="cd-meta-item">
+                                    <i class="fas fa-star"></i>
+                                    <span>{{ $course->rating }}</span>
+                                    <span class="cd-meta-label">({{ $course->reviews_count }} تقييم)</span>
+                                </div>
+                            @endif
+                            @if($course->students_count)
+                                <div class="cd-meta-item"><i class="fas fa-users"></i><span>+{{ $course->students_count }} طالب</span></div>
+                            @endif
+                            @if($course->duration_hours)
+                                <div class="cd-meta-item"><i class="fas fa-clock"></i><span>{{ $course->duration_hours }} ساعة</span></div>
+                            @endif
                         </div>
+                        @if($course->instructor_name)
                         <div class="cd-instructor-row">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="المدرب"
-                                class="cd-instructor-img">
+                            @if($course->instructor_image)
+                                <img src="{{ Storage::url($course->instructor_image) }}" alt="{{ $course->instructor_name }}" class="cd-instructor-img">
+                            @endif
                             <div>
                                 <span class="cd-instructor-label">المدرب</span>
-                                <span class="cd-instructor-name">د. سارة أحمد</span>
+                                <span class="cd-instructor-name">{{ $course->instructor_name }}</span>
                             </div>
                         </div>
+                        @endif
                     </div>
                     <!-- Enroll Card -->
                     <div class="cd-enroll-card" data-aos="fade-left">
-                        <img src="https://images.unsplash.com/photo-1552581234-26160f608093?w=600" alt="الدورة"
-                            class="cd-course-thumb" id="cd-cover-img">
+                        @if($course->image)
+                            <img src="{{ Storage::url($course->image) }}" alt="{{ $course->name }}" class="cd-course-thumb">
+                        @endif
                         <div class="cd-card-body">
                             <div class="cd-price-wrap">
-                                <span class="cd-new-price" id="cd-new-price">1200 ج.م</span>
-                                <span class="cd-old-price" id="cd-old-price">1500 ج.م</span>
-                                <span class="cd-discount-badge" id="cd-discount-badge">خصم 20%</span>
+                                @if($course->discount_price)
+                                    <span class="cd-new-price">{{ $course->discount_price }} ج.م</span>
+                                    <span class="cd-old-price">{{ $course->price }} ج.م</span>
+                                @else
+                                    <span class="cd-new-price">{{ $course->price }} ج.م</span>
+                                @endif
                             </div>
                             <button class="cd-pay-btn" onclick="openPayModal()">
                                 <i class="fas fa-credit-card"></i> ادفع والتحق بالدورة
                             </button>
-                            <p class="cd-guarantee"><i class="fas fa-shield-alt"></i> ضمان استرداد المبلغ خلال 7 أيام
-                            </p>
+                            <p class="cd-guarantee"><i class="fas fa-shield-alt"></i> ضمان استرداد المبلغ خلال 7 أيام</p>
                             <ul class="cd-includes">
                                 <li><i class="fas fa-book-open"></i> محتوى نصي تفاعلي</li>
                                 <li><i class="fas fa-file-alt"></i> مواد تدريبية قابلة للتحميل</li>
@@ -79,65 +90,53 @@
                     <div>
                         <!-- What you learn -->
                         <div class="cd-section-card" data-aos="fade-up">
-                            <h2 class="cd-section-title"><i class="fas fa-check-circle"></i>ماذا ستتعلم</h2>
-                            <div class="cd-learn-grid">
-                                <div class="cd-learn-item"><i class="fas fa-check"></i><span>اكتشاف نقاط قوتك وتطويرها
-                                        بشكل فعّال</span></div>
-                                <div class="cd-learn-item"><i class="fas fa-check"></i><span>بناء عادات يومية تقودك
-                                        للنجاح</span></div>
-                                <div class="cd-learn-item"><i class="fas fa-check"></i><span>إدارة الوقت والأولويات
-                                        باحترافية</span></div>
-                                <div class="cd-learn-item"><i class="fas fa-check"></i><span>تطوير مهارات التواصل
-                                        والتأثير</span></div>
-                                <div class="cd-learn-item"><i class="fas fa-check"></i><span>التغلب على العقبات والخوف
-                                        من الفشل</span></div>
-                                <div class="cd-learn-item"><i class="fas fa-check"></i><span>وضع أهداف واضحة
-                                        وتحقيقها</span></div>
-                                <div class="cd-learn-item"><i class="fas fa-check"></i><span>تعزيز الثقة بالنفس والتقدير
-                                        الذاتي</span></div>
-                                <div class="cd-learn-item"><i class="fas fa-check"></i><span>تحقيق التوازن بين الحياة
-                                        الشخصية والمهنية</span></div>
-                            </div>
-                        </div>
-
-                        <!-- Curriculum -->
-                        <div class="cd-section-card" data-aos="fade-up">
-                            <h2 class="cd-section-title"><i class="fas fa-list"></i>محتوى الدورة</h2>
-                            <p style="font-size:14px;color:#888;margin-bottom:18px">8 أقسام • 42 درس • 24 ساعة إجمالية
-                            </p>
-
-                            <p></p>
+                            <h2 class="cd-section-title"><i class="fas fa-check-circle"></i>وصف الدورة</h2>
+                            <div style="color: #000">{!! $course->description !!}</div>
                         </div>
 
                         <!-- Instructor -->
+                        @if($course->instructor_name)
                         <div class="cd-section-card" data-aos="fade-up">
                             <h2 class="cd-section-title"><i class="fas fa-chalkboard-teacher"></i>المدرب</h2>
                             <div class="cd-instructor-card">
-                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="د. سارة أحمد">
+                                @if($course->instructor_image)
+                                    <img src="{{ Storage::url($course->instructor_image) }}" alt="{{ $course->instructor_name }}">
+                                @endif
                                 <div>
-                                    <h3>د. سارة أحمد</h3>
-                                    <p class="cd-inst-title">خبيرة تطوير الذات والتدريب المهني</p>
+                                    <h3>{{ $course->instructor_name }}</h3>
+                                    <p class="cd-inst-title">{{ $course->instructor_title }}</p>
                                     <div class="cd-inst-stats">
-                                        <span class="cd-inst-stat"><i class="fas fa-star"></i> 4.9 تقييم</span>
-                                        <span class="cd-inst-stat"><i class="fas fa-users"></i> +5000 طالب</span>
-                                        <span class="cd-inst-stat"><i class="fas fa-book"></i> 12 دورة</span>
+                                        @if($course->rating)
+                                            <span class="cd-inst-stat"><i class="fas fa-star"></i> {{ $course->rating }} تقييم</span>
+                                        @endif
+                                        @if($course->students_count)
+                                            <span class="cd-inst-stat"><i class="fas fa-users"></i> +{{ $course->students_count }} طالب</span>
+                                        @endif
                                     </div>
-                                    <p>دكتورة في علم النفس التطبيقي مع خبرة تزيد عن 15 عاماً في مجال التدريب وتطوير
-                                        الذات. ساعدت آلاف الأشخاص على تحقيق أهدافهم.</p>
+                                    <p>{{ $course->instructor_bio }}</p>
                                 </div>
                             </div>
                         </div>
+                        @endif
 
                         <!-- Reviews -->
                         <div class="cd-section-card" data-aos="fade-up">
                             <h2 class="cd-section-title"><i class="fas fa-star"></i>تقييمات الطلاب</h2>
                             <div class="cd-rating-summary">
                                 <div class="cd-rating-big">
-                                    <div class="num">4.8</div>
-                                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                            class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                            class="fas fa-star-half-alt"></i></div>
-                                    <div class="total">320 تقييم</div>
+                                    <div class="num">{{ $course->rating ?? '0' }}</div>
+                                    <div class="stars">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            @if($i <= $course->rating)
+                                                <i class="fas fa-star"></i>
+                                            @elseif($i - 0.5 <= $course->rating)
+                                                <i class="fas fa-star-half-alt"></i>
+                                            @else
+                                                <i class="far fa-star"></i>
+                                            @endif
+                                        @endfor
+                                    </div>
+                                    <div class="total">{{ $course->reviews_count ?? 0 }} تقييم</div>
                                 </div>
                                 <div class="cd-rating-bars">
                                     <div class="cd-rating-bar-row"><span>5 ★</span>
@@ -167,34 +166,31 @@
                                     </div>
                                 </div>
                             </div>
+                            @foreach($course->reviews as $review)
                             <div class="cd-review-card">
                                 <div class="cd-review-top">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+                                    @if($review->reviewer_image)
+                                        <img src="{{ Storage::url($review->reviewer_image) }}" alt="{{ $review->reviewer_name }}">
+                                    @endif
                                     <div>
-                                        <div class="cd-review-name">أحمد محمد</div>
-                                        <div class="cd-review-stars"><i class="fas fa-star"></i><i
-                                                class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                                class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                                        <div class="cd-review-name">{{ $review->reviewer_name }}</div>
+                                        <div class="cd-review-stars">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $review->rating)
+                                                    <i class="fas fa-star"></i>
+                                                @elseif($i - 0.5 <= $review->rating)
+                                                    <i class="fas fa-star-half-alt"></i>
+                                                @else
+                                                    <i class="far fa-star"></i>
+                                                @endif
+                                            @endfor
+                                        </div>
                                     </div>
-                                    <span class="cd-review-date">منذ أسبوعين</span>
+                                    <span class="cd-review-date">{{ $review->review_date }}</span>
                                 </div>
-                                <p class="cd-review-text">دورة رائعة جداً، غيّرت طريقة تفكيري بشكل كامل. المحتوى منظم
-                                    ومفيد والدكتورة سارة أسلوبها ممتاز. أنصح بها بشدة.</p>
+                                <p class="cd-review-text">{{ $review->review }}</p>
                             </div>
-                            <div class="cd-review-card">
-                                <div class="cd-review-top">
-                                    <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="">
-                                    <div>
-                                        <div class="cd-review-name">نورا إبراهيم</div>
-                                        <div class="cd-review-stars"><i class="fas fa-star"></i><i
-                                                class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                                class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
-                                    </div>
-                                    <span class="cd-review-date">منذ شهر</span>
-                                </div>
-                                <p class="cd-review-text">محتوى عملي وقابل للتطبيق فعلاً في الحياة اليومية. استفدت
-                                    كثيراً من قسم إدارة الوقت والعادات.</p>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
 
@@ -202,27 +198,17 @@
                     <div>
                         <div class="cd-sidebar-card" data-aos="fade-up">
                             <h3 class="cd-sidebar-title">دورات مشابهة</h3>
-                            <a href="course-details.html?id=2" class="cd-related-course">
-                                <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=200" alt="">
+                            @foreach($relatedCourses as $related)
+                            <a href="{{ route('course-details', $related->id) }}" class="cd-related-course">
+                                @if($related->image)
+                                    <img src="{{ Storage::url($related->image) }}" alt="{{ $related->name }}">
+                                @endif
                                 <div>
-                                    <div class="cd-related-course-title">فن التواصل الفعّال والإقناع</div>
-                                    <div class="cd-related-course-price">1000 ج.م</div>
+                                    <div class="cd-related-course-title">{{ $related->name }}</div>
+                                    <div class="cd-related-course-price">{{ $related->discount_price ?? $related->price }} ج.م</div>
                                 </div>
                             </a>
-                            <a href="course-details.html?id=3" class="cd-related-course">
-                                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=200" alt="">
-                                <div>
-                                    <div class="cd-related-course-title">إدارة الوقت وتعزيز الإنتاجية</div>
-                                    <div class="cd-related-course-price">750 ج.م</div>
-                                </div>
-                            </a>
-                            <a href="course-details.html?id=5" class="cd-related-course">
-                                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=200" alt="">
-                                <div>
-                                    <div class="cd-related-course-title">الذكاء العاطفي والتحكم بالمشاعر</div>
-                                    <div class="cd-related-course-price">850 ج.م</div>
-                                </div>
-                            </a>
+                            @endforeach
                         </div>
                         <div class="cd-sidebar-card" data-aos="fade-up">
                             <h3 class="cd-sidebar-title">متطلبات الدورة</h3>

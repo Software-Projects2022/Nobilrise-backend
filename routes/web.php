@@ -1,14 +1,20 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Auth\ClientAuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TrainingCourseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/about', fn () => view('pages.about.about'))->name('about');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/contact', fn () => view('pages.contact.contact'))->name('contact');
-Route::get('/training-courses', fn () => view('pages.training-courses.training-courses'))->name('training-courses');
-Route::get('/training-courses/{id}', fn ($id) => view('pages.course-details.course-details', ['id' => $id]))->name('course-details');
+Route::get('/training-courses', [TrainingCourseController::class, 'index'])->name('training-courses');
+Route::get('/training-courses/{id}', [TrainingCourseController::class, 'show'])->name('course-details');
+
+// Booking
+Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 
 // Auth routes
 Route::get('/login', [ClientAuthController::class, 'showLogin'])->name('login')->middleware('guest:client');

@@ -14,7 +14,7 @@
                         <p class="hero-subtitle">
                             {{ $settings?->home_banner_description ?? 'عزّز صحتك النفسية من خلال جلسات استشارية متخصصة مع معالجين نفسيين محترفين.' }}
                         </p>
-                        <a href="{{ $settings?->home_banner_link ?? '#sessions' }}" class="hero-cta">احجز جلستك الاستشارية الآن</a>
+                        <a href="{{ route('training-courses') }}#sessions" class="hero-cta">احجز جلستك الاستشارية الآن</a>
                         <div class="hero-features">
                             <div class="feature-item">
                                 <div class="feature-icon"><i class="fas fa-user-md"></i></div>

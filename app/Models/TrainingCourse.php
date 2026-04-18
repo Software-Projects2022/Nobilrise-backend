@@ -17,10 +17,23 @@ class TrainingCourse extends Model
         'training_course_category_id',
         'price',
         'discount_price',
+        'instructor_name',
+        'instructor_title',
+        'instructor_image',
+        'instructor_bio',
+        'rating',
+        'reviews_count',
+        'students_count',
+        'duration_hours',
     ];
     //
     public function trainingCourseCategory()
     {
         return $this->belongsTo(TrainingCourseCategory::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(CourseReview::class);
     }
 }
