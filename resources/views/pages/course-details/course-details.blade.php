@@ -13,7 +13,7 @@
                     <i class="fas fa-chevron-left"></i>
                     <a href="{{ route('training-courses') }}">الدورات</a>
                     <i class="fas fa-chevron-left"></i>
-                    <span>{{ $course->name }}</span>
+                    <span>{{ $course->trans('name') }}</span>
                 </div>
                 <div class="cd-hero-grid">
                     <!-- Info -->
@@ -22,8 +22,8 @@
                             <i class="fas fa-graduation-cap"></i>
                             <span>{{ $course->trainingCourseCategory?->name }}</span>
                         </div>
-                        <h1 class="cd-title">{{ $course->name }}</h1>
-                        <p class="cd-desc">{{ $course->short_description }}</p>
+                        <h1 class="cd-title">{{ $course->trans('name') }}</h1>
+                        <p class="cd-desc">{{ $course->trans('short_description') }}</p>
                         <div class="cd-meta-row">
                             @if($course->rating)
                                 <div class="cd-meta-item">
@@ -32,8 +32,8 @@
                                     <span class="cd-meta-label">({{ $course->reviews_count }} تقييم)</span>
                                 </div>
                             @endif
-                            @if($course->students_count)
-                                <div class="cd-meta-item"><i class="fas fa-users"></i><span>+{{ $course->students_count }} طالب</span></div>
+                            @if($course->enrolled_students_count)
+                                <div class="cd-meta-item"><i class="fas fa-users"></i><span>+{{ $course->enrolled_students_count }} طالب</span></div>
                             @endif
                             @if($course->duration_hours)
                                 <div class="cd-meta-item"><i class="fas fa-clock"></i><span>{{ $course->duration_hours }} ساعة</span></div>
@@ -54,7 +54,7 @@
                     <!-- Enroll Card -->
                     <div class="cd-enroll-card" data-aos="fade-left">
                         @if($course->image)
-                            <img src="{{ Storage::url($course->image) }}" alt="{{ $course->name }}" class="cd-course-thumb">
+                            <img src="{{ Storage::url($course->image) }}" alt="{{ $course->trans('name') }}" class="cd-course-thumb">
                         @endif
                         <div class="cd-card-body">
                             <div class="cd-price-wrap">
@@ -109,8 +109,8 @@
                                         @if($course->rating)
                                             <span class="cd-inst-stat"><i class="fas fa-star"></i> {{ $course->rating }} تقييم</span>
                                         @endif
-                                        @if($course->students_count)
-                                            <span class="cd-inst-stat"><i class="fas fa-users"></i> +{{ $course->students_count }} طالب</span>
+                                        @if($course->enrolled_students_count)
+                                            <span class="cd-inst-stat"><i class="fas fa-users"></i> +{{ $course->enrolled_students_count }} طالب</span>
                                         @endif
                                     </div>
                                     <p>{{ $course->instructor_bio }}</p>
@@ -263,7 +263,7 @@
 
             <div class="pay-f-group">
                 <label class="pay-f-label"><i class="fas fa-user"></i> الاسم الكامل</label>
-                <input type="text" class="pay-f-input" placeholder="محمد أحمد">
+                <input type="text" class="pay-f-input" placeholder="محمد أحمد" id="card-name-input">
             </div>
             <div class="pay-f-group">
                 <label class="pay-f-label"><i class="fas fa-credit-card"></i> رقم البطاقة</label>
@@ -273,11 +273,11 @@
             <div class="pay-f-row">
                 <div class="pay-f-group">
                     <label class="pay-f-label"><i class="fas fa-calendar"></i> تاريخ الانتهاء</label>
-                    <input type="text" class="pay-f-input" placeholder="MM / YY" dir="ltr" maxlength="7">
+                    <input type="text" class="pay-f-input" placeholder="MM / YY" dir="ltr" maxlength="7" id="card-expiry-input">
                 </div>
                 <div class="pay-f-group">
                     <label class="pay-f-label"><i class="fas fa-lock"></i> CVV</label>
-                    <input type="text" class="pay-f-input" placeholder="000" dir="ltr" maxlength="3">
+                    <input type="text" class="pay-f-input" placeholder="000" dir="ltr" maxlength="3" id="card-cvv-input">
                 </div>
             </div>
 
@@ -297,8 +297,12 @@
 @section('scripts')
 <script>
 function openPayModal() {
-    document.getElementById('payModal').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    @auth('client')
+        document.getElementById('payModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    @else
+        window.location.href = '{{ route('login') }}';
+    @endauth
 }
 
 function closePayModal() {
@@ -312,8 +316,50 @@ function selectMethod(el) {
 }
 
 function submitPayment() {
-    alert('تم الدفع بنجاح!');
-    closePayModal();
+    const cardName   = document.getElementById('card-name-input').value.trim();
+    const cardNumber = document.getElementById('card-number-input').value.replace(/\s/g, '');
+    const cardExpiry = document.getElementById('card-expiry-input').value.trim();
+    const cardCvv    = document.getElementById('card-cvv-input').value.trim();
+
+    if (! cardName) {
+        return alert('يرجى إدخال الاسم الكامل.');
+    }
+    if (cardNumber.length < 16) {
+        return alert('يرجى إدخال رقم بطاقة صحيح (16 رقم).');
+    }
+    if (! /^\d{2}\s?\/\s?\d{2}$/.test(cardExpiry)) {
+        return alert('يرجى إدخال تاريخ انتهاء صحيح (MM / YY).');
+    }
+    if (cardCvv.length < 3) {
+        return alert('يرجى إدخال رمز CVV الصحيح.');
+    }
+
+    const btn = document.querySelector('.pay-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+
+    fetch('{{ route('courses.enroll', $course->id) }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+    })
+    .then(res => res.json())
+    .then(data => {
+        closePayModal();
+        if (data.redirect_url) {
+            window.location.href = data.redirect_url;
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-lock"></i> ادفع الآن';
+        alert('حدث خطأ، يرجى المحاولة مرة أخرى.');
+    });
 }
 
 document.getElementById('payModal').addEventListener('click', function(e) {

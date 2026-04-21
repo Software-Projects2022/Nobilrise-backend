@@ -11,7 +11,7 @@ class ManageSetting extends EditRecord
 {
     protected static string $resource = SettingResource::class;
 
-    public function mount(int | string $record = ''): void
+    public function mount(int|string $record = ''): void
     {
         $this->record = Setting::query()->first() ?? new Setting;
 
@@ -35,6 +35,8 @@ class ManageSetting extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+        cache()->forget('site_settings');
+
         if (! $record->exists) {
             $record->fill($data);
             $record->save();

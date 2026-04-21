@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
             'name' => ['required', 'string'],
@@ -20,9 +21,11 @@ class BookingController extends Controller
             'psychological_session_id' => ['nullable', 'integer'],
         ]);
 
-        Booking::create($validated);
+        Booking::create([
+            ...$validated,
+            'client_id' => auth('client')->id(),
+        ]);
 
         return response()->json(['message' => 'تم تأكيد الحجز بنجاح!']);
     }
 }
-

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('description_ar')->nullable();
             $table->foreignId('psychological_session_category_id')->constrained('psychological_session_categories')->onDelete('cascade');
             $table->string('image')->nullable();
-     $table->decimal('price', 10, 2)->nullable()->default(0);
+            $table->decimal('price', 10, 2)->nullable()->default(0);
             $table->decimal('discount_price', 10, 2)->nullable()->default(0);
             $table->integer('duration')->nullable();
             $table->integer('people_count')->nullable();

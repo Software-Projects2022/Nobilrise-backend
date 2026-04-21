@@ -8,141 +8,286 @@
 @endsection
 @section('content')
   <main>
-        <!-- ========================== Page Hero ========================== -->
+     <!-- ========================== Page Hero ========================== -->
         <section class="page-hero training_coursesh">
-            <div class="container">
-                <div class="hero-content">
-                    <div class="breadcrumb">
-                        <a href="{{ route('home') }}"><i class="fas fa-home"></i> الرئيسية</a>
-                        <i class="fas fa-chevron-left"></i>
-                        <span>الدورات والجلسات</span>
-                    </div>
-                    <h1 class="page-title">
-                        اكتشف <span class="highlight">دوراتنا وجلساتنا</span>
-                    </h1>
-                    <p class="page-description">
-                        برامج تدريبية متميزة وجلسات نفسية احترافية مصممة لتطوير مهاراتك وتحقيق صحتك النفسية
-                    </p>
-                    <div class="hero-tabs">
-                        <a href="#courses" class="hero-tab active" id="tab-courses">
-                            <i class="fas fa-graduation-cap"></i> الدورات التدريبية
-                        </a>
-                        <a href="#sessions" class="hero-tab" id="tab-sessions">
-                            <i class="fas fa-brain"></i> الجلسات النفسية
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- ========================== COURSES SECTION ========================== -->
-        <section class="courses-section" id="courses">
             <div class="container">
+
+                <div class="hero-content">
+
+                    <!-- Breadcrumb -->
+                    <div class="breadcrumb">
+
+                        <a href="{{ route('home') }}">
+                            <i class="fas fa-home"></i>
+                            {{ __('common.home') }}
+                        </a>
+
+                        <i class="fas {{ app()->getLocale() == 'ar' ? 'fa-chevron-left' : 'fa-chevron-right' }}"></i>
+
+                        <span>{{ __('nav.courses') }}</span>
+
+                    </div>
+
+                    <!-- Title -->
+                    <h1 class="page-title">
+                        {{ __('courses.hero_title') }}
+                        <span class="highlight">
+                            {{ __('courses.hero_highlight') }}
+                        </span>
+                    </h1>
+
+                    <!-- Description -->
+                    <p class="page-description">
+                        {{ __('courses.hero_desc') }}
+                    </p>
+
+                    <!-- Tabs -->
+                    <div class="hero-tabs">
+
+                        <a href="#courses" class="hero-tab active" id="tab-courses">
+                            <i class="fas fa-graduation-cap"></i>
+                            {{ __('courses.tab_courses') }}
+                        </a>
+
+                        <a href="#sessions" class="hero-tab" id="tab-sessions">
+                            <i class="fas fa-brain"></i>
+                            {{ __('sessions.tab_sessions') }}
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+       <!-- ========================== COURSES SECTION ========================== -->
+        <section class="courses-section" id="courses">
+
+            <div class="container">
+
                 <div class="section-header" data-aos="fade-up">
+
                     <div class="section-badge">
                         <i class="fas fa-graduation-cap"></i>
-                        <span>الدورات التدريبية</span>
+                        <span>{{ __('courses.badge') }}</span>
                     </div>
+
                     <h2 class="section-title">
-                        استثمر في نفسك من خلال <span class="highlight">دوراتنا المتميزة</span>
+                        {{ __('courses.title') }}
+                        <span class="highlight">{{ __('courses.title_highlight') }}</span>
                     </h2>
+
                 </div>
+
+                <!-- Filters -->
                 <div class="course-filters" data-aos="fade-up" data-aos-delay="100">
-                    <button class="filter-btn active" data-filter="all">الكل</button>
+
+                    <button class="filter-btn active" data-filter="all">
+                        {{ __('common.all') }}
+                    </button>
+
                     @foreach($categories as $category)
-                        <button class="filter-btn" data-filter="{{ $category->name }}">{{ $category->name }}</button>
+                        <button class="filter-btn" data-filter="{{ $category->name }}">
+                            {{ $category->name }}
+                        </button>
                     @endforeach
+
                 </div>
+
+                <!-- Courses -->
                 <div class="courses-grid">
+
                     @foreach($courses as $index => $course)
-                    <div class="course-card" data-aos="fade-up" data-aos-delay="{{ ($index % 3 + 1) * 100 }}" data-category="{{ $course->trainingCourseCategory?->name }}">
+
+                    <div class="course-card"
+                        data-aos="fade-up"
+                        data-aos-delay="{{ ($index % 3 + 1) * 100 }}"
+                        data-category="{{ $course->trainingCourseCategory?->name }}">
+
                         <div class="course-image">
+
                             @if($course->image)
-                                <img src="{{ Storage::url($course->image) }}" alt="{{ $course->name }}">
+                                <img src="{{ Storage::url($course->image) }}"
+                                    alt="{{ $course->trans('name') }}">
                             @endif
+
                             <div class="course-badge">
                                 <div class="course-category">
                                     <i class="fas fa-graduation-cap"></i>
                                     <span>{{ $course->trainingCourseCategory?->name }}</span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="course-content">
-                            <h3 class="course-title">{{ $course->name }}</h3>
-                            <p class="course-desc">{{ $course->short_description }}</p>
-                            <div class="course-footer">
-                                <div class="course-price">
-                                    @if($course->discount_price)
-                                        <span class="old-price">{{ $course->price }} ج.م</span>
-                                        <span class="new-price">{{ $course->discount_price }} ج.م</span>
-                                    @else
-                                        <span class="new-price">{{ $course->price }} ج.م</span>
-                                    @endif
-                                </div>
-                                <a href="{{ route('course-details', $course->id) }}" class="course-btn">التفصيل<i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-        </section>
 
+                        </div>
+
+                        <div class="course-content">
+
+                            <h3 class="course-title">
+                                {{ $course->trans('name') }}
+                            </h3>
+
+                            <p class="course-desc">
+                                {{ $course->trans('short_description') }}
+                            </p>
+
+                            <div class="course-footer">
+
+                                <div class="course-price">
+
+                                    @if($course->discount_price)
+                                        <span class="old-price">
+                                            {{ $course->price }} {{ __('common.currency') }}
+                                        </span>
+                                        <span class="new-price">
+                                            {{ $course->discount_price }} {{ __('common.currency') }}
+                                        </span>
+                                    @else
+                                        <span class="new-price">
+                                            {{ $course->price }} {{ __('common.currency') }}
+                                        </span>
+                                    @endif
+
+                                </div>
+
+                                <a href="{{ route('course-details', $course->id) }}"
+                                class="course-btn">
+                                    {{ __('common.details') }}
+                                    <i class="fas {{ app()->getLocale() == 'ar' ? 'fa-arrow-left' : 'fa-arrow-right' }}"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    @endforeach
+
+                </div>
+
+            </div>
+
+        </section>
         <!-- ========================== SESSIONS SECTION ========================== -->
         <section class="sessions-page-section" id="sessions">
+
             <div class="container">
+
                 <div class="section-header" data-aos="fade-up">
-                    <div class="section-badge" style="background: rgba(197,167,115,0.1); border: 1px solid rgba(197,167,115,0.3); color: #c5a773;">
+
+                    <div class="section-badge"
+                        style="background: rgba(197,167,115,0.1); border: 1px solid rgba(197,167,115,0.3); color: #c5a773;">
+
                         <i class="fas fa-brain"></i>
-                        <span>الجلسات النفسية</span>
+                        <span>{{ __('sessions.badge') }}</span>
+
                     </div>
+
                     <h2 class="section-title">
-                        رحلتك نحو <span class="highlight">الصحة النفسية</span>
+                        {{ __('sessions.title') }}
+                        <span class="highlight">{{ __('sessions.title_highlight') }}</span>
                     </h2>
+
                     <p class="section-description" style="color: rgba(0, 0, 0, 0.7);">
-                        جلسات نفسية احترافية مع معالجين معتمدين لمساعدتك على تحقيق التوازن والسعادة
+                        {{ __('sessions.desc') }}
                     </p>
+
                 </div>
+
                 <div class="sessions-grid">
+
                     @foreach($sessions as $index => $session)
-                    <div class="session-card" data-aos="fade-up" data-aos-delay="{{ ($index % 3 + 1) * 100 }}">
+
+                    <div class="session-card"
+                        data-aos="fade-up"
+                        data-aos-delay="{{ ($index % 3 + 1) * 100 }}">
+
                         <div class="session-image">
+
                             @if($session->image)
-                                <img src="{{ Storage::url($session->image) }}" alt="{{ $session->name }}">
+                                <img src="{{ Storage::url($session->image) }}"
+                                    alt="{{ $session->trans('name') }}">
                             @endif
+
                             <div class="session-type-badge">
-                                <i class="fas fa-brain"></i> {{ $session->psychologicalSessionCategory?->name }}
+                                <i class="fas fa-brain"></i>
+                                {{ $session->psychologicalSessionCategory?->name }}
                             </div>
+
                         </div>
+
                         <div class="session-content">
-                            <h3 class="session-title">{{ $session->name }}</h3>
-                            <p class="session-desc">{{ $session->short_description }}</p>
+
+                            <h3 class="session-title">
+                                {{ $session->trans('name') }}
+                            </h3>
+
+                            <p class="session-desc">
+                                {{ $session->trans('short_description') }}
+                            </p>
+
                             <div class="session-meta-row">
+
                                 @if($session->duration)
-                                    <span><i class="fas fa-clock"></i> {{ $session->duration }} دقيقة</span>
+                                    <span>
+                                        <i class="fas fa-clock"></i>
+                                        {{ $session->duration }} {{ __('sessions.minutes') }}
+                                    </span>
                                 @endif
+
                                 @if($session->people_count)
-                                    <span><i class="fas fa-users"></i> {{ $session->people_count }} أشخاص</span>
+                                    <span>
+                                        <i class="fas fa-users"></i>
+                                        {{ $session->people_count }} {{ __('sessions.people') }}
+                                    </span>
                                 @endif
+
                             </div>
+
                             <div class="session-footer">
+
                                 <div class="session-price">
+
                                     @if($session->discount_price)
-                                        <span class="s-old-price">{{ $session->price }} ج.م</span>
-                                        <span class="s-new-price">{{ $session->discount_price }} ج.م</span>
+                                        <span class="s-old-price">
+                                            {{ $session->price }} {{ __('common.currency') }}
+                                        </span>
+                                        <span class="s-new-price">
+                                            {{ $session->discount_price }} {{ __('common.currency') }}
+                                        </span>
                                     @else
-                                        <span class="s-new-price">{{ $session->price }} ج.م</span>
+                                        <span class="s-new-price">
+                                            {{ $session->price }} {{ __('common.currency') }}
+                                        </span>
                                     @endif
+
                                 </div>
-                                <a href="#" class="session-book-btn open-modal" data-session="{{ $session->name }}">احجز الآن <i class="fas fa-arrow-left"></i></a>
+
+                                <a href="#"
+                                class="session-book-btn open-modal"
+                                data-session="{{ $session->trans('name') }}">
+
+                                    {{ __('common.book_now') }}
+                                    <i class="fas {{ app()->getLocale() == 'ar' ? 'fa-arrow-left' : 'fa-arrow-right' }}"></i>
+
+                                </a>
+
                             </div>
+
                         </div>
+
                     </div>
+
                     @endforeach
+
                 </div>
+
             </div>
+
         </section>
-    </main>
+            </main>
 
     <!-- ========================== Booking Modal ========================== -->
     <div class="modal-overlay" id="bookingModal">

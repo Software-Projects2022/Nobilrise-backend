@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class TrainingCourse extends Model
 {
+    use HasTranslations;
+
     protected $fillable = [
         'name',
         'short_description',
@@ -26,6 +30,7 @@ class TrainingCourse extends Model
         'students_count',
         'duration_hours',
     ];
+
     //
     public function trainingCourseCategory()
     {
@@ -35,5 +40,17 @@ class TrainingCourse extends Model
     public function reviews()
     {
         return $this->hasMany(CourseReview::class);
+    }
+
+    public function clients(): BelongsToMany
+    {
+        return $this->belongsToMany(Client::class, 'client_training_course')
+            ->withPivot('amount_paid', 'status')
+            ->withTimestamps();
+    }
+
+    public function getEnrolledStudentsCountAttribute(): int
+    {
+        return $this->clients()->count();
     }
 }

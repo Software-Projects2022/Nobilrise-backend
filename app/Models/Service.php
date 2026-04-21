@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
-    //
+    use HasTranslations;
+
     protected $fillable = [
         'name',
         'short_description',
