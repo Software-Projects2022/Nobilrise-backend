@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\Values\Schemas;
 
-use Filament\Schemas\Schema;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Schema;
 
 class ValueForm
 {
@@ -27,6 +27,9 @@ class ValueForm
                     ->required(),
                 FileUpload::make('image')
                     ->label('Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('values')
                     ->required(),
                 //
             ]);

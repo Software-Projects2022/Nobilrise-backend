@@ -358,7 +358,7 @@ body {
 /* Right Content */
 .hero-banner .hero-content {
   flex: 1;
-  text-align: right;
+  text-align: start;
 }
 
 .hero-banner .hero-title {
@@ -2816,7 +2816,7 @@ body {
     content: "";
     position: absolute;
     bottom: 0px;
-    right: 0px; 
+    right: 0px;
     width: 50px;
     height: 3px;
     background: linear-gradient(90deg, rgb(197, 167, 115), rgb(212, 175, 55));

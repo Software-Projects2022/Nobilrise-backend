@@ -6,317 +6,213 @@
         <!-- ========================== Hero ========================== -->
         <section class="hero-banner" id="home">
 
-    <div class="container">
+            <div class="container">
 
-        <div class="hero-row">
+                <div class="hero-row">
 
-            <!-- Content -->
-            <div class="hero-content">
+                    <!-- Content -->
+                    <div class="hero-content">
 
-                <h1 class="hero-title">
-                    {{ $settings?->home_banner_title ?? __('hero.default_title') }}
-                    <span class="highlight">
-                        {{ $settings?->home_banner_highlight ?? __('hero.default_highlight') }}
-                    </span>
-                </h1>
+                        <h1 class="hero-title">
+                            {{ $settings?->home_banner_title ?? __('hero.default_title') }}
+                            <span class="highlight">
+                                {{ $settings?->home_banner_highlight ?? __('hero.default_highlight') }}
+                            </span>
+                        </h1>
 
-                <p class="hero-subtitle">
-                    {{ $settings?->home_banner_description ?? __('hero.default_desc') }}
-                </p>
+                        <p class="hero-subtitle">
+                            {{ $settings?->home_banner_description ?? __('hero.default_desc') }}
+                        </p>
 
-                <a href="{{ route('training-courses') }}#sessions" class="hero-cta">
-                    {{ __('hero.cta') }}
-                </a>
+                        <a href="{{ route('training-courses') }}#sessions" class="hero-cta">
+                            {{ __('hero.cta') }}
+                        </a>
 
-                <!-- Features -->
-                <div class="hero-features">
+                        <!-- Features -->
+                        <div class="hero-features">
 
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-user-md"></i>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                                <div class="feature-text">
+                                    {{ __('hero.professionals') }}
+                                </div>
+                                <div class="feature-subtext">
+                                    {{ __('hero.professionals_sub') }}
+                                </div>
+                            </div>
+
+                            <div class="feature-item">
+                                <div class="feature-icon icon-brain">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="feature-text">
+                                    {{ __('hero.sessions') }}
+                                </div>
+                                <div class="feature-subtext">
+                                    {{ __('hero.sessions_sub') }}
+                                </div>
+                            </div>
+
+                            <div class="feature-item">
+                                <div class="feature-icon icon-lock">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="feature-text">
+                                    {{ __('hero.privacy') }}
+                                </div>
+                                <div class="feature-subtext">
+                                    {{ __('hero.privacy_sub') }}
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="feature-text">
-                            {{ __('hero.professionals') }}
-                        </div>
-                        <div class="feature-subtext">
-                            {{ __('hero.professionals_sub') }}
-                        </div>
+
                     </div>
 
-                    <div class="feature-item">
-                        <div class="feature-icon icon-brain">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <div class="feature-text">
-                            {{ __('hero.sessions') }}
-                        </div>
-                        <div class="feature-subtext">
-                            {{ __('hero.sessions_sub') }}
-                        </div>
-                    </div>
+                    <!-- Image -->
+                    <div class="hero-visual">
 
-                    <div class="feature-item">
-                        <div class="feature-icon icon-lock">
-                            <i class="fas fa-shield-alt"></i>
+                        <div class="deco-element deco-circle"></div>
+                        <div class="deco-element deco-dots"></div>
+
+                        <div class="hero-image-wrapper">
+
+                            <div class="circular-images">
+
+                                <div class="circle-image image-1">
+                                    <img src="{{ $settings?->home_banner_image1 ? Storage::url($settings->home_banner_image1) : asset('assets/img/hero.jpg') }}"
+                                        alt="{{ __('hero.image_1') }}"
+                                        fetchpriority="high"
+                                        loading="eager" />
+                                </div>
+
+                                <div class="circle-image image-2">
+                                    <img src="{{ $settings?->home_banner_image2 ? Storage::url($settings->home_banner_image2) : asset('assets/img/main_hero.jpg') }}"
+                                        alt="{{ __('hero.image_2') }}" />
+                                </div>
+
+                            </div>
+
                         </div>
-                        <div class="feature-text">
-                            {{ __('hero.privacy') }}
-                        </div>
-                        <div class="feature-subtext">
-                            {{ __('hero.privacy_sub') }}
-                        </div>
+
                     </div>
 
                 </div>
 
             </div>
-
-            <!-- Image -->
-            <div class="hero-visual">
-
-                <div class="deco-element deco-circle"></div>
-                <div class="deco-element deco-dots"></div>
-
-                <div class="hero-image-wrapper">
-
-                    <div class="circular-images">
-
-                        <div class="circle-image image-1">
-                            <img src="{{ $settings?->home_banner_image1 ? Storage::url($settings->home_banner_image1) : asset('assets/img/hero.jpg') }}"
-                                 alt="{{ __('hero.image_1') }}"
-                                 fetchpriority="high"
-                                 loading="eager" />
-                        </div>
-
-                        <div class="circle-image image-2">
-                            <img src="{{ $settings?->home_banner_image2 ? Storage::url($settings->home_banner_image2) : asset('assets/img/main_hero.jpg') }}"
-                                 alt="{{ __('hero.image_2') }}" />
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
 
         </section>
 
         <!-- ========================== About ========================== -->
-        <section class="about-section" id="about">
+   <section class="about-section" id="about">
+            <div class="container">
+                <div class="row align-items-center mb-5">
 
-    <div class="container">
+                    <div class="col-lg-6 col-md-12 {{ app()->getLocale() === 'en' ? 'order-lg-2' : '' }}" data-aos="fade-right" data-aos-duration="1000">
+                        <div class="about-content">
 
-        <!-- Row 1: Text + Image -->
-        <div class="row align-items-center mb-5">
+                            <div class="section-badge">
+                                <i class="fas fa-heart"></i>
+                                <span>{{ __('about.badge') }}</span>
+                            </div>
 
-            <!-- Text Side -->
-            <div class="col-lg-6 col-md-12" data-aos="fade-right" data-aos-duration="1000">
+                            <h2 class="section-title">
+                                {{ $about?->trans('title') ?? __('about.default_title') }}
+                            </h2>
 
-                <div class="about-content">
+                            <p class="section-description">
+                                {{ $about?->trans('description') ?? __('about.default_desc') }}
+                            </p>
 
-                    <div class="section-badge">
-                        <i class="fas fa-heart"></i>
-                        <span>{{ __('about.badge') }}</span>
+                            <div class="about-features">
+
+                                <div class="feature-row">
+
+                                    <div class="feature-box">
+
+                                        <div class="feature-icon-box">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+
+                                        <div class="feature-info">
+                                            <h4>{{ __('about.feature_1_title') }}</h4>
+                                            <p>{{ __('about.feature_1_desc') }}</p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="feature-box">
+
+                                        <div class="feature-icon-box">
+                                            <i class="fas fa-user-shield"></i>
+                                        </div>
+
+                                        <div class="feature-info">
+                                            <h4>{{ __('about.feature_2_title') }}</h4>
+                                            <p>{{ __('about.feature_2_desc') }}</p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="feature-row">
+
+                                    <div class="feature-box">
+
+                                        <div class="feature-icon-box">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+
+                                        <div class="feature-info">
+                                            <h4>{{ __('about.feature_3_title') }}</h4>
+                                            <p>{{ __('about.feature_3_desc') }}</p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="feature-box">
+
+                                        <div class="feature-icon-box">
+                                            <i class="fas fa-star"></i>
+                                        </div>
+
+                                        <div class="feature-info">
+                                            <h4>{{ __('about.feature_4_title') }}</h4>
+                                            <p>{{ __('about.feature_4_desc') }}</p>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <a href="#sessions" class="btn-about">
+                                <span>{{ __('about.cta') }}</span>
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+
+                        </div>
+
                     </div>
 
-                    <h2 class="section-title">
-                        {{ $about?->title ?? __('about.default_title') }}
-                        <span class="highlight">
-                            {{ $about?->title_ar ?? __('about.default_highlight') }}
-                        </span>
-                    </h2>
-
-                    <p class="section-description">
-                        {{ $about?->description ?? __('about.default_desc') }}
-                    </p>
-
-                    <div class="about-features">
-
-                        <div class="feature-row">
-
-                            <div class="feature-box">
-
-                                <div class="feature-icon-box">
-                                    <i class="fas fa-check-circle"></i>
-                                </div>
-
-                                <div class="feature-info">
-                                    <h4>{{ __('about.feature_1_title') }}</h4>
-                                    <p>{{ __('about.feature_1_desc') }}</p>
-                                </div>
-
-                            </div>
-
-                            <div class="feature-box">
-
-                                <div class="feature-icon-box">
-                                    <i class="fas fa-user-shield"></i>
-                                </div>
-
-                                <div class="feature-info">
-                                    <h4>{{ __('about.feature_2_title') }}</h4>
-                                    <p>{{ __('about.feature_2_desc') }}</p>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="feature-row">
-
-                            <div class="feature-box">
-
-                                <div class="feature-icon-box">
-                                    <i class="fas fa-clock"></i>
-                                </div>
-
-                                <div class="feature-info">
-                                    <h4>{{ __('about.feature_3_title') }}</h4>
-                                    <p>{{ __('about.feature_3_desc') }}</p>
-                                </div>
-
-                            </div>
-
-                            <div class="feature-box">
-
-                                <div class="feature-icon-box">
-                                    <i class="fas fa-star"></i>
-                                </div>
-
-                                <div class="feature-info">
-                                    <h4>{{ __('about.feature_4_title') }}</h4>
-                                    <p>{{ __('about.feature_4_desc') }}</p>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <a href="#sessions" class="btn-about">
-                        <span>{{ __('about.cta') }}</span>
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
-
-                </div>
-
-            </div>
-
-            <!-- Image Side -->
-            <div class="col-lg-6 col-md-12"
-                 data-aos="fade-left"
-                 data-aos-duration="1000"
-                 data-aos-delay="200">
-
-                <div class="about-img-wrap">
-
-                    <img src="{{ $about?->image ? Storage::url($about->image) : asset('assets/img/main_hero.jpg') }}"
-                         alt="{{ __('about.title') }}"
-                         class="about-side-img" />
-
-                    <div class="about-img-badge">
-                        <i class="fas fa-award"></i>
-                        <span>{{ __('about.experience') }}</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Row 2: Stats -->
-        <div class="row" data-aos="fade-up" data-aos-duration="1000">
-
-            <div class="col-12">
-
-                <div class="stats-card">
-
-                    <div class="stats-grid">
-
-                        <div class="stat-box">
-
-                            <div class="stat-icon">
-                                <img src="{{ asset('assets/img/User.png') }}" alt="" />
-                            </div>
-
-                            <div class="stat-content">
-
-                                <h3 class="stat-number">
-                                    <span class="counter" data-target="5000">0</span>+
-                                </h3>
-
-                                <p class="stat-label">
-                                    {{ __('about.stat_clients') }}
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                        <div class="stat-box">
-
-                            <div class="stat-icon">
-                                <img src="{{ asset('assets/img/successful.png') }}" alt="" />
-                            </div>
-
-                            <div class="stat-content">
-
-                                <h3 class="stat-number">
-                                    <span class="counter" data-target="15000">0</span>+
-                                </h3>
-
-                                <p class="stat-label">
-                                    {{ __('about.stat_sessions') }}
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                        <div class="stat-box">
-
-                            <div class="stat-icon">
-                                <img src="https://cdn-icons-png.flaticon.com/512/2785/2785482.png"
-                                     alt="" />
-                            </div>
-
-                            <div class="stat-content">
-
-                                <h3 class="stat-number">
-                                    <span class="counter" data-target="50">0</span>+
-                                </h3>
-
-                                <p class="stat-label">
-                                    {{ __('about.stat_therapists') }}
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                        <div class="stat-box">
-
-                            <div class="stat-icon">
-                                <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png"
-                                     alt="" />
-                            </div>
-
-                            <div class="stat-content">
-
-                                <h3 class="stat-number">
-                                    <span class="counter" data-target="98">0</span>%
-                                </h3>
-
-                                <p class="stat-label">
-                                    {{ __('about.stat_satisfaction') }}
-                                </p>
-
+                    <div class="col-lg-6 col-md-12 {{ app()->getLocale() === 'en' ? 'order-lg-1' : '' }}"
+                        data-aos="fade-left"
+                        data-aos-duration="1000"
+                        data-aos-delay="200">
+
+                        <div class="about-img-wrap">
+
+                            <img src="{{ $about?->image ? Storage::url($about->image) : asset('assets/img/main_hero.jpg') }}"
+                                alt="{{ __('about.title') }}"
+                                class="about-side-img" />
+
+                            <div class="about-img-badge">
+                                <i class="fas fa-award"></i>
+                                <span>{{ __('about.experience') }}</span>
                             </div>
 
                         </div>
@@ -325,12 +221,104 @@
 
                 </div>
 
+                <div class="row" data-aos="fade-up" data-aos-duration="1000">
+
+                    <div class="col-12">
+
+                        <div class="stats-card">
+
+                            <div class="stats-grid">
+
+                                <div class="stat-box">
+
+                                    <div class="stat-icon">
+                                        <img src="{{ asset('assets/img/User.png') }}" alt="" />
+                                    </div>
+
+                                    <div class="stat-content">
+
+                                        <h3 class="stat-number">
+                                            <span class="counter" data-target="5000">0</span>+
+                                        </h3>
+
+                                        <p class="stat-label">
+                                            {{ __('about.stat_clients') }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-box">
+
+                                    <div class="stat-icon">
+                                        <img src="{{ asset('assets/img/successful.png') }}" alt="" />
+                                    </div>
+
+                                    <div class="stat-content">
+
+                                        <h3 class="stat-number">
+                                            <span class="counter" data-target="15000">0</span>+
+                                        </h3>
+
+                                        <p class="stat-label">
+                                            {{ __('about.stat_sessions') }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-box">
+
+                                    <div class="stat-icon">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/2785/2785482.png"
+                                            alt="" />
+                                    </div>
+
+                                    <div class="stat-content">
+
+                                        <h3 class="stat-number">
+                                            <span class="counter" data-target="50">0</span>+
+                                        </h3>
+
+                                        <p class="stat-label">
+                                            {{ __('about.stat_therapists') }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="stat-box">
+
+                                    <div class="stat-icon">
+                                        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png"
+                                            alt="" />
+                                    </div>
+
+                                    <div class="stat-content">
+
+                                        <h3 class="stat-number">
+                                            <span class="counter" data-target="98">0</span>%
+                                        </h3>
+
+                                        <p class="stat-label">
+                                            {{ __('about.stat_satisfaction') }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
-
-        </div>
-
-    </div>
-
         </section>
 
         <!-- ========================== Services ========================== -->
@@ -538,6 +526,7 @@
 
     </div>
         </section>
+
         <!-- ========================== How It Works ========================== -->
         <section class="how-it-works-section" id="how-it-works">
             <div class="container">
@@ -609,7 +598,7 @@
         </section>
 
         <!-- ========================== Testimonials ========================== -->
-       <section class="testimonials-section" id="testimonials">
+        <section class="testimonials-section" id="testimonials">
     <div class="container">
 
         <div class="section-header" data-aos="fade-up">
@@ -698,112 +687,112 @@
         </section>
 
         <!-- ========================== swepr ========================== -->
-     <section class="app-showcase-section">
-        <div class="container">
-        <div class="app-showcase-inner">
+        <section class="app-showcase-section">
+            <div class="container">
+            <div class="app-showcase-inner">
 
-            <!-- Text Side -->
-            <div class="app-text-side">
+                <!-- Text Side -->
+                <div class="app-text-side">
 
-                <div class="section-badge">
-                    <i class="fas fa-mobile-alt"></i>
-                    <span>{{ __('app.mobile_app') }}</span>
+                    <div class="section-badge">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>{{ __('app.mobile_app') }}</span>
+                    </div>
+
+                    <h2 class="app-title">
+                        {{ __('app.experience_title') }}
+                        <span class="highlight">{{ __('app.experience_highlight') }}</span>
+                    </h2>
+
+                    <p class="app-desc">
+                        {{ __('app.description') }}
+                    </p>
+
+                    <ul class="app-features-list">
+                        <li><i class="fas fa-check-circle"></i> {{ __('app.feature_1') }}</li>
+                        <li><i class="fas fa-check-circle"></i> {{ __('app.feature_2') }}</li>
+                        <li><i class="fas fa-check-circle"></i> {{ __('app.feature_3') }}</li>
+                        <li><i class="fas fa-check-circle"></i> {{ __('app.feature_4') }}</li>
+                    </ul>
+
+                    <div class="app-store-btns">
+
+                        <a href="{{ $settings?->app_store_link ?? '#' }}" class="store-btn">
+                            <i class="fab fa-apple"></i>
+                            <div>
+                                <span>{{ __('app.download_from') }}</span>
+                                <strong>{{ __('app.app_store') }}</strong>
+                            </div>
+                        </a>
+
+                        <a href="{{ $settings?->google_play_link ?? '#' }}" class="store-btn">
+                            <i class="fab fa-google-play"></i>
+                            <div>
+                                <span>{{ __('app.download_from') }}</span>
+                                <strong>{{ __('app.google_play') }}</strong>
+                            </div>
+                        </a>
+
+                    </div>
                 </div>
 
-                <h2 class="app-title">
-                    {{ __('app.experience_title') }}
-                    <span class="highlight">{{ __('app.experience_highlight') }}</span>
-                </h2>
+                <!-- Phone Mockup Side -->
+                <div class="app-phone-side">
+                    <div class="phone-mockup-wrap">
+                        <div class="phone-glow"></div>
 
-                <p class="app-desc">
-                    {{ __('app.description') }}
-                </p>
+                        <div class="phone-device">
+                            <img src="{{ $settings?->app_phone_frame ? Storage::url($settings->app_phone_frame) : asset('assets/img/iphone-mask.png') }}"
+                                alt="iPhone Frame"
+                                class="phone-frame-img" />
 
-                <ul class="app-features-list">
-                    <li><i class="fas fa-check-circle"></i> {{ __('app.feature_1') }}</li>
-                    <li><i class="fas fa-check-circle"></i> {{ __('app.feature_2') }}</li>
-                    <li><i class="fas fa-check-circle"></i> {{ __('app.feature_3') }}</li>
-                    <li><i class="fas fa-check-circle"></i> {{ __('app.feature_4') }}</li>
-                </ul>
+                            <div class="phone-screen">
+                                <div class="swiper mySwiper">
+                                    <div class="swiper-wrapper">
 
-                <div class="app-store-btns">
+                                        <div class="swiper-slide">
+                                            <img src="{{ $settings?->app_screenshot_1 ? Storage::url($settings->app_screenshot_1) : asset('assets/img/Screenshot.png') }}"
+                                                alt="App Screen 1" />
+                                        </div>
 
-                    <a href="{{ $settings?->app_store_link ?? '#' }}" class="store-btn">
-                        <i class="fab fa-apple"></i>
-                        <div>
-                            <span>{{ __('app.download_from') }}</span>
-                            <strong>{{ __('app.app_store') }}</strong>
-                        </div>
-                    </a>
+                                        <div class="swiper-slide">
+                                            <img src="{{ $settings?->app_screenshot_2 ? Storage::url($settings->app_screenshot_2) : asset('assets/img/Screenshot.png') }}"
+                                                alt="App Screen 2" />
+                                        </div>
 
-                    <a href="{{ $settings?->google_play_link ?? '#' }}" class="store-btn">
-                        <i class="fab fa-google-play"></i>
-                        <div>
-                            <span>{{ __('app.download_from') }}</span>
-                            <strong>{{ __('app.google_play') }}</strong>
-                        </div>
-                    </a>
+                                        <div class="swiper-slide">
+                                            <img src="{{ $settings?->app_screenshot_3 ? Storage::url($settings->app_screenshot_3) : asset('assets/img/Screenshot.png') }}"
+                                                alt="App Screen 3" />
+                                        </div>
 
-                </div>
-            </div>
-
-            <!-- Phone Mockup Side -->
-            <div class="app-phone-side">
-                <div class="phone-mockup-wrap">
-                    <div class="phone-glow"></div>
-
-                    <div class="phone-device">
-                        <img src="{{ $settings?->app_phone_frame ? Storage::url($settings->app_phone_frame) : asset('assets/img/iphone-mask.png') }}"
-                             alt="iPhone Frame"
-                             class="phone-frame-img" />
-
-                        <div class="phone-screen">
-                            <div class="swiper mySwiper">
-                                <div class="swiper-wrapper">
-
-                                    <div class="swiper-slide">
-                                        <img src="{{ $settings?->app_screenshot_1 ? Storage::url($settings->app_screenshot_1) : asset('assets/img/Screenshot.png') }}"
-                                             alt="App Screen 1" />
                                     </div>
 
-                                    <div class="swiper-slide">
-                                        <img src="{{ $settings?->app_screenshot_2 ? Storage::url($settings->app_screenshot_2) : asset('assets/img/Screenshot.png') }}"
-                                             alt="App Screen 2" />
-                                    </div>
-
-                                    <div class="swiper-slide">
-                                        <img src="{{ $settings?->app_screenshot_3 ? Storage::url($settings->app_screenshot_3) : asset('assets/img/Screenshot.png') }}"
-                                             alt="App Screen 3" />
-                                    </div>
-
+                                    <div class="swiper-pagination"></div>
                                 </div>
-
-                                <div class="swiper-pagination"></div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="float-badge badge-top">
-                        <i class="fas fa-star"></i>
-                        <div>
-                            <strong>{{ $settings?->app_rating ?? '4.9' }}</strong>
-                            <span>{{ __('app.user_rating') }}</span>
+                        <div class="float-badge badge-top">
+                            <i class="fas fa-star"></i>
+                            <div>
+                                <strong>{{ $settings?->app_rating ?? '4.9' }}</strong>
+                                <span>{{ __('app.user_rating') }}</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="float-badge badge-bottom">
-                        <i class="fas fa-download"></i>
-                        <div>
-                            <strong>{{ $settings?->app_downloads ?? '+10K' }}</strong>
-                            <span>{{ __('app.downloads') }}</span>
+                        <div class="float-badge badge-bottom">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <strong>{{ $settings?->app_downloads ?? '+10K' }}</strong>
+                                <span>{{ __('app.downloads') }}</span>
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
-    </div>
-    </section>
+        </section>
     </main>
 @endsection

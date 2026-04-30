@@ -26,17 +26,13 @@
             <!-- Title -->
             <h1 class="page-title">
 
-                {{ $about?->title ?? __('about.default_title') }}
-
-                <span class="highlight">
-                    {{ $about?->title_ar ?? __('about.default_highlight') }}
-                </span>
+                {{ $about?->trans('title') ?? __('about.default_title') }}
 
             </h1>
 
             <!-- Description -->
             <p class="page-description">
-                {{ $about?->description ?? __('about.default_desc') }}
+                {{ $about?->trans('description') ?? __('about.default_desc') }}
             </p>
 
         </div>
@@ -66,14 +62,11 @@
                             </div>
 
                             <h2 class="section-title">
-                                {{ $about?->title ?? __('about.default_title') }}
-                                <span class="highlight">
-                                    {{ $about?->title_ar ?? __('about.default_highlight') }}
-                                </span>
+                                {{ $about?->trans('title') ?? __('about.default_title') }}
                             </h2>
 
                             <p class="section-description">
-                                {{ $about?->description ?? __('about.default_desc') }}
+                                {{ $about?->trans('description') ?? __('about.default_desc') }}
                             </p>
 
                             <!-- Features -->
@@ -271,8 +264,8 @@
 
                     <div class="value-icon">
                         @if($value->image)
-                            <img src="{{ Storage::url($value->image) }}"
-                                 alt="{{ $value->title }}"
+                            <img src="{{ Storage::disk('public')->url($value->image) }}"
+                                 alt="{{ $value->trans('title') }}"
                                  style="width:40px">
                         @else
                             <i class="fas fa-star"></i>
@@ -280,11 +273,11 @@
                     </div>
 
                     <div class="value-title">
-                        {{ $value->title }}
+                        {{ $value->trans('title') }}
                     </div>
 
                     <div class="value-desc">
-                        {{ $value->description }}
+                        {{ $value->trans('description') }}
                     </div>
 
                 </div>

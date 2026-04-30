@@ -51,10 +51,13 @@
                 <!-- Avatar -->
                 <div class="p-card p-avatar-card">
                     <div class="p-avatar-wrap">
-                        <div class="p-avatar">
+                        <div class="p-avatar" id="avatarEl">
                             {{ strtoupper(substr($client->name, 0, 2)) }}
                         </div>
-                        <div class="p-avatar-edit"><i class="fas fa-camera"></i></div>
+                        <label class="p-avatar-edit" for="avatarInput" style="cursor:pointer;">
+                            <i class="fas fa-camera"></i>
+                        </label>
+                        <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatar(event)">
                     </div>
 
                     <div class="p-name">
@@ -211,7 +214,66 @@
             </div>
         </div>
     </div>
-</main>
+
+        <!-- Modal: Edit Main -->
+        <div class="p-overlay" id="modal-main" onclick="if(event.target===this)closeModal('main')">
+            <div class="p-modal">
+                <div class="p-modal-head">
+                    <h3>{{ __('profile.edit_data') }}</h3>
+                    <button class="p-modal-close" onclick="closeModal('main')"><i class="fas fa-times"></i></button>
+                </div>
+                <form method="POST" action="{{ route('profile.update') }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="p-modal-body">
+                        <div class="p-field">
+                            <label>{{ __('profile.full_name') }}</label>
+                            <input name="name" value="{{ $client->name }}" required />
+                        </div>
+                        <div class="p-field">
+                            <label>{{ __('profile.phone') }}</label>
+                            <input name="phone" value="{{ $client->phone }}" />
+                        </div>
+                    </div>
+                    <div class="p-modal-foot">
+                        <button type="button" class="p-btn-cancel" onclick="closeModal('main')">{{ __('common.cancel') }}</button>
+                        <button type="submit" class="p-btn-save">{{ __('common.save') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Edit Contact -->
+        <div class="p-overlay" id="modal-contact" onclick="if(event.target===this)closeModal('contact')">
+            <div class="p-modal">
+                <div class="p-modal-head">
+                    <h3>{{ __('profile.contact_info') }}</h3>
+                    <button class="p-modal-close" onclick="closeModal('contact')"><i class="fas fa-times"></i></button>
+                </div>
+                <form method="POST" action="{{ route('profile.update') }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="p-modal-body">
+                        <div class="p-field">
+                            <label>{{ __('profile.full_name') }}</label>
+                            <input type="text" name="name" value="{{ $client->name }}" required />
+                        </div>
+                        <div class="p-field">
+                            <label>{{ __('profile.phone') }}</label>
+                            <input name="phone" value="{{ $client->phone }}" />
+                        </div>
+                    </div>
+                    <div class="p-modal-foot">
+                        <button type="button" class="p-btn-cancel" onclick="closeModal('contact')">{{ __('common.cancel') }}</button>
+                        <button type="submit" class="p-btn-save">{{ __('common.save') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="p-toast" id="toast"><i class="fas fa-check-circle"></i> {{ __('common.save') }}</div>
+
+        </main>
 
     @endsection
 
@@ -252,16 +314,40 @@
 
             function handleAvatar(event) {
                 var file = event.target.files[0];
-                if (!file) {
-                    return;
-                }
+                if (!file) { return; }
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     var avatar = document.getElementById('avatarEl');
                     avatar.style.backgroundImage = 'url(' + e.target.result + ')';
-                    document.getElementById('avatarInitials').style.display = 'none';
+                    avatar.style.backgroundSize = 'cover';
+                    avatar.style.backgroundPosition = 'center';
+                    avatar.textContent = '';
                 };
                 reader.readAsDataURL(file);
+            }
+
+            function openModal(name) {
+                var overlay = document.getElementById('modal-' + name);
+                if (overlay) {
+                    overlay.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            function closeModal(name) {
+                var overlay = document.getElementById('modal-' + name);
+                if (overlay) {
+                    overlay.classList.remove('open');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            function showToast() {
+                var toast = document.getElementById('toast');
+                if (toast) {
+                    toast.classList.add('show');
+                    setTimeout(function() { toast.classList.remove('show'); }, 3000);
+                }
             }
 
             function switchTab(btn, name) {
@@ -270,13 +356,11 @@
                 });
                 document.querySelectorAll('.p-tab-content').forEach(function(c) {
                     c.classList.remove('active');
-                    c.style.display = 'none';
                 });
                 btn.classList.add('active');
                 var target = document.getElementById('tab-' + name);
                 if (target) {
                     target.classList.add('active');
-                    target.style.display = 'block';
                 }
             }
         </script>

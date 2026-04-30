@@ -307,10 +307,10 @@
                     <input type="tel" class="form-ctrl" placeholder="01XX XXX XXXX" dir="ltr">
                 </div>
             </div>
-            <input class="form-group">
+            <div class="form-group">
                 <label class="form-label"><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
                 <input type="email" class="form-ctrl" placeholder="example@email.com" dir="ltr">
-            </input>
+            </div>
             <div class="form-row-two">
                 <div class="form-group">
                     <label class="form-label"><i class="fas fa-calendar-alt"></i> تاريخ الجلسة</label>

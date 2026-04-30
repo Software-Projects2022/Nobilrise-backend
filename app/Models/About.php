@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 
 class About extends Model
 {
-    //
-    protected $guarded = ['id'];
+    use HasTranslations;
 
+    protected $guarded = ['id'];
 }
