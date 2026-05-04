@@ -18,7 +18,10 @@ class EnrollmentController extends Controller
 
         $amountPaid = $course->discount_price ?? $course->price ?? 0;
 
-        $client->trainingCourses()->attach($course->id, ['amount_paid' => $amountPaid]);
+        $client->trainingCourses()->attach($course->id, [
+            'amount_paid' => $amountPaid,
+            'status' => 'pending',
+        ]);
 
         return response()->json([
             'message' => 'تم التسجيل في الدورة بنجاح!',

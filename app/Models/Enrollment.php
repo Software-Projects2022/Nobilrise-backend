@@ -22,7 +22,8 @@ class Enrollment extends Pivot
     public static function statuses(): array
     {
         return [
-            'active' => 'جارية',
+            'pending' => 'قيد المراجعة',
+            'active' => 'مقبولة',
             'completed' => 'مكتملة',
             'cancelled' => 'ملغية',
         ];

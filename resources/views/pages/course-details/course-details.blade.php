@@ -66,9 +66,9 @@
                                 @endif
                             </div>
                             <button class="cd-pay-btn" onclick="openPayModal()">
-                                <i class="fas fa-credit-card"></i> ادفع والتحق بالدورة
+                                <i class="fas fa-check-circle"></i> سجّل الآن (كاش)
                             </button>
-                            <p class="cd-guarantee"><i class="fas fa-shield-alt"></i> ضمان استرداد المبلغ خلال 7 أيام</p>
+                            <p class="cd-guarantee"><i class="fas fa-money-bill-wave"></i> الدفع نقداً عند الحضور للمقر</p>
                             <ul class="cd-includes">
                                 <li><i class="fas fa-book-open"></i> محتوى نصي تفاعلي</li>
                                 <li><i class="fas fa-file-alt"></i> مواد تدريبية قابلة للتحميل</li>
@@ -120,6 +120,7 @@
                         @endif
 
                         <!-- Reviews -->
+                        @if($canSeeReviews)
                         <div class="cd-section-card" data-aos="fade-up">
                             <h2 class="cd-section-title"><i class="fas fa-star"></i>تقييمات الطلاب</h2>
                             <div class="cd-rating-summary">
@@ -192,6 +193,7 @@
                             </div>
                             @endforeach
                         </div>
+                        @endif
                     </div>
 
                     <!-- Sidebar -->
@@ -243,53 +245,24 @@
     <div class="pay-modal-overlay" id="payModal">
         <div class="pay-modal">
             <button class="pay-modal-close" onclick="closePayModal()"><i class="fas fa-times"></i></button>
-            <h3>إتمام الدفع</h3>
-            <p class="pay-modal-sub">دورة: <span id="pay-modal-course-name">دورة تطوير الذات الشاملة</span></p>
+            <h3>تأكيد التسجيل في الدورة</h3>
+            <p class="pay-modal-sub">دورة: <span id="pay-modal-course-name">{{ $course->trans('name') }}</span></p>
 
-            <p
-                style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">
-                طريقة الدفع</p>
-            <div class="pay-methods">
-                <div class="pay-method active" onclick="selectMethod(this)">
-                    <i class="fas fa-credit-card"></i>بطاقة بنكية
-                </div>
-                <div class="pay-method" onclick="selectMethod(this)">
-                    <i class="fas fa-mobile-alt"></i>محفظة إلكترونية
-                </div>
-                <div class="pay-method" onclick="selectMethod(this)">
-                    <i class="fas fa-university"></i>تحويل بنكي
-                </div>
-            </div>
-
-            <div class="pay-f-group">
-                <label class="pay-f-label"><i class="fas fa-user"></i> الاسم الكامل</label>
-                <input type="text" class="pay-f-input" placeholder="محمد أحمد" id="card-name-input">
-            </div>
-            <div class="pay-f-group">
-                <label class="pay-f-label"><i class="fas fa-credit-card"></i> رقم البطاقة</label>
-                <input type="text" class="pay-f-input" placeholder="0000 0000 0000 0000" dir="ltr" maxlength="19"
-                    id="card-number-input">
-            </div>
-            <div class="pay-f-row">
-                <div class="pay-f-group">
-                    <label class="pay-f-label"><i class="fas fa-calendar"></i> تاريخ الانتهاء</label>
-                    <input type="text" class="pay-f-input" placeholder="MM / YY" dir="ltr" maxlength="7" id="card-expiry-input">
-                </div>
-                <div class="pay-f-group">
-                    <label class="pay-f-label"><i class="fas fa-lock"></i> CVV</label>
-                    <input type="text" class="pay-f-input" placeholder="000" dir="ltr" maxlength="3" id="card-cvv-input">
-                </div>
+            <div style="background:rgba(197,167,115,0.08);border:1px solid rgba(197,167,115,0.3);border-radius:12px;padding:20px;margin:16px 0;text-align:center;">
+                <i class="fas fa-money-bill-wave" style="font-size:36px;color:#c5a773;margin-bottom:10px;display:block;"></i>
+                <p style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:4px;">طريقة الدفع: كاش</p>
+                <p style="font-size:13px;color:#666;margin:0;">سيتم الدفع نقداً عند الحضور للمقر</p>
             </div>
 
             <div class="pay-total-row">
                 <span>المبلغ الإجمالي</span>
-                <span id="pay-modal-price">1200 ج.م</span>
+                <span id="pay-modal-price">{{ $course->discount_price ?? $course->price }} ج.م</span>
             </div>
 
             <button class="pay-submit-btn" onclick="submitPayment()">
-                <i class="fas fa-lock"></i> ادفع الآن
+                <i class="fas fa-check-circle"></i> تأكيد التسجيل
             </button>
-            <p class="pay-secure-note"><i class="fas fa-shield-alt"></i> الدفع آمن ومشفر بالكامل</p>
+            <p class="pay-secure-note"><i class="fas fa-shield-alt"></i> سيتم تأكيد تسجيلك فور مراجعة الإدارة</p>
         </div>
     </div>
 @endsection
@@ -316,27 +289,9 @@ function selectMethod(el) {
 }
 
 function submitPayment() {
-    const cardName   = document.getElementById('card-name-input').value.trim();
-    const cardNumber = document.getElementById('card-number-input').value.replace(/\s/g, '');
-    const cardExpiry = document.getElementById('card-expiry-input').value.trim();
-    const cardCvv    = document.getElementById('card-cvv-input').value.trim();
-
-    if (! cardName) {
-        return alert('يرجى إدخال الاسم الكامل.');
-    }
-    if (cardNumber.length < 16) {
-        return alert('يرجى إدخال رقم بطاقة صحيح (16 رقم).');
-    }
-    if (! /^\d{2}\s?\/\s?\d{2}$/.test(cardExpiry)) {
-        return alert('يرجى إدخال تاريخ انتهاء صحيح (MM / YY).');
-    }
-    if (cardCvv.length < 3) {
-        return alert('يرجى إدخال رمز CVV الصحيح.');
-    }
-
     const btn = document.querySelector('.pay-submit-btn');
     btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التسجيل...';
 
     fetch('{{ route('courses.enroll', $course->id) }}', {
         method: 'POST',
@@ -354,10 +309,12 @@ function submitPayment() {
         } else {
             alert(data.message);
         }
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> تأكيد التسجيل';
     })
     .catch(() => {
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-lock"></i> ادفع الآن';
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> تأكيد التسجيل';
         alert('حدث خطأ، يرجى المحاولة مرة أخرى.');
     });
 }

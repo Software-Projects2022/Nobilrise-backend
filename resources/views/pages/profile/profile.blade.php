@@ -1,5 +1,4 @@
-<div>
-    @extends('layouts.app')
+@extends('layouts.app')
     @section('title', 'Profile')
     @section('styles')
         <style>
@@ -122,18 +121,35 @@
                 <div class="p-card">
                     <div class="p-tabs">
 
-                        <button class="p-tab active" onclick="switchTab(this,'courses')">
+                        <button class="p-tab active" id="btn-courses" onclick="profileSwitchTab(this,'courses')">
                             <i class="fas fa-graduation-cap"></i>
                             {{ __('profile.courses_tab') }}
                         </button>
 
-                        <button class="p-tab" onclick="switchTab(this,'sessions')">
+                        <button class="p-tab" id="btn-sessions" onclick="profileSwitchTab(this,'sessions')">
                             <i class="fas fa-brain"></i>
                             {{ __('profile.sessions_tab') }}
                         </button>
 
                     </div>
                 </div>
+
+                <script>
+                    function profileSwitchTab(btn, name) {
+                        document.querySelectorAll('.p-tab').forEach(function(t) { t.classList.remove('active'); });
+                        document.querySelectorAll('.p-tab-content').forEach(function(c) {
+                            c.style.display = 'none';
+                        });
+                        btn.classList.add('active');
+                        var target = document.getElementById('tab-' + name);
+                        if (target) { target.style.display = 'flex'; }
+                    }
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.querySelectorAll('.p-tab-content').forEach(function(c) { c.style.display = 'none'; });
+                        var first = document.getElementById('tab-courses');
+                        if (first) { first.style.display = 'flex'; }
+                    });
+                </script>
 
                 <!-- ================= COURSES ================= -->
                 <div class="p-tab-content active" id="tab-courses">
@@ -151,11 +167,12 @@
                                 <div class="p-course-top">
                                     <div class="p-course-name">{{ $course->name }}</div>
 
-                                    <span class="p-badge">
-                                        {{ match($course->pivot->status) {
-                                            'completed' => __('profile.completed_status'),
-                                            'cancelled' => __('profile.cancelled_status'),
-                                            default => __('profile.ongoing_status'),
+                                    <span class="p-badge" style="background: {{ match($course->pivot->status ?? 'pending') { 'active' => 'rgba(76,175,80,0.15)', 'completed' => 'rgba(33,150,243,0.15)', 'cancelled' => 'rgba(244,67,54,0.15)', default => 'rgba(255,152,0,0.15)' } }}; color: {{ match($course->pivot->status ?? 'pending') { 'active' => '#2e7d32', 'completed' => '#1565c0', 'cancelled' => '#c62828', default => '#e65100' } }}">
+                                        {{ match($course->pivot->status ?? 'pending') {
+                                            'active'    => 'مقبولة',
+                                            'completed' => 'مكتملة',
+                                            'cancelled' => 'ملغية',
+                                            default     => 'قيد المراجعة',
                                         } }}
                                     </span>
                                 </div>
@@ -200,7 +217,9 @@
                                 </div>
                             </div>
 
-                            <span class="p-s-badge">مؤكدة</span>
+                            <span class="p-s-badge" style="background: {{ match($booking->status ?? 'pending') { 'accepted' => 'rgba(76,175,80,0.15)', 'rejected' => 'rgba(244,67,54,0.15)', default => 'rgba(255,152,0,0.15)' } }}; color: {{ match($booking->status ?? 'pending') { 'accepted' => '#2e7d32', 'rejected' => '#c62828', default => '#e65100' } }}">
+                                {{ match($booking->status ?? 'pending') { 'accepted' => 'مقبولة', 'rejected' => 'مرفوضة', default => 'قيد الانتظار' } }}
+                            </span>
                         </div>
 
                     @empty
@@ -349,21 +368,5 @@
                     setTimeout(function() { toast.classList.remove('show'); }, 3000);
                 }
             }
-
-            function switchTab(btn, name) {
-                document.querySelectorAll('.p-tab').forEach(function(t) {
-                    t.classList.remove('active');
-                });
-                document.querySelectorAll('.p-tab-content').forEach(function(c) {
-                    c.classList.remove('active');
-                });
-                btn.classList.add('active');
-                var target = document.getElementById('tab-' + name);
-                if (target) {
-                    target.classList.add('active');
-                }
-            }
         </script>
     @endsection
-
-</div>

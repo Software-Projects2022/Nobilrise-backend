@@ -7507,3 +7507,192 @@ body {
     justify-content: center;
   }
 }
+
+/* ========================== Sessions Section ========================== */
+.sessions-section {
+  position: relative;
+  padding: 80px 0;
+  background: var(--color-bg-white);
+}
+
+.sessions-section .section-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 50px;
+}
+
+.sessions-section .section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(197, 167, 115, 0.1);
+  border: 1px solid rgba(197, 167, 115, 0.3);
+  border-radius: 50px;
+  padding: 8px 20px;
+  font-size: 13px;
+  color: var(--color-primary);
+  margin-bottom: 20px;
+}
+
+.sessions-section .section-title {
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--color-text-dark);
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+
+.sessions-section .section-title .highlight {
+  background: linear-gradient(135deg, #c5a773, #a88b5a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sessions-section .section-description {
+  font-size: 15px;
+  color: var(--color-text-gray);
+  line-height: 1.7;
+}
+
+.sessions-section .courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+}
+
+.sessions-section .course-card {
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(197, 167, 115, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: all var(--transition-fast);
+}
+
+.sessions-section .course-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(197, 167, 115, 0.3);
+  box-shadow: 0 20px 50px rgba(197, 167, 115, 0.15);
+}
+
+.sessions-section .course-image {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.sessions-section .course-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.sessions-section .course-card:hover .course-image img {
+  transform: scale(1.08);
+}
+
+.sessions-section .course-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.sessions-section .course-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(197, 167, 115, 0.9);
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+.sessions-section .course-content {
+  padding: 20px;
+}
+
+.sessions-section .course-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text-dark);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.sessions-section .course-desc {
+  font-size: 13px;
+  color: var(--color-text-gray);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.sessions-section .course-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(197, 167, 115, 0.1);
+}
+
+.sessions-section .course-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sessions-section .old-price {
+  font-size: 13px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.sessions-section .new-price {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--color-primary);
+}
+
+.sessions-section .course-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.sessions-section .course-btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(197, 167, 115, 0.35);
+}
+
+@media (max-width: 992px) {
+  .sessions-section .courses-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .sessions-section .courses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sessions-section .section-title {
+    font-size: 28px;
+  }
+}

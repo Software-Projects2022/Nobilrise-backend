@@ -686,6 +686,115 @@
     </div>
         </section>
 
+        <!-- ========================== Sessions ========================== -->
+        <section class="sessions-section" id="sessions">
+            <div class="container">
+
+                <div class="section-header" data-aos="fade-up">
+                    <div class="section-badge">
+                        <i class="fas fa-brain"></i>
+                        <span>{{ __('sessions.badge') }}</span>
+                    </div>
+                    <h2 class="section-title">
+                        {{ __('sessions.title') }}
+                        <span class="highlight">{{ __('sessions.title_highlight') }}</span>
+                    </h2>
+                    <p class="section-description">{{ __('sessions.desc') }}</p>
+                </div>
+
+                <div class="courses-grid">
+                    @foreach($sessions as $index => $session)
+                    <div class="course-card" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+
+                        <div class="course-image">
+                            @if($session->image)
+                                <img src="{{ Storage::url($session->image) }}" alt="{{ $session->trans('name') }}" />
+                            @endif
+                            <div class="course-badge">
+                                <div class="course-category">
+                                    <i class="fas fa-brain"></i>
+                                    <span>{{ $session->psychologicalSessionCategory?->name }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="course-content">
+                            <h3 class="course-title">{{ $session->trans('name') }}</h3>
+                            <p class="course-desc">{{ $session->trans('short_description') }}</p>
+
+                            <div style="display:flex;gap:12px;margin-bottom:12px;font-size:13px;color:#666;">
+                                @if($session->duration)
+                                    <span><i class="fas fa-clock" style="color:var(--color-primary)"></i> {{ $session->duration }}</span>
+                                @endif
+                                @if($session->people_count)
+                                    <span><i class="fas fa-users" style="color:var(--color-primary)"></i> {{ $session->people_count }} {{ __('sessions.persons') }}</span>
+                                @endif
+                            </div>
+
+                            <div class="course-footer">
+                                <div class="course-price">
+                                    @if($session->discount_price)
+                                        <span class="old-price">{{ $session->price }} {{ __('common.currency') }}</span>
+                                        <span class="new-price">{{ $session->discount_price }} {{ __('common.currency') }}</span>
+                                    @else
+                                        <span class="new-price">{{ $session->price }} {{ __('common.currency') }}</span>
+                                    @endif
+                                </div>
+                                <button class="course-btn"
+                                    onclick="openBookingModal({{ $session->id }}, '{{ addslashes($session->trans('name')) }}', '{{ $session->trans('name') }}')">
+                                    {{ __('common.book_now') }}
+                                    <i class="fas fa-arrow-left"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                    @endforeach
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Booking Modal -->
+        <div class="pay-modal-overlay" id="bookingModal" style="display:none;">
+            <div class="pay-modal">
+                <button class="pay-modal-close" onclick="closeBookingModal()"><i class="fas fa-times"></i></button>
+                <h3>{{ __('sessions.book_session') }}</h3>
+                <p class="pay-modal-sub">{{ __('sessions.session_label') }}: <span id="booking-session-name"></span></p>
+
+                <div class="pay-f-group">
+                    <label class="pay-f-label"><i class="fas fa-user"></i> {{ __('sessions.full_name') }}</label>
+                    <input type="text" class="pay-f-input" id="booking-name" placeholder="{{ __('sessions.name_placeholder') }}">
+                </div>
+                <div class="pay-f-group">
+                    <label class="pay-f-label"><i class="fas fa-phone"></i> {{ __('sessions.phone') }}</label>
+                    <input type="text" class="pay-f-input" id="booking-phone" placeholder="{{ __('sessions.phone_placeholder') }}">
+                </div>
+                <div class="pay-f-group">
+                    <label class="pay-f-label"><i class="fas fa-envelope"></i> {{ __('sessions.email') }}</label>
+                    <input type="email" class="pay-f-input" id="booking-email" placeholder="{{ __('sessions.email_placeholder') }}">
+                </div>
+                <div class="pay-f-row">
+                    <div class="pay-f-group">
+                        <label class="pay-f-label"><i class="fas fa-calendar"></i> {{ __('sessions.date') }}</label>
+                        <input type="date" class="pay-f-input" id="booking-date">
+                    </div>
+                    <div class="pay-f-group">
+                        <label class="pay-f-label"><i class="fas fa-clock"></i> {{ __('sessions.time') }}</label>
+                        <input type="time" class="pay-f-input" id="booking-time">
+                    </div>
+                </div>
+                <div class="pay-f-group">
+                    <label class="pay-f-label"><i class="fas fa-comment"></i> {{ __('sessions.notes') }}</label>
+                    <textarea class="pay-f-input" id="booking-notes" rows="3" placeholder="{{ __('sessions.notes_placeholder') }}" style="resize:none;"></textarea>
+                </div>
+
+                <button class="pay-submit-btn" id="booking-submit-btn" onclick="submitBooking()">
+                    <i class="fas fa-calendar-check"></i> {{ __('sessions.confirm_booking') }}
+                </button>
+            </div>
+        </div>
+
         <!-- ========================== swepr ========================== -->
         <section class="app-showcase-section">
             <div class="container">
@@ -795,4 +904,81 @@
         </div>
         </section>
     </main>
+@endsection
+
+@section('scripts')
+<script>
+let bookingSessionId = null;
+
+function openBookingModal(sessionId, sessionName) {
+    @auth('client')
+        bookingSessionId = sessionId;
+        document.getElementById('booking-session-name').textContent = sessionName;
+        document.getElementById('booking-name').value = '{{ auth("client")->user()?->name ?? "" }}';
+        document.getElementById('booking-email').value = '{{ auth("client")->user()?->email ?? "" }}';
+        document.getElementById('booking-phone').value = '{{ auth("client")->user()?->phone ?? "" }}';
+        document.getElementById('bookingModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    @else
+        window.location.href = '{{ route('login') }}';
+    @endauth
+}
+
+function closeBookingModal() {
+    document.getElementById('bookingModal').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function submitBooking() {
+    const name  = document.getElementById('booking-name').value.trim();
+    const phone = document.getElementById('booking-phone').value.trim();
+    const email = document.getElementById('booking-email').value.trim();
+    const date  = document.getElementById('booking-date').value;
+    const time  = document.getElementById('booking-time').value;
+    const notes = document.getElementById('booking-notes').value.trim();
+
+    if (!name)  { return alert('يرجى إدخال الاسم.'); }
+    if (!phone) { return alert('يرجى إدخال رقم الهاتف.'); }
+    if (!email) { return alert('يرجى إدخال البريد الإلكتروني.'); }
+    if (!date)  { return alert('يرجى اختيار التاريخ.'); }
+    if (!time)  { return alert('يرجى اختيار الوقت.'); }
+
+    const btn = document.getElementById('booking-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحجز...';
+
+    fetch('{{ route('bookings.store') }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            name,
+            phone,
+            email,
+            date,
+            time,
+            session_type: document.getElementById('booking-session-name').textContent,
+            notes,
+            psychological_session_id: bookingSessionId,
+        }),
+    })
+    .then(res => res.json())
+    .then(data => {
+        closeBookingModal();
+        alert(data.message);
+    })
+    .catch(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-calendar-check"></i> تأكيد الحجز';
+        alert('حدث خطأ، يرجى المحاولة مرة أخرى.');
+    });
+}
+
+document.getElementById('bookingModal').addEventListener('click', function(e) {
+    if (e.target === this) { closeBookingModal(); }
+});
+</script>
 @endsection
