@@ -106,7 +106,7 @@
         </section>
 
         <!-- ========================== About ========================== -->
-   <section class="about-section" id="about">
+        <section class="about-section" id="about">
             <div class="container">
                 <div class="row align-items-center mb-5">
 

@@ -18,7 +18,7 @@ class PsychologicalSessionResource extends Resource
 {
     protected static ?string $model = PsychologicalSession::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSparkles;
 
     public static function form(Schema $schema): Schema
     {

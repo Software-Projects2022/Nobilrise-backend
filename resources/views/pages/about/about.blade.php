@@ -5,44 +5,42 @@
         <!-- ===================== HERO ===================== -->
         <section class="page-hero">
 
-    <div class="container">
+            <div class="container">
 
-        <div class="hero-content">
+                <div class="hero-content">
 
-            <!-- Breadcrumb -->
-            <div class="breadcrumb">
+                    <!-- Breadcrumb -->
+                    <div class="breadcrumb">
 
-                <a href="{{ route('home') }}">
-                    <i class="fas fa-home"></i>
-                    {{ __('common.home') }}
-                </a>
+                        <a href="{{ route('home') }}">
+                            <i class="fas fa-home"></i>
+                            {{ __('common.home') }}
+                        </a>
 
-                <i class="fas fa-chevron-left"></i>
+                        <i class="fas fa-chevron-left"></i>
 
-                <span>{{ __('about.title') }}</span>
+                        <span>{{ __('about.title') }}</span>
+
+                    </div>
+
+                    <!-- Title -->
+                    <h1 class="page-title">
+
+                        {{ $about?->trans('title') ?? __('about.default_title') }}
+
+                    </h1>
+
+                    <!-- Description -->
+                    <p class="page-description">
+                        {{ $about?->trans('description') ?? __('about.default_desc') }}
+                    </p>
+
+                </div>
 
             </div>
 
-            <!-- Title -->
-            <h1 class="page-title">
-
-                {{ $about?->trans('title') ?? __('about.default_title') }}
-
-            </h1>
-
-            <!-- Description -->
-            <p class="page-description">
-                {{ $about?->trans('description') ?? __('about.default_desc') }}
-            </p>
-
-        </div>
-
-    </div>
-
         </section>
-
         <div class="gold-divider"></div>
-
         <!-- ===================== ABOUT ===================== -->
         <section class="about-section" id="about">
 
@@ -222,117 +220,112 @@
             </div>
 
         </section>
+        <!-- ===================== QUOTE ===================== -->
+        <div class="quote-banner">
+            <div class="container">
 
-<!-- ===================== QUOTE ===================== -->
-<div class="quote-banner">
-    <div class="container">
+                <blockquote data-aos="fade-up">
+                    {{ __('quote.text_1') }}<br>
+                    {{ __('quote.text_2') }}
+                    <span class="gold">{{ __('quote.highlight') }}</span>
+                    {{ __('quote.text_3') }}
+                </blockquote>
 
-        <blockquote data-aos="fade-up">
-            {{ __('quote.text_1') }}<br>
-            {{ __('quote.text_2') }}
-            <span class="gold">{{ __('quote.highlight') }}</span>
-            {{ __('quote.text_3') }}
-        </blockquote>
+                <div class="quote-attr">
+                    {{ __('quote.author') }}
+                </div>
 
-        <div class="quote-attr">
-            {{ __('quote.author') }}
+            </div>
         </div>
+        <!-- ===================== VALUES ===================== -->
+        <section class="values-section" id="values">
 
-    </div>
-</div>
+            <div class="container">
 
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <div class="sec-label">{{ __('values.badge') }}</div>
+                    <h2 class="sec-title">{{ __('values.title') }}</h2>
+                </div>
 
-<!-- ===================== VALUES ===================== -->
-<section class="values-section" id="values">
+                <div class="row g-4">
 
-    <div class="container">
+                    @foreach($values as $index => $value)
 
-        <div class="text-center mb-5" data-aos="fade-up">
-            <div class="sec-label">{{ __('values.badge') }}</div>
-            <h2 class="sec-title">{{ __('values.title') }}</h2>
-        </div>
+                    <div class="col-lg-4 col-md-6"
+                        data-aos="fade-up"
+                        data-aos-delay="{{ ($index % 3) * 100 }}">
 
-        <div class="row g-4">
+                        <div class="value-card">
 
-            @foreach($values as $index => $value)
+                            <div class="value-icon">
+                                @if($value->image)
+                                    <img src="{{ Storage::disk('public')->url($value->image) }}"
+                                        alt="{{ $value->trans('title') }}"
+                                        style="width:40px">
+                                @else
+                                    <i class="fas fa-star"></i>
+                                @endif
+                            </div>
 
-            <div class="col-lg-4 col-md-6"
-                 data-aos="fade-up"
-                 data-aos-delay="{{ ($index % 3) * 100 }}">
+                            <div class="value-title">
+                                {{ $value->trans('title') }}
+                            </div>
 
-                <div class="value-card">
+                            <div class="value-desc">
+                                {{ $value->trans('description') }}
+                            </div>
 
-                    <div class="value-icon">
-                        @if($value->image)
-                            <img src="{{ Storage::disk('public')->url($value->image) }}"
-                                 alt="{{ $value->trans('title') }}"
-                                 style="width:40px">
-                        @else
-                            <i class="fas fa-star"></i>
-                        @endif
+                        </div>
+
                     </div>
 
-                    <div class="value-title">
-                        {{ $value->trans('title') }}
+                    @endforeach
+
+                </div>
+
+            </div>
+
+        </section>
+        <!-- ===================== CTA ===================== -->
+        <section class="cta-section">
+
+            <div class="container">
+
+                <div class="cta-inner" data-aos="fade-up">
+
+                    <div class="cta-text">
+
+                        <div class="sec-label">
+                            {{ __('cta.badge') }}
+                        </div>
+
+                        <h2 class="sec-title">
+                            {{ __('cta.title') }}
+                        </h2>
+
+                        <p class="sec-body" style="color: var(--color-text-muted); max-width: 50ch;">
+                            {{ __('cta.desc') }}
+                        </p>
+
                     </div>
 
-                    <div class="value-desc">
-                        {{ $value->trans('description') }}
+                    <div class="cta-btns">
+
+                        <a href="{{ route('training-courses') }}" class="btn-gold">
+                            {{ __('cta.primary_btn') }}
+                        </a>
+
+                        <a href="{{ route('training-courses') }}" class="btn-ghost">
+                            {{ __('cta.secondary_btn') }}
+                        </a>
+
                     </div>
 
                 </div>
 
             </div>
 
-            @endforeach
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ===================== CTA ===================== -->
-<section class="cta-section">
-
-    <div class="container">
-
-        <div class="cta-inner" data-aos="fade-up">
-
-            <div class="cta-text">
-
-                <div class="sec-label">
-                    {{ __('cta.badge') }}
-                </div>
-
-                <h2 class="sec-title">
-                    {{ __('cta.title') }}
-                </h2>
-
-                <p class="sec-body" style="color: var(--color-text-muted); max-width: 50ch;">
-                    {{ __('cta.desc') }}
-                </p>
-
-            </div>
-
-            <div class="cta-btns">
-
-                <a href="{{ route('training-courses') }}" class="btn-gold">
-                    {{ __('cta.primary_btn') }}
-                </a>
-
-                <a href="{{ route('training-courses') }}" class="btn-ghost">
-                    {{ __('cta.secondary_btn') }}
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
+        </section>
     </main>
 
 @endsection

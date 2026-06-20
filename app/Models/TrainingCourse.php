@@ -45,7 +45,7 @@ class TrainingCourse extends Model
     public function clients(): BelongsToMany
     {
         return $this->belongsToMany(Client::class, 'client_training_course')
-            ->withPivot('amount_paid', 'status')
+            ->withPivot('id', 'amount_paid', 'status')
             ->withTimestamps();
     }
 

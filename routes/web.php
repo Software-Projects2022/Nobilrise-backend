@@ -3,11 +3,13 @@
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Auth\ClientAuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrainingCourseController;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Route;
 
 // ─── Language switcher ───────────────────────────────────────────────
@@ -36,6 +38,17 @@ Route::get('/register', [ClientAuthController::class, 'showRegister'])->name('re
 Route::post('/register', [ClientAuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [ClientAuthController::class, 'logout'])->name('logout');
 
+// ─── Certificate preview (design only) ───────────────────────────────
+Route::get('/certificate/preview', function () {
+    return view('pages.certificate.certificate', [
+        'studentName' => 'أحمد محمد علي',
+        'courseName' => 'دورة التطوير الذاتي والقيادة',
+        'issueDate' => now()->format('d / m / Y'),
+        'certificateNumber' => 'CERT-000123',
+        'settings' => Setting::first(),
+    ]);
+})->name('certificate.preview');
+
 // ─── Protected routes ─────────────────────────────────────────────────
 Route::middleware('auth:client')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
@@ -43,4 +56,5 @@ Route::middleware('auth:client')->group(function () {
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
     Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'store'])->name('courses.enroll');
+    Route::get('/certificate/{enrollmentId}', [CertificateController::class, 'show'])->name('certificate.show');
 });

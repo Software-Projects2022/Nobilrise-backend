@@ -18,7 +18,7 @@ class TrainingCourseResource extends Resource
 {
     protected static ?string $model = TrainingCourse::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
     public static function form(Schema $schema): Schema
     {

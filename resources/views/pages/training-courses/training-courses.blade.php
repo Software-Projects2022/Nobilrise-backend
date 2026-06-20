@@ -288,97 +288,93 @@
             </div>
 
         </section>
-            </main>
+        <!-- ========================== Course Payment Modal ========================== -->
+        <div class="modal-overlay" id="coursePayModal">
+            <div class="booking-modal">
+                <div class="modal-close" id="closeCourseModal"><i class="fas fa-times"></i></div>
+                <div class="modal-header-box">
+                    <h3>تأكيد التسجيل في الدورة</h3>
+                    <p id="courseModalName"></p>
+                </div>
 
-    <!-- ========================== Course Payment Modal ========================== -->
-    <div class="modal-overlay" id="coursePayModal">
-        <div class="booking-modal">
-            <div class="modal-close" id="closeCourseModal"><i class="fas fa-times"></i></div>
-            <div class="modal-header-box">
-                <h3>تأكيد التسجيل في الدورة</h3>
-                <p id="courseModalName"></p>
+                <div style="background:rgba(197,167,115,0.08);border:1px solid rgba(197,167,115,0.3);border-radius:12px;padding:16px;margin-bottom:20px;text-align:center;">
+                    <i class="fas fa-money-bill-wave" style="font-size:32px;color:#c5a773;margin-bottom:8px;display:block;"></i>
+                    <p style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:4px;">طريقة الدفع: كاش</p>
+                    <p style="font-size:13px;color:#666;">سيتم الدفع نقداً عند الحضور للمقر</p>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid #f0f0f0;font-weight:700;font-size:16px;">
+                    <span>المبلغ الإجمالي</span>
+                    <span id="courseModalPrice" style="color:#c5a773;"></span>
+                </div>
+
+                <button class="submit-btn-modal" id="coursePayBtn">
+                    <i class="fas fa-check-circle"></i> تأكيد التسجيل
+                </button>
+                <p style="text-align:center;font-size:12px;color:#999;margin-top:10px;">
+                    <i class="fas fa-shield-alt"></i> سيتم تأكيد تسجيلك فور مراجعة الإدارة
+                </p>
             </div>
-
-            <div style="background:rgba(197,167,115,0.08);border:1px solid rgba(197,167,115,0.3);border-radius:12px;padding:16px;margin-bottom:20px;text-align:center;">
-                <i class="fas fa-money-bill-wave" style="font-size:32px;color:#c5a773;margin-bottom:8px;display:block;"></i>
-                <p style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:4px;">طريقة الدفع: كاش</p>
-                <p style="font-size:13px;color:#666;">سيتم الدفع نقداً عند الحضور للمقر</p>
-            </div>
-
-            <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid #f0f0f0;font-weight:700;font-size:16px;">
-                <span>المبلغ الإجمالي</span>
-                <span id="courseModalPrice" style="color:#c5a773;"></span>
-            </div>
-
-            <button class="submit-btn-modal" id="coursePayBtn">
-                <i class="fas fa-check-circle"></i> تأكيد التسجيل
-            </button>
-            <p style="text-align:center;font-size:12px;color:#999;margin-top:10px;">
-                <i class="fas fa-shield-alt"></i> سيتم تأكيد تسجيلك فور مراجعة الإدارة
-            </p>
         </div>
-    </div>
-
-    <!-- ========================== Booking Modal ========================== --></div>
-    <div class="modal-overlay" id="bookingModal">
-        <div class="booking-modal">
-            <div class="modal-close" id="closeModal"><i class="fas fa-times"></i></div>
-            <div class="modal-header-box">
-                <h3>احجز جلستك النفسية</h3>
-                <p id="modalSessionType">جلسة فردية</p>
-            </div>
-            <div class="form-row-two">
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-user"></i> الاسم الكامل</label>
-                    <input type="text" class="form-ctrl" placeholder="أدخل اسمك الكامل">
+        <!-- ========================== Booking Modal ========================== --></div>
+        <div class="modal-overlay" id="bookingModal">
+            <div class="booking-modal">
+                <div class="modal-close" id="closeModal"><i class="fas fa-times"></i></div>
+                <div class="modal-header-box">
+                    <h3>احجز جلستك النفسية</h3>
+                    <p id="modalSessionType">جلسة فردية</p>
                 </div>
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-phone"></i> رقم الهاتف</label>
-                    <input type="tel" class="form-ctrl" placeholder="01XX XXX XXXX" dir="ltr">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
-                <input type="email" class="form-ctrl" placeholder="example@email.com" dir="ltr">
-            </div>
-            <div class="form-row-two">
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-calendar-alt"></i> تاريخ الجلسة</label>
-                    <input type="date" class="form-ctrl">
-                </div>
-                <div class="form-group">
-                    <label class="form-label"><i class="fas fa-user-md"></i> المعالج المفضل</label>
-                    <div class="select-wrap">
-                        <i class="fas fa-chevron-down sel-arrow"></i>
-                        <select class="form-ctrl is-select">
-                            <option value="">اختر المعالج</option>
-                            <option value="any">أي معالج متاح</option>
-                        </select>
+                <div class="form-row-two">
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-user"></i> الاسم الكامل</label>
+                        <input type="text" class="form-ctrl" placeholder="أدخل اسمك الكامل">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-phone"></i> رقم الهاتف</label>
+                        <input type="tel" class="form-ctrl" placeholder="01XX XXX XXXX" dir="ltr">
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-clock"></i> الوقت المناسب</label>
-                <div class="time-slots">
-                    <div class="time-slot">9:00 ص</div>
-                    <div class="time-slot">10:30 ص</div>
-                    <div class="time-slot">12:00 م</div>
-                    <div class="time-slot">2:00 م</div>
-                    <div class="time-slot">4:00 م</div>
-                    <div class="time-slot">6:00 م</div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
+                    <input type="email" class="form-ctrl" placeholder="example@email.com" dir="ltr">
                 </div>
+                <div class="form-row-two">
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-calendar-alt"></i> تاريخ الجلسة</label>
+                        <input type="date" class="form-ctrl">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-user-md"></i> المعالج المفضل</label>
+                        <div class="select-wrap">
+                            <i class="fas fa-chevron-down sel-arrow"></i>
+                            <select class="form-ctrl is-select">
+                                <option value="">اختر المعالج</option>
+                                <option value="any">أي معالج متاح</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-clock"></i> الوقت المناسب</label>
+                    <div class="time-slots">
+                        <div class="time-slot">9:00 ص</div>
+                        <div class="time-slot">10:30 ص</div>
+                        <div class="time-slot">12:00 م</div>
+                        <div class="time-slot">2:00 م</div>
+                        <div class="time-slot">4:00 م</div>
+                        <div class="time-slot">6:00 م</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-comment-dots"></i> ملاحظات إضافية <span style="font-weight:400; color:#bbb; font-size:12px;">(اختياري)</span></label>
+                    <textarea class="form-ctrl is-textarea" rows="3" placeholder="اكتب أي معلومات تريد مشاركتها مع المعالج..."></textarea>
+                </div>
+                <button class="submit-btn-modal" id="sessionSubmitBtn">
+                    <i class="fas fa-calendar-check"></i> تأكيد الحجز
+                </button>
             </div>
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-comment-dots"></i> ملاحظات إضافية <span style="font-weight:400; color:#bbb; font-size:12px;">(اختياري)</span></label>
-                <textarea class="form-ctrl is-textarea" rows="3" placeholder="اكتب أي معلومات تريد مشاركتها مع المعالج..."></textarea>
-            </div>
-            <button class="submit-btn-modal" id="sessionSubmitBtn">
-                <i class="fas fa-calendar-check"></i> تأكيد الحجز
-            </button>
         </div>
-    </div>
-
-
+    </main>
 @section('scripts')
 <script>
 // ===== Course Payment Modal =====

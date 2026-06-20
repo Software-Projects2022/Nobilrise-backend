@@ -16,7 +16,7 @@ class AboutResource extends Resource
 {
     protected static ?string $model = About::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInformationCircle;
 
     protected static ?string $navigationLabel = 'About';
 
@@ -28,7 +28,7 @@ class AboutResource extends Resource
     public static function table(Table $table): Table
     {
         return AboutsTable::configure($table);
-        
+
     }
 
     public static function getRelations(): array

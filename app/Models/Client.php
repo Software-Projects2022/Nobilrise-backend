@@ -26,7 +26,7 @@ class Client extends Authenticatable
     public function trainingCourses(): BelongsToMany
     {
         return $this->belongsToMany(TrainingCourse::class, 'client_training_course')
-            ->withPivot('amount_paid', 'status')
+            ->withPivot('id', 'amount_paid', 'status')
             ->withTimestamps();
     }
 

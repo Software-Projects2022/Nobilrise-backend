@@ -4,7 +4,6 @@
     <main>
         <div class="auth-form-panel">
             <div class="auth-box">
-
                 <div class="auth-tabs">
                     <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">
                         {{ __('auth.login_title') }}
@@ -13,7 +12,6 @@
                         {{ __('auth.register_title') }}
                     </button>
                 </div>
-
                 <!-- LOGIN FORM -->
                 <div class="login-panel active" id="panel-login">
                     <div class="login-head">
@@ -54,7 +52,6 @@
                         </button>
                     </form>
                 </div>
-
                 <!-- REGISTER FORM -->
                 <div class="signin-panel" id="panel-register">
                     <div class="signin-head">
@@ -129,14 +126,12 @@
                         </button>
                     </form>
                 </div>
-
                 <div style="padding-bottom: 10px;" class="back-home">
                     <a href="{{ route('home') }}">
                         <i class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}"></i>
                         {{ __('auth.back_home') }}
                     </a>
                 </div>
-
             </div>
         </div>
     </main>

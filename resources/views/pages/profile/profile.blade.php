@@ -23,217 +23,224 @@
 
         <!-- ========================== main ========================== -->
       <main class="profile-page">
-    <div class="container">
+        <div class="container">
 
-        @if(session('success'))
-            <div style="background:rgba(76,175,80,0.12);border:1px solid #4caf50;border-radius:12px;padding:14px 20px;margin-bottom:20px;color:#2e7d32;display:flex;align-items:center;gap:10px;">
-                <i class="fas fa-check-circle"></i> {{ session('success') }}
+            @if(session('success'))
+                <div style="background:rgba(76,175,80,0.12);border:1px solid #4caf50;border-radius:12px;padding:14px 20px;margin-bottom:20px;color:#2e7d32;display:flex;align-items:center;gap:10px;">
+                    <i class="fas fa-check-circle"></i> {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Top Bar -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+                <h2 style="font-size:22px;font-weight:900;color:#1a1a1a;margin:0;">
+                    {{ __('profile.title') }}
+                </h2>
+
+                <button class="p-edit-btn" onclick="openModal('main')">
+                    <i class="fas fa-pen"></i> {{ __('profile.edit_data') }}
+                </button>
             </div>
-        @endif
 
-        <!-- Top Bar -->
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
-            <h2 style="font-size:22px;font-weight:900;color:#1a1a1a;margin:0;">
-                {{ __('profile.title') }}
-            </h2>
+            <div class="profile-layout">
 
-            <button class="p-edit-btn" onclick="openModal('main')">
-                <i class="fas fa-pen"></i> {{ __('profile.edit_data') }}
-            </button>
-        </div>
+                <!-- ================= SIDEBAR ================= -->
+                <div class="p-sidebar">
 
-        <div class="profile-layout">
-
-            <!-- ================= SIDEBAR ================= -->
-            <div class="p-sidebar">
-
-                <!-- Avatar -->
-                <div class="p-card p-avatar-card">
-                    <div class="p-avatar-wrap">
-                        <div class="p-avatar" id="avatarEl">
-                            {{ strtoupper(substr($client->name, 0, 2)) }}
-                        </div>
-                        <label class="p-avatar-edit" for="avatarInput" style="cursor:pointer;">
-                            <i class="fas fa-camera"></i>
-                        </label>
-                        <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatar(event)">
-                    </div>
-
-                    <div class="p-name">
-                        {{ strtoupper($client->name) }}
-                    </div>
-
-                    <div class="p-title">
-                        {{ __('profile.registered_on_platform') }}
-                    </div>
-
-                    <div class="p-stats">
-                        <div class="p-stat">
-                            <div class="p-stat-num">{{ $client->trainingCourses->count() }}</div>
-                            <div class="p-stat-lbl">{{ __('profile.courses') }}</div>
-                        </div>
-
-                        <div class="p-stat">
-                            <div class="p-stat-num">
-                                {{ $client->trainingCourses->where('pivot.status','completed')->count() }}
+                    <!-- Avatar -->
+                    <div class="p-card p-avatar-card">
+                        <div class="p-avatar-wrap">
+                            <div class="p-avatar" id="avatarEl">
+                                {{ strtoupper(substr($client->name, 0, 2)) }}
                             </div>
-                            <div class="p-stat-lbl">{{ __('profile.completed') }}</div>
+                            <label class="p-avatar-edit" for="avatarInput" style="cursor:pointer;">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                            <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatar(event)">
                         </div>
 
-                        <div class="p-stat">
-                            <div class="p-stat-num">{{ $client->bookings->count() }}</div>
-                            <div class="p-stat-lbl">{{ __('profile.sessions') }}</div>
+                        <div class="p-name">
+                            {{ strtoupper($client->name) }}
+                        </div>
+
+                        <div class="p-title">
+                            {{ __('profile.registered_on_platform') }}
+                        </div>
+
+                        <div class="p-stats">
+                            <div class="p-stat">
+                                <div class="p-stat-num">{{ $client->trainingCourses->count() }}</div>
+                                <div class="p-stat-lbl">{{ __('profile.courses') }}</div>
+                            </div>
+
+                            <div class="p-stat">
+                                <div class="p-stat-num">
+                                    {{ $client->trainingCourses->where('pivot.status','completed')->count() }}
+                                </div>
+                                <div class="p-stat-lbl">{{ __('profile.completed') }}</div>
+                            </div>
+
+                            <div class="p-stat">
+                                <div class="p-stat-num">{{ $client->bookings->count() }}</div>
+                                <div class="p-stat-lbl">{{ __('profile.sessions') }}</div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Contact -->
-                <div class="p-card">
-                    <div class="p-card-inner">
+                    <!-- Contact -->
+                    <div class="p-card">
+                        <div class="p-card-inner">
 
-                        <div class="p-card-header">
-                            <span class="p-card-title">{{ __('profile.contact_info') }}</span>
+                            <div class="p-card-header">
+                                <span class="p-card-title">{{ __('profile.contact_info') }}</span>
 
-                            <button class="p-edit-btn" onclick="openModal('contact')">
-                                <i class="fas fa-pen"></i> {{ __('profile.edit') }}
-                            </button>
+                                <button class="p-edit-btn" onclick="openModal('contact')">
+                                    <i class="fas fa-pen"></i> {{ __('profile.edit') }}
+                                </button>
+                            </div>
+
+                            <div class="p-info-row">
+                                <span class="p-info-label"><i class="fas fa-envelope"></i> {{ __('profile.email') }}</span>
+                                <span class="p-info-val">{{ $client->email }}</span>
+                            </div>
+
+                            <div class="p-info-row">
+                                <span class="p-info-label"><i class="fas fa-phone"></i> {{ __('profile.phone') }}</span>
+                                <span class="p-info-val">{{ $client->phone ?? __('profile.no_phone') }}</span>
+                            </div>
+
                         </div>
-
-                        <div class="p-info-row">
-                            <span class="p-info-label"><i class="fas fa-envelope"></i> {{ __('profile.email') }}</span>
-                            <span class="p-info-val">{{ $client->email }}</span>
-                        </div>
-
-                        <div class="p-info-row">
-                            <span class="p-info-label"><i class="fas fa-phone"></i> {{ __('profile.phone') }}</span>
-                            <span class="p-info-val">{{ $client->phone ?? __('profile.no_phone') }}</span>
-                        </div>
-
                     </div>
+
                 </div>
 
-            </div>
+                <!-- ================= MAIN ================= -->
+                <div class="p-main">
 
-            <!-- ================= MAIN ================= -->
-            <div class="p-main">
+                    <!-- Tabs -->
+                    <div class="p-card">
+                        <div class="p-tabs">
 
-                <!-- Tabs -->
-                <div class="p-card">
-                    <div class="p-tabs">
-
-                        <button class="p-tab active" id="btn-courses" onclick="profileSwitchTab(this,'courses')">
-                            <i class="fas fa-graduation-cap"></i>
-                            {{ __('profile.courses_tab') }}
-                        </button>
-
-                        <button class="p-tab" id="btn-sessions" onclick="profileSwitchTab(this,'sessions')">
-                            <i class="fas fa-brain"></i>
-                            {{ __('profile.sessions_tab') }}
-                        </button>
-
-                    </div>
-                </div>
-
-                <script>
-                    function profileSwitchTab(btn, name) {
-                        document.querySelectorAll('.p-tab').forEach(function(t) { t.classList.remove('active'); });
-                        document.querySelectorAll('.p-tab-content').forEach(function(c) {
-                            c.style.display = 'none';
-                        });
-                        btn.classList.add('active');
-                        var target = document.getElementById('tab-' + name);
-                        if (target) { target.style.display = 'flex'; }
-                    }
-                    document.addEventListener('DOMContentLoaded', function() {
-                        document.querySelectorAll('.p-tab-content').forEach(function(c) { c.style.display = 'none'; });
-                        var first = document.getElementById('tab-courses');
-                        if (first) { first.style.display = 'flex'; }
-                    });
-                </script>
-
-                <!-- ================= COURSES ================= -->
-                <div class="p-tab-content active" id="tab-courses">
-
-                    @forelse($client->trainingCourses as $course)
-
-                        <div class="p-course-card">
-
-                            <div class="p-course-ico">
+                            <button class="p-tab active" id="btn-courses" onclick="profileSwitchTab(this,'courses')">
                                 <i class="fas fa-graduation-cap"></i>
-                            </div>
+                                {{ __('profile.courses_tab') }}
+                            </button>
 
-                            <div class="p-course-body">
+                            <button class="p-tab" id="btn-sessions" onclick="profileSwitchTab(this,'sessions')">
+                                <i class="fas fa-brain"></i>
+                                {{ __('profile.sessions_tab') }}
+                            </button>
 
-                                <div class="p-course-top">
-                                    <div class="p-course-name">{{ $course->name }}</div>
-
-                                    <span class="p-badge" style="background: {{ match($course->pivot->status ?? 'pending') { 'active' => 'rgba(76,175,80,0.15)', 'completed' => 'rgba(33,150,243,0.15)', 'cancelled' => 'rgba(244,67,54,0.15)', default => 'rgba(255,152,0,0.15)' } }}; color: {{ match($course->pivot->status ?? 'pending') { 'active' => '#2e7d32', 'completed' => '#1565c0', 'cancelled' => '#c62828', default => '#e65100' } }}">
-                                        {{ match($course->pivot->status ?? 'pending') {
-                                            'active'    => 'مقبولة',
-                                            'completed' => 'مكتملة',
-                                            'cancelled' => 'ملغية',
-                                            default     => 'قيد المراجعة',
-                                        } }}
-                                    </span>
-                                </div>
-
-                                <div class="p-course-meta">
-                                    {{ __('profile.instructor') }}: {{ $course->instructor_name }}
-                                </div>
-
-                                <div class="p-prog-row">
-                                    <span>
-                                        {{ __('profile.registration_date') }}:
-                                        {{ $course->pivot->created_at->format('d/m/Y') }}
-                                    </span>
-                                </div>
-
-                            </div>
                         </div>
+                    </div>
 
-                    @empty
-                        <p style="text-align:center;color:#888;padding:30px 0">
-                            {{ __('profile.no_courses') }}
-                        </p>
-                    @endforelse
+                    <script>
+                        function profileSwitchTab(btn, name) {
+                            document.querySelectorAll('.p-tab').forEach(function(t) { t.classList.remove('active'); });
+                            document.querySelectorAll('.p-tab-content').forEach(function(c) {
+                                c.style.display = 'none';
+                            });
+                            btn.classList.add('active');
+                            var target = document.getElementById('tab-' + name);
+                            if (target) { target.style.display = 'flex'; }
+                        }
+                        document.addEventListener('DOMContentLoaded', function() {
+                            document.querySelectorAll('.p-tab-content').forEach(function(c) { c.style.display = 'none'; });
+                            var first = document.getElementById('tab-courses');
+                            if (first) { first.style.display = 'flex'; }
+                        });
+                    </script>
+
+                    <!-- ================= COURSES ================= -->
+                    <div class="p-tab-content active" id="tab-courses">
+
+                        @forelse($client->trainingCourses as $course)
+
+                            <div class="p-course-card">
+
+                                <div class="p-course-ico">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+
+                                <div class="p-course-body">
+
+                                    <div class="p-course-top">
+                                        <div class="p-course-name">{{ $course->name }}</div>
+
+                                        <span class="p-badge" style="background: {{ match($course->pivot->status ?? 'pending') { 'active' => 'rgba(76,175,80,0.15)', 'completed' => 'rgba(33,150,243,0.15)', 'cancelled' => 'rgba(244,67,54,0.15)', default => 'rgba(255,152,0,0.15)' } }}; color: {{ match($course->pivot->status ?? 'pending') { 'active' => '#2e7d32', 'completed' => '#1565c0', 'cancelled' => '#c62828', default => '#e65100' } }}">
+                                            {{ match($course->pivot->status ?? 'pending') {
+                                                'active'    => 'مقبولة',
+                                                'completed' => 'مكتملة',
+                                                'cancelled' => 'ملغية',
+                                                default     => 'قيد المراجعة',
+                                            } }}
+                                        </span>
+                                    </div>
+
+                                    <div class="p-course-meta">
+                                        {{ __('profile.instructor') }}: {{ $course->instructor_name }}
+                                    </div>
+
+                                    <div class="p-prog-row">
+                                        <span>
+                                            {{ __('profile.registration_date') }}:
+                                            {{ $course->pivot->created_at->format('d/m/Y') }}
+                                        </span>
+
+                                        @if(($course->pivot->status ?? '') === 'completed')
+                                            <a href="{{ route('certificate.show', $course->pivot->id) }}"
+                                            target="_blank"
+                                            style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(90deg,#b07000,#e8a820);color:#fff;padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:700;text-decoration:none;">
+                                                <i class="fas fa-certificate"></i> عرض الشهادة
+                                            </a>
+                                        @endif
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        @empty
+                            <p style="text-align:center;color:#888;padding:30px 0">
+                                {{ __('profile.no_courses') }}
+                            </p>
+                        @endforelse
+
+                    </div>
+
+                    <!-- ================= SESSIONS ================= -->
+                    <div class="p-tab-content" id="tab-sessions">
+
+                        @forelse($client->bookings as $booking)
+
+                            <div class="p-session-row">
+                                <div class="p-s-dot"></div>
+
+                                <div class="p-s-info">
+                                    <div class="p-s-title">{{ $booking->session_type }}</div>
+
+                                    <div class="p-s-date">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        {{ \Carbon\Carbon::parse($booking->date)->format('d/m/Y') }}
+                                        · {{ $booking->time }}
+                                    </div>
+                                </div>
+
+                                <span class="p-s-badge" style="background: {{ match($booking->status ?? 'pending') { 'accepted' => 'rgba(76,175,80,0.15)', 'rejected' => 'rgba(244,67,54,0.15)', default => 'rgba(255,152,0,0.15)' } }}; color: {{ match($booking->status ?? 'pending') { 'accepted' => '#2e7d32', 'rejected' => '#c62828', default => '#e65100' } }}">
+                                    {{ match($booking->status ?? 'pending') { 'accepted' => 'مقبولة', 'rejected' => 'مرفوضة', default => 'قيد الانتظار' } }}
+                                </span>
+                            </div>
+
+                        @empty
+                            <p style="text-align:center;color:#888;padding:30px 0">
+                                {{ __('profile.no_sessions') }}
+                            </p>
+                        @endforelse
+
+                    </div>
 
                 </div>
-
-                <!-- ================= SESSIONS ================= -->
-                <div class="p-tab-content" id="tab-sessions">
-
-                    @forelse($client->bookings as $booking)
-
-                        <div class="p-session-row">
-                            <div class="p-s-dot"></div>
-
-                            <div class="p-s-info">
-                                <div class="p-s-title">{{ $booking->session_type }}</div>
-
-                                <div class="p-s-date">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    {{ \Carbon\Carbon::parse($booking->date)->format('d/m/Y') }}
-                                    · {{ $booking->time }}
-                                </div>
-                            </div>
-
-                            <span class="p-s-badge" style="background: {{ match($booking->status ?? 'pending') { 'accepted' => 'rgba(76,175,80,0.15)', 'rejected' => 'rgba(244,67,54,0.15)', default => 'rgba(255,152,0,0.15)' } }}; color: {{ match($booking->status ?? 'pending') { 'accepted' => '#2e7d32', 'rejected' => '#c62828', default => '#e65100' } }}">
-                                {{ match($booking->status ?? 'pending') { 'accepted' => 'مقبولة', 'rejected' => 'مرفوضة', default => 'قيد الانتظار' } }}
-                            </span>
-                        </div>
-
-                    @empty
-                        <p style="text-align:center;color:#888;padding:30px 0">
-                            {{ __('profile.no_sessions') }}
-                        </p>
-                    @endforelse
-
-                </div>
-
             </div>
         </div>
-    </div>
-
         <!-- Modal: Edit Main -->
         <div class="p-overlay" id="modal-main" onclick="if(event.target===this)closeModal('main')">
             <div class="p-modal">
@@ -261,7 +268,6 @@
                 </form>
             </div>
         </div>
-
         <!-- Modal: Edit Contact -->
         <div class="p-overlay" id="modal-contact" onclick="if(event.target===this)closeModal('contact')">
             <div class="p-modal">
@@ -289,9 +295,7 @@
                 </form>
             </div>
         </div>
-
         <div class="p-toast" id="toast"><i class="fas fa-check-circle"></i> {{ __('common.save') }}</div>
-
         </main>
 
     @endsection
