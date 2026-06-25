@@ -20,7 +20,7 @@
                     <div class="cd-hero-info" data-aos="fade-right">
                         <div class="cd-category-badge">
                             <i class="fas fa-graduation-cap"></i>
-                            <span>{{ $course->trainingCourseCategory?->name }}</span>
+                            <span>{{ $course->trainingCourseCategory?->trans('name') }}</span>
                         </div>
                         <h1 class="cd-title">{{ $course->trans('name') }}</h1>
                         <p class="cd-desc">{{ $course->trans('short_description') }}</p>

@@ -425,8 +425,8 @@
             </button>
 
             @foreach($courseCategories as $category)
-                <button class="filter-btn" data-filter="{{ $category->name }}">
-                    {{ $category->name }}
+                <button class="filter-btn" data-filter="{{ $category->trans('name') }}">
+                    {{ $category->trans('name') }}
                 </button>
             @endforeach
 
@@ -443,7 +443,7 @@
             <div class="course-card"
                     data-aos="fade-up"
                     data-aos-delay="{{ ($index + 1) * 100 }}"
-                    data-category="{{ $course->trainingCourseCategory?->name }}">
+                    data-category="{{ $course->trainingCourseCategory?->trans('name') }}">
 
                 <div class="course-image">
 
@@ -456,7 +456,7 @@
 
                         <div class="course-category">
                             <i class="fas fa-graduation-cap"></i>
-                            <span>{{ $course->trainingCourseCategory?->name }}</span>
+                            <span>{{ $course->trainingCourseCategory?->trans('name') }}</span>
                         </div>
 
                     </div>
@@ -648,20 +648,20 @@
                     </div>
 
                     <p class="testimonial-text">
-                        {{ $testimonial->review }}
+                        {{ $testimonial->trans('review') }}
                     </p>
 
                     <div class="testimonial-footer">
 
                         <div class="client-avatar">
                             @if($testimonial->image)
-                                <img src="{{ Storage::url($testimonial->image) }}" alt="{{ $testimonial->name }}" />
+                                <img src="{{ Storage::url($testimonial->image) }}" alt="{{ $testimonial->trans('name') }}" />
                             @endif
                         </div>
 
                         <div class="client-info">
-                            <h4 class="client-name">{{ $testimonial->name }}</h4>
-                            <p class="client-role">{{ $testimonial->job }}</p>
+                            <h4 class="client-name">{{ $testimonial->trans('name') }}</h4>
+                            <p class="client-role">{{ $testimonial->trans('job') }}</p>
                         </div>
 
                         <div class="verified-badge">
@@ -713,7 +713,7 @@
                             <div class="course-badge">
                                 <div class="course-category">
                                     <i class="fas fa-brain"></i>
-                                    <span>{{ $session->psychologicalSessionCategory?->name }}</span>
+                                    <span>{{ $session->psychologicalSessionCategory?->trans('name') }}</span>
                                 </div>
                             </div>
                         </div>

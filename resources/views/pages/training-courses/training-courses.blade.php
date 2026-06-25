@@ -89,8 +89,8 @@
                     </button>
 
                     @foreach($categories as $category)
-                        <button class="filter-btn" data-filter="{{ $category->name }}">
-                            {{ $category->name }}
+                        <button class="filter-btn" data-filter="{{ $category->trans('name') }}">
+                            {{ $category->trans('name') }}
                         </button>
                     @endforeach
 
@@ -104,7 +104,7 @@
                     <div class="course-card"
                         data-aos="fade-up"
                         data-aos-delay="{{ ($index % 3 + 1) * 100 }}"
-                        data-category="{{ $course->trainingCourseCategory?->name }}">
+                        data-category="{{ $course->trainingCourseCategory?->trans('name') }}">
 
                         <div class="course-image">
 
@@ -116,7 +116,7 @@
                             <div class="course-badge">
                                 <div class="course-category">
                                     <i class="fas fa-graduation-cap"></i>
-                                    <span>{{ $course->trainingCourseCategory?->name }}</span>
+                                    <span>{{ $course->trainingCourseCategory?->trans('name') }}</span>
                                 </div>
                             </div>
 
@@ -214,7 +214,7 @@
 
                             <div class="session-type-badge">
                                 <i class="fas fa-brain"></i>
-                                {{ $session->psychologicalSessionCategory?->name }}
+                                {{ $session->psychologicalSessionCategory?->trans('name') }}
                             </div>
 
                         </div>
