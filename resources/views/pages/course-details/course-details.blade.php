@@ -25,13 +25,11 @@
                         <h1 class="cd-title">{{ $course->trans('name') }}</h1>
                         <p class="cd-desc">{{ $course->trans('short_description') }}</p>
                         <div class="cd-meta-row">
-                            @if($course->rating)
-                                <div class="cd-meta-item">
-                                    <i class="fas fa-star"></i>
-                                    <span>{{ $course->rating }}</span>
-                                    <span class="cd-meta-label">({{ $course->reviews_count }} تقييم)</span>
-                                </div>
-                            @endif
+                            <div class="cd-meta-item">
+                                <i class="fas fa-star"></i>
+                                <span>{{ $course->rating > 0 ? $course->rating : '0' }}</span>
+                                <span class="cd-meta-label">({{ $course->reviews_count }} تقييم)</span>
+                            </div>
                             @if($course->enrolled_students_count)
                                 <div class="cd-meta-item"><i class="fas fa-users"></i><span>+{{ $course->enrolled_students_count }} طالب</span></div>
                             @endif
@@ -119,12 +117,11 @@
                         @endif
 
                         <!-- Reviews -->
-                        @if($canSeeReviews)
                         <div class="cd-section-card" data-aos="fade-up">
                             <h2 class="cd-section-title"><i class="fas fa-star"></i>تقييمات الطلاب</h2>
                             <div class="cd-rating-summary">
                                 <div class="cd-rating-big">
-                                    <div class="num">{{ $course->rating ?? '0' }}</div>
+                                    <div class="num">{{ $course->rating > 0 ? $course->rating : '0' }}</div>
                                     <div class="stars">
                                         @for($i = 1; $i <= 5; $i++)
                                             @if($i <= $course->rating)
@@ -193,7 +190,6 @@
                             @endforeach
 
                         </div>
-                        @endif
                     </div>
 
                     <!-- Sidebar -->

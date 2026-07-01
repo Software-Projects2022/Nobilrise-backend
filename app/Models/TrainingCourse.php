@@ -25,8 +25,6 @@ class TrainingCourse extends Model
         'instructor_title',
         'instructor_image',
         'instructor_bio',
-        'rating',
-        'reviews_count',
         'students_count',
         'duration_hours',
     ];
@@ -51,6 +49,18 @@ class TrainingCourse extends Model
 
     public function getEnrolledStudentsCountAttribute(): int
     {
-        return $this->clients()->count();
+        return $this->relationLoaded('clients')
+            ? $this->clients->count()
+            : $this->clients()->count();
+    }
+
+    public function getRatingAttribute(): float
+    {
+        return round($this->reviews()->avg('rating') ?? 0, 1);
+    }
+
+    public function getReviewsCountAttribute(): int
+    {
+        return $this->reviews()->count();
     }
 }

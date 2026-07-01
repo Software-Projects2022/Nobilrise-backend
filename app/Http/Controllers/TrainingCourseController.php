@@ -21,7 +21,7 @@ class TrainingCourseController extends Controller
 
     public function show(int $id): View
     {
-        $course = TrainingCourse::with(['trainingCourseCategory', 'reviews'])->findOrFail($id);
+        $course = TrainingCourse::with(['trainingCourseCategory', 'reviews', 'clients'])->findOrFail($id);
         $relatedCourses = TrainingCourse::where('id', '!=', $id)->limit(3)->get();
 
         $canSeeReviews = false;

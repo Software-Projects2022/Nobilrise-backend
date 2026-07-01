@@ -1638,6 +1638,11 @@ body {
   color: #6a6a6a;
   margin-bottom: 15px;
   min-height: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Course Meta */
@@ -4103,7 +4108,11 @@ body {
   line-height: 1.7;
   color: #6a6a6a;
   margin-bottom: 20px;
-  min-height: 30px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Course Meta */
