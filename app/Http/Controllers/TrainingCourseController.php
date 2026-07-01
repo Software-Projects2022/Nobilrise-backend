@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CourseReview;
 use App\Models\PsychologicalSession;
 use App\Models\TrainingCourse;
 use App\Models\TrainingCourseCategory;
@@ -24,6 +25,7 @@ class TrainingCourseController extends Controller
         $relatedCourses = TrainingCourse::where('id', '!=', $id)->limit(3)->get();
 
         $canSeeReviews = false;
+        $alreadyReviewed = false;
 
         if (auth('client')->check()) {
             $enrollment = auth('client')->user()
@@ -33,8 +35,14 @@ class TrainingCourseController extends Controller
                 ->exists();
 
             $canSeeReviews = $enrollment;
+
+            if ($canSeeReviews) {
+                $alreadyReviewed = CourseReview::where('training_course_id', $id)
+                    ->where('reviewer_name', auth('client')->user()->name)
+                    ->exists();
+            }
         }
 
-        return view('pages.course-details.course-details', compact('course', 'relatedCourses', 'canSeeReviews'));
+        return view('pages.course-details.course-details', compact('course', 'relatedCourses', 'canSeeReviews', 'alreadyReviewed'));
     }
 }

@@ -18,7 +18,10 @@ class SettingResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
-    protected static ?string $navigationLabel = 'Settings';
+    protected static ?string $navigationLabel = 'الإعدادات';
+
+    protected static ?string $modelLabel = 'الإعدادات';
+    protected static ?string $pluralModelLabel = 'الإعدادات';
 
     public static function form(Schema $schema): Schema
     {

@@ -20,6 +20,10 @@ class ClientTestimonialResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeftRight;
 
+    protected static ?string $navigationLabel = 'آراء العملاء';
+    protected static ?string $modelLabel = 'رأي عميل';
+    protected static ?string $pluralModelLabel = 'آراء العملاء';
+
     public static function form(Schema $schema): Schema
     {
         return ClientTestimonialForm::configure($schema);

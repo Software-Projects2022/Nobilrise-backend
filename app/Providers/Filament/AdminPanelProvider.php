@@ -31,6 +31,8 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->login()
             ->brandName('الصعود النبيل')
+            ->brandLogo(asset('assets/img/logo.png'))
+            ->brandLogoHeight('50px')
             ->defaultThemeMode(ThemeMode::Dark)
             ->sidebarCollapsibleOnDesktop()
             ->colors([

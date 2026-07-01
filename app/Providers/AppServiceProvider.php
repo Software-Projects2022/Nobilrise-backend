@@ -12,6 +12,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        if (request()->is('admin*')) {
+            app()->setLocale('ar');
+        }
+
         View::composer(['*'], function (\Illuminate\View\View $view) {
             if (! request()->is('admin*')) {
                 $view->with('settings', Setting::first() ?? new Setting);

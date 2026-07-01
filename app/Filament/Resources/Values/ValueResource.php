@@ -20,6 +20,10 @@ class ValueResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHeart;
 
+    protected static ?string $navigationLabel = 'القيم';
+    protected static ?string $modelLabel = 'قيمة';
+    protected static ?string $pluralModelLabel = 'القيم';
+
     public static function form(Schema $schema): Schema
     {
         return ValueForm::configure($schema);

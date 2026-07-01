@@ -20,6 +20,10 @@ class PsychologicalSessionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSparkles;
 
+    protected static ?string $navigationLabel = 'الجلسات النفسية';
+    protected static ?string $modelLabel = 'جلسة نفسية';
+    protected static ?string $pluralModelLabel = 'الجلسات النفسية';
+
     public static function form(Schema $schema): Schema
     {
         return PsychologicalSessionForm::configure($schema);

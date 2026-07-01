@@ -20,6 +20,10 @@ class TrainingCourseCategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFolderOpen;
 
+    protected static ?string $navigationLabel = 'تصنيفات الدورات';
+    protected static ?string $modelLabel = 'تصنيف دورة';
+    protected static ?string $pluralModelLabel = 'تصنيفات الدورات';
+
     public static function form(Schema $schema): Schema
     {
         return TrainingCourseCategoryForm::configure($schema);

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\ClientAuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CourseReviewController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -57,5 +58,6 @@ Route::middleware('auth:client')->group(function () {
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
     Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'store'])->name('courses.enroll');
+    Route::post('/courses/{course}/review', [CourseReviewController::class, 'store'])->name('courses.review');
     Route::get('/certificate/{enrollmentId}', [CertificateController::class, 'show'])->name('certificate.show');
 });

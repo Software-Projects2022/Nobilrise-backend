@@ -20,6 +20,10 @@ class TrainingCourseResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
+    protected static ?string $navigationLabel = 'الدورات التدريبية';
+    protected static ?string $modelLabel = 'دورة تدريبية';
+    protected static ?string $pluralModelLabel = 'الدورات التدريبية';
+
     public static function form(Schema $schema): Schema
     {
         return TrainingCourseForm::configure($schema);

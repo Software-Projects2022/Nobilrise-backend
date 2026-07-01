@@ -20,6 +20,10 @@ class PsychologicalSessionCategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
+    protected static ?string $navigationLabel = 'تصنيفات الجلسات';
+    protected static ?string $modelLabel = 'تصنيف جلسة';
+    protected static ?string $pluralModelLabel = 'تصنيفات الجلسات';
+
     public static function form(Schema $schema): Schema
     {
         return PsychologicalSessionCategoryForm::configure($schema);

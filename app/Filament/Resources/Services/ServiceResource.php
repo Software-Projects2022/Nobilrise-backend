@@ -20,6 +20,10 @@ class ServiceResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
 
+    protected static ?string $navigationLabel = 'الخدمات';
+    protected static ?string $modelLabel = 'خدمة';
+    protected static ?string $pluralModelLabel = 'الخدمات';
+
     public static function form(Schema $schema): Schema
     {
         return ServiceForm::configure($schema);

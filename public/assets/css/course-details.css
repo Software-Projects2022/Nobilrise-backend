@@ -754,3 +754,10 @@
     padding: 22px 16px;
   }
 }
+
+/* ── Review Star Rating ── */
+.cd-star-rating { flex-direction: row-reverse; }
+.cd-star-rating label { color: #ddd; font-size: 28px; cursor: pointer; transition: color 0.2s; }
+.cd-star-rating input:checked ~ label,
+.cd-star-rating label:hover,
+.cd-star-rating label:hover ~ label { color: #c5a773; }

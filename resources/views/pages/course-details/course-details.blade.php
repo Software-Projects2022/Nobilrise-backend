@@ -139,31 +139,31 @@
                                     <div class="total">{{ $course->reviews_count ?? 0 }} تقييم</div>
                                 </div>
                                 <div class="cd-rating-bars">
-                                    <div class="cd-rating-bar-row"><span>5 ★</span>
+                                    <!-- <div class="cd-rating-bar-row"><span>5 ★</span>
                                         <div class="cd-bar-track">
                                             <div class="cd-bar-fill" style="width:75%"></div>
                                         </div><span>75%</span>
-                                    </div>
-                                    <div class="cd-rating-bar-row"><span>4 ★</span>
+                                    </div> -->
+                                    <!-- <div class="cd-rating-bar-row"><span>4 ★</span>
                                         <div class="cd-bar-track">
                                             <div class="cd-bar-fill" style="width:18%"></div>
                                         </div><span>18%</span>
-                                    </div>
-                                    <div class="cd-rating-bar-row"><span>3 ★</span>
+                                    </div> -->
+                                    <!-- <div class="cd-rating-bar-row"><span>3 ★</span>
                                         <div class="cd-bar-track">
                                             <div class="cd-bar-fill" style="width:5%"></div>
                                         </div><span>5%</span>
-                                    </div>
-                                    <div class="cd-rating-bar-row"><span>2 ★</span>
+                                    </div> -->
+                                    <!-- <div class="cd-rating-bar-row"><span>2 ★</span>
                                         <div class="cd-bar-track">
                                             <div class="cd-bar-fill" style="width:1%"></div>
                                         </div><span>1%</span>
-                                    </div>
-                                    <div class="cd-rating-bar-row"><span>1 ★</span>
+                                    </div> -->
+                                    <!-- <div class="cd-rating-bar-row"><span>1 ★</span>
                                         <div class="cd-bar-track">
                                             <div class="cd-bar-fill" style="width:1%"></div>
                                         </div><span>1%</span>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             @foreach($course->reviews as $review)
@@ -172,7 +172,7 @@
                                     @if($review->reviewer_image)
                                         <img src="{{ Storage::url($review->reviewer_image) }}" alt="{{ $review->reviewer_name }}">
                                     @endif
-                                    <div>
+                                    <!-- <div>
                                         <div class="cd-review-name">{{ $review->reviewer_name }}</div>
                                         <div class="cd-review-stars">
                                             @for($i = 1; $i <= 5; $i++)
@@ -185,12 +185,13 @@
                                                 @endif
                                             @endfor
                                         </div>
-                                    </div>
-                                    <span class="cd-review-date">{{ $review->review_date }}</span>
+                                    </div> -->
+                                    <!-- <span class="cd-review-date">{{ $review->review_date }}</span> -->
                                 </div>
-                                <p class="cd-review-text">{{ $review->review }}</p>
+                                <!-- <p class="cd-review-text">{{ $review->review }}</p> -->
                             </div>
                             @endforeach
+
                         </div>
                         @endif
                     </div>

@@ -31,6 +31,12 @@
                 </div>
             @endif
 
+            @if(session('review_success'))
+                <div style="background:rgba(76,175,80,0.12);border:1px solid #4caf50;border-radius:12px;padding:14px 20px;margin-bottom:20px;color:#2e7d32;display:flex;align-items:center;gap:10px;">
+                    <i class="fas fa-star"></i> {{ session('review_success') }}
+                </div>
+            @endif
+
             <!-- Top Bar -->
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
                 <h2 style="font-size:22px;font-weight:900;color:#1a1a1a;margin:0;">
@@ -197,11 +203,31 @@
                                         </span>
 
                                         @if(($course->pivot->status ?? '') === 'completed')
-                                            <a href="{{ route('certificate.show', $course->pivot->id) }}"
-                                            target="_blank"
-                                            style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(90deg,#b07000,#e8a820);color:#fff;padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:700;text-decoration:none;">
-                                                <i class="fas fa-certificate"></i> عرض الشهادة
-                                            </a>
+                                            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                                                <a href="{{ route('certificate.show', $course->pivot->id) }}"
+                                                target="_blank"
+                                                style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(90deg,#b07000,#e8a820);color:#fff;padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:700;text-decoration:none;">
+                                                    <i class="fas fa-certificate"></i> عرض الشهادة
+                                                </a>
+
+                                                @php
+                                                    $hasReviewed = \App\Models\CourseReview::where('training_course_id', $course->id)
+                                                        ->where('reviewer_name', $client->name)
+                                                        ->exists();
+                                                @endphp
+
+                                                @if(!$hasReviewed)
+                                                    <button type="button"
+                                                        onclick="openReviewModal({{ $course->id }}, '{{ addslashes($course->name) }}')"
+                                                        style="display:inline-flex;align-items:center;gap:6px;background:rgba(197,167,115,0.15);border:1px solid #c5a773;color:#a88b5a;padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:700;cursor:pointer;">
+                                                        <i class="fas fa-star"></i> قيّم الدورة
+                                                    </button>
+                                                @else
+                                                    <span style="font-size:.8rem;color:#4caf50;display:flex;align-items:center;gap:4px;">
+                                                        <i class="fas fa-check-circle"></i> تم التقييم
+                                                    </span>
+                                                @endif
+                                            </div>
                                         @endif
                                     </div>
 
@@ -313,6 +339,51 @@
             </div>
         </div>
         <div class="p-toast" id="toast"><i class="fas fa-check-circle"></i> {{ __('common.save') }}</div>
+
+        {{-- Review Modal --}}
+        <div class="p-overlay" id="modal-review" onclick="if(event.target===this)closeModal('review')">
+            <div class="p-modal">
+                <div class="p-modal-head">
+                    <h3><i class="fas fa-star" style="color:#c5a773;margin-left:6px;"></i> تقييم الدورة</h3>
+                    <button class="p-modal-close" onclick="closeModal('review')"><i class="fas fa-times"></i></button>
+                </div>
+                <form method="POST" id="review-form" action="">
+                    @csrf
+                    <div class="p-modal-body">
+                        <p id="review-course-name" style="font-weight:700;color:#1a1a1a;margin-bottom:16px;font-size:15px;"></p>
+
+                        @if(session('review_success'))
+                            <div style="background:rgba(76,175,80,0.12);border:1px solid #4caf50;border-radius:10px;padding:12px;color:#2e7d32;margin-bottom:12px;font-size:13px;">
+                                <i class="fas fa-check-circle"></i> {{ session('review_success') }}
+                            </div>
+                        @endif
+
+                        <div class="p-field">
+                            <label style="font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:8px;">تقييمك بالنجوم</label>
+                            <div style="display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px;" id="star-container">
+                                @for($s = 5; $s >= 1; $s--)
+                                    <input type="radio" name="rating" id="pstar{{ $s }}" value="{{ $s }}" style="display:none">
+                                    <label for="pstar{{ $s }}" style="font-size:32px;cursor:pointer;color:#ddd;transition:color 0.2s;" class="pstar-lbl">★</label>
+                                @endfor
+                            </div>
+                            @error('rating') <span style="color:#e53935;font-size:12px;">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="p-field" style="margin-top:14px;">
+                            <label style="font-size:13px;font-weight:700;color:#555;display:block;margin-bottom:8px;">تعليقك على الدورة</label>
+                            <textarea name="review" rows="4"
+                                style="width:100%;padding:12px;border:1.5px solid rgba(0,0,0,0.12);border-radius:10px;font-family:inherit;font-size:14px;resize:none;outline:none;"
+                                placeholder="شاركنا رأيك...">{{ old('review') }}</textarea>
+                            @error('review') <span style="color:#e53935;font-size:12px;">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+                    <div class="p-modal-foot">
+                        <button type="button" class="p-btn-cancel" onclick="closeModal('review')">إلغاء</button>
+                        <button type="submit" class="p-btn-save"><i class="fas fa-paper-plane"></i> إرسال التقييم</button>
+                    </div>
+                </form>
+            </div>
+        </div>
         </main>
 
     @endsection
@@ -382,6 +453,35 @@
                     document.body.style.overflow = '';
                 }
             }
+
+            function openReviewModal(courseId, courseName) {
+                document.getElementById('review-form').action = '/courses/' + courseId + '/review';
+                document.getElementById('review-course-name').textContent = courseName;
+                // Reset stars
+                document.querySelectorAll('input[name="rating"]').forEach(function(r) { r.checked = false; });
+                document.querySelectorAll('.pstar-lbl').forEach(function(l) { l.style.color = '#ddd'; });
+                openModal('review');
+            }
+
+            // Star hover effect
+            document.querySelectorAll('.pstar-lbl').forEach(function(lbl, idx, all) {
+                lbl.addEventListener('mouseover', function() {
+                    all.forEach(function(l, i) { l.style.color = i >= idx ? '#c5a773' : '#ddd'; });
+                });
+                lbl.addEventListener('mouseleave', function() {
+                    var checked = document.querySelector('input[name="rating"]:checked');
+                    if (checked) {
+                        var val = parseInt(checked.value);
+                        all.forEach(function(l, i) { l.style.color = (5 - i) <= val ? '#c5a773' : '#ddd'; });
+                    } else {
+                        all.forEach(function(l) { l.style.color = '#ddd'; });
+                    }
+                });
+                lbl.addEventListener('click', function() {
+                    var val = parseInt(lbl.getAttribute('for').replace('pstar', ''));
+                    all.forEach(function(l, i) { l.style.color = (5 - i) <= val ? '#c5a773' : '#ddd'; });
+                });
+            });
 
             function showToast() {
                 var toast = document.getElementById('toast');

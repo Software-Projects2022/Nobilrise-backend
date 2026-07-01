@@ -20,6 +20,10 @@ class CourseReviewResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedStar;
 
+    protected static ?string $navigationLabel = 'تقييمات الدورات';
+    protected static ?string $modelLabel = 'تقييم';
+    protected static ?string $pluralModelLabel = 'تقييمات الدورات';
+
     public static function form(Schema $schema): Schema
     {
         return CourseReviewForm::configure($schema);

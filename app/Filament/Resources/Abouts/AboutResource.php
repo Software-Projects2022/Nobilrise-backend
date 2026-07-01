@@ -18,7 +18,9 @@ class AboutResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInformationCircle;
 
-    protected static ?string $navigationLabel = 'About';
+    protected static ?string $navigationLabel = 'من نحن';
+    protected static ?string $modelLabel = 'من نحن';
+    protected static ?string $pluralModelLabel = 'من نحن';
 
     public static function form(Schema $schema): Schema
     {
