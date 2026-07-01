@@ -116,7 +116,10 @@
                         <div class="f-terms">
                             <input type="checkbox" id="terms-check" required>
                             <label for="terms-check">
-                                {{ __('auth.terms') }} <a href="#">{{ __('auth.terms_link') }}</a> {{ app()->getLocale() === 'ar' ? 'و' : '&' }} <a href="#">{{ __('auth.privacy_link') }}</a>
+                                {{ __('auth.terms') }}
+                                <a href="#" onclick="openTermsModal('terms-modal'); return false;">{{ __('auth.terms_link') }}</a>
+                                {{ app()->getLocale() === 'ar' ? 'و' : '&' }}
+                                <a href="#" onclick="openTermsModal('privacy-modal'); return false;">{{ __('auth.privacy_link') }}</a>
                             </label>
                         </div>
 
@@ -134,5 +137,75 @@
                 </div>
             </div>
         </div>
+
+        {{-- Terms & Conditions Modal --}}
+        <div class="terms-modal-overlay" id="terms-modal">
+            <div class="terms-modal-box">
+                <div class="terms-modal-header">
+                    <h2>{{ __('auth.terms_link') }}</h2>
+                    <button type="button" class="terms-modal-close" onclick="closeTermsModal('terms-modal')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="terms-modal-body">
+                    <p>{{ __('auth.terms_content') }}</p>
+                </div>
+                <div class="terms-modal-footer">
+                    <button type="button" class="terms-modal-btn" onclick="closeTermsModal('terms-modal')">
+                        {{ __('auth.modal_close') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {{-- Privacy Policy Modal --}}
+        <div class="terms-modal-overlay" id="privacy-modal">
+            <div class="terms-modal-box">
+                <div class="terms-modal-header">
+                    <h2>{{ __('auth.privacy_link') }}</h2>
+                    <button type="button" class="terms-modal-close" onclick="closeTermsModal('privacy-modal')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="terms-modal-body">
+                    <p>{{ __('auth.privacy_content') }}</p>
+                </div>
+                <div class="terms-modal-footer">
+                    <button type="button" class="terms-modal-btn" onclick="closeTermsModal('privacy-modal')">
+                        {{ __('auth.modal_close') }}
+                    </button>
+                </div>
+            </div>
+        </div>
     </main>
+@endsection
+
+@section('scripts')
+<script>
+    function openTermsModal(id) {
+        document.getElementById(id).classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeTermsModal(id) {
+        document.getElementById(id).classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.terms-modal-overlay').forEach(function(overlay) {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                closeTermsModal(overlay.id);
+            }
+        });
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.terms-modal-overlay.active').forEach(function(modal) {
+                closeTermsModal(modal.id);
+            });
+        }
+    });
+</script>
 @endsection

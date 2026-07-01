@@ -664,16 +664,10 @@
                             <p class="client-role">{{ $testimonial->trans('job') }}</p>
                         </div>
 
-                        <div class="verified-badge">
-                            <i class="fas fa-check-circle"></i>
-                            {{ __('common.verified') }}
-                        </div>
-
                     </div>
 
                 </div>
             </div>
-
             @endforeach
 
         </div>

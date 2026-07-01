@@ -49,19 +49,28 @@
 
                     <!-- Avatar -->
                     <div class="p-card p-avatar-card">
-                        <div class="p-avatar-wrap">
-                            <div class="p-avatar" id="avatarEl">
-                                {{ strtoupper(substr($client->name, 0, 2)) }}
+                        <form method="POST" action="{{ route('profile.avatar') }}" enctype="multipart/form-data" id="avatar-form">
+                            @csrf
+                            <div class="p-avatar-wrap">
+                                @if($client->avatar)
+                                    <div class="p-avatar" id="avatarEl" style="background-image:url('{{ Storage::url($client->avatar) }}');background-size:cover;background-position:center;"></div>
+                                @else
+                                    <div class="p-avatar" id="avatarEl">
+                                        {{ strtoupper(substr($client->name, 0, 2)) }}
+                                    </div>
+                                @endif
+                                <label class="p-avatar-edit" for="avatarInput" style="cursor:pointer;">
+                                    <i class="fas fa-camera"></i>
+                                </label>
+                                <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display:none"
+                                    onchange="handleAvatar(event)">
                             </div>
-                            <label class="p-avatar-edit" for="avatarInput" style="cursor:pointer;">
-                                <i class="fas fa-camera"></i>
-                            </label>
-                            <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatar(event)">
-                        </div>
+                        </form>
 
                         <div class="p-name">
                             {{ strtoupper($client->name) }}
                         </div>
+                        </form>
 
                         <div class="p-title">
                             {{ __('profile.registered_on_platform') }}
@@ -248,13 +257,17 @@
                     <h3>{{ __('profile.edit_data') }}</h3>
                     <button class="p-modal-close" onclick="closeModal('main')"><i class="fas fa-times"></i></button>
                 </div>
-                <form method="POST" action="{{ route('profile.update') }}">
+                <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="p-modal-body">
                         <div class="p-field">
                             <label>{{ __('profile.full_name') }}</label>
                             <input name="name" value="{{ $client->name }}" required />
+                        </div>
+                        <div class="p-field">
+                            <label>{{ __('auth.email') }}</label>
+                            <input type="email" name="email" value="{{ $client->email }}" required />
                         </div>
                         <div class="p-field">
                             <label>{{ __('profile.phone') }}</label>
@@ -275,13 +288,17 @@
                     <h3>{{ __('profile.contact_info') }}</h3>
                     <button class="p-modal-close" onclick="closeModal('contact')"><i class="fas fa-times"></i></button>
                 </div>
-                <form method="POST" action="{{ route('profile.update') }}">
+                <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="p-modal-body">
                         <div class="p-field">
                             <label>{{ __('profile.full_name') }}</label>
                             <input type="text" name="name" value="{{ $client->name }}" required />
+                        </div>
+                        <div class="p-field">
+                            <label>{{ __('auth.email') }}</label>
+                            <input type="email" name="email" value="{{ $client->email }}" required />
                         </div>
                         <div class="p-field">
                             <label>{{ __('profile.phone') }}</label>
@@ -347,6 +364,7 @@
                     avatar.textContent = '';
                 };
                 reader.readAsDataURL(file);
+                document.getElementById('avatar-form').submit();
             }
 
             function openModal(name) {

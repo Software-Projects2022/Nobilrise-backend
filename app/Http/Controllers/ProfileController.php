@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -16,12 +17,32 @@ class ProfileController extends Controller
         return view('pages.profile.profile', compact('client'));
     }
 
+    public function updateAvatar(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'avatar' => ['required', 'image', 'max:2048'],
+        ]);
+
+        $client = auth('client')->user();
+
+        if ($client->avatar) {
+            Storage::disk('public')->delete($client->avatar);
+        }
+
+        $client->update([
+            'avatar' => $request->file('avatar')->store('avatars', 'public'),
+        ]);
+
+        return back()->with('success', 'تم تحديث الصورة بنجاح.');
+    }
+
     public function update(Request $request): RedirectResponse
     {
         $client = auth('client')->user();
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', "unique:clients,email,{$client->id}"],
             'phone' => ['nullable', 'string', 'max:30'],
         ]);
 

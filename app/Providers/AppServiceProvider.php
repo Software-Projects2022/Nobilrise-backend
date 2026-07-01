@@ -12,6 +12,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        View::share('settings', Setting::first());
+        View::composer(['*'], function (\Illuminate\View\View $view) {
+            if (! request()->is('admin*')) {
+                $view->with('settings', Setting::first() ?? new Setting);
+            }
+        });
     }
 }

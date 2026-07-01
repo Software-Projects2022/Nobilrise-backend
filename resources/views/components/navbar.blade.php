@@ -40,8 +40,18 @@
                         {{ app()->getLocale() === 'ar' ? 'EN' : 'ع' }}
                     </a>
                     @auth('client')
-                        <a href="{{ route('profile') }}" class="btn-login">
-                            <i class="fas fa-user-circle"></i> {{ Auth::guard('client')->user()->name }}
+                        @php $authClient = Auth::guard('client')->user(); @endphp
+                        <a href="{{ route('profile') }}" class="btn-login" style="display:flex;align-items:center;gap:8px;padding:6px 14px;">
+                            @if($authClient->avatar)
+                                <img src="{{ Storage::url($authClient->avatar) }}"
+                                     style="width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid var(--color-primary);"
+                                     alt="{{ $authClient->name }}">
+                            @else
+                                <span style="width:30px;height:30px;border-radius:50%;background:var(--color-primary);color:#000;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">
+                                    {{ strtoupper(substr($authClient->name, 0, 2)) }}
+                                </span>
+                            @endif
+                            {{ $authClient->name }}
                         </a>
                         <form method="POST" action="{{ route('logout') }}" style="display:inline">
                             @csrf

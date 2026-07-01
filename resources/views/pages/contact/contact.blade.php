@@ -368,6 +368,20 @@
     .contact-map-badge strong { display: block; font-size: 14px; color: var(--color-text-dark); }
     .contact-map-badge span { font-size: 12px; color: var(--color-text-gray-light); }
 
+    /* Validation errors */
+    .contact-f-error {
+        border-color: #e53935 !important;
+        background: rgba(229,57,53,0.05) !important;
+    }
+
+    .contact-f-err-msg {
+        display: block;
+        color: #e53935;
+        font-size: 12px;
+        margin-top: 5px;
+        font-weight: 600;
+    }
+
     /* Alert success */
     .contact-alert-success {
         padding: 14px 20px;
@@ -581,28 +595,32 @@
                         <div class="contact-f-row">
                             <div class="contact-f-group">
                                 <label class="contact-f-label">{{ __('contact.name_first') }}</label>
-                                <input type="text" name="first_name" class="contact-f-input"
+                                <input type="text" name="first_name" class="contact-f-input {{ $errors->has('first_name') ? 'contact-f-error' : '' }}"
                                     value="{{ old('first_name') }}">
+                                @error('first_name') <span class="contact-f-err-msg">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="contact-f-group">
                                 <label class="contact-f-label">{{ __('contact.name_last') }}</label>
-                                <input type="text" name="last_name" class="contact-f-input"
+                                <input type="text" name="last_name" class="contact-f-input {{ $errors->has('last_name') ? 'contact-f-error' : '' }}"
                                     value="{{ old('last_name') }}">
+                                @error('last_name') <span class="contact-f-err-msg">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
                         <div class="contact-f-row">
                             <div class="contact-f-group">
                                 <label class="contact-f-label">{{ __('contact.email') }}</label>
-                                <input type="email" name="email" class="contact-f-input"
+                                <input type="email" name="email" class="contact-f-input {{ $errors->has('email') ? 'contact-f-error' : '' }}"
                                     value="{{ old('email') }}">
+                                @error('email') <span class="contact-f-err-msg">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="contact-f-group">
                                 <label class="contact-f-label">{{ __('contact.phone') }}</label>
-                                <input type="tel" name="phone" class="contact-f-input"
+                                <input type="tel" name="phone" class="contact-f-input {{ $errors->has('phone') ? 'contact-f-error' : '' }}"
                                     value="{{ old('phone') }}">
+                                @error('phone') <span class="contact-f-err-msg">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
@@ -611,14 +629,15 @@
                             <select name="service" class="contact-f-input">
                                 <option value="">{{ __('common.select') ?? 'اختر الخدمة' }}</option>
                                 @foreach(['courses','sessions','consultation','other'] as $service)
-                                    <option value="{{ $service }}">{{ __("contact.service_$service") ?? $service }}</option>
+                                    <option value="{{ $service }}" {{ old('service') === $service ? 'selected' : '' }}>{{ __("contact.service_$service") ?? $service }}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="contact-f-group">
                             <label class="contact-f-label">{{ __('contact.message') }}</label>
-                            <textarea name="message" class="contact-f-input contact-f-textarea">{{ old('message') }}</textarea>
+                            <textarea name="message" class="contact-f-input contact-f-textarea {{ $errors->has('message') ? 'contact-f-error' : '' }}">{{ old('message') }}</textarea>
+                            @error('message') <span class="contact-f-err-msg">{{ $message }}</span> @enderror
                         </div>
 
                         <button type="submit" class="contact-f-submit">
